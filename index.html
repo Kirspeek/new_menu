@@ -1,0 +1,3333 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Меню игры</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800&family=Share+Tech+Mono&display=swap">
+<style>
+  :root {
+    --bg: #ffffff;
+    --lock: #e9ecef;
+    --lock-dark: #c9d0d6;
+    --green: #2fbf4a;
+    --green-dark: #1f8f35;
+    --wall: #eef1f5;
+    --ink: #232a31;
+    --muted: #6a7682;
+    --metal-1: #3b424b;
+    --metal-2: #252a30;
+    --lcd: #0e1712;
+    --lcd-text: #5cf08a;
+    --red: #e5484d;
+    --desk: #d8c09e;
+    --desk-dark: #b89a72;
+    --key: clamp(44px, 11vw, 62px);
+    --gap: 10px;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Rubik", system-ui, sans-serif;
+    overflow: hidden;
+  }
+  .screen { position: fixed; inset: 0; }
+
+  /* ---------- Меню ---------- */
+  #menu {
+    background: var(--bg);
+    display: grid;
+    place-items: center;
+    padding-inline: 16px;
+    z-index: 1;
+  }
+  .lock {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(70vw, 420px);
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+    transform-origin: 50% 64.58%;
+  }
+  .keyhole { fill: var(--lock-dark); transition: fill 0.5s ease 0.2s; }
+  .play {
+    position: relative;
+    z-index: 1;
+    font: 800 clamp(28px, 6vw, 44px)/1 "Rubik", system-ui, sans-serif;
+    color: #fff;
+    background: var(--green);
+    border: none;
+    border-radius: 18px;
+    padding: 22px 64px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 0 var(--green-dark), 0 14px 24px rgba(31, 143, 53, 0.25);
+    transition: transform 0.08s, box-shadow 0.08s, background 0.15s, opacity 0.25s;
+  }
+  .play:hover { background: #36cc52; }
+  .play:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 var(--green-dark), 0 6px 12px rgba(31, 143, 53, 0.2);
+  }
+  .play:focus-visible, button:focus-visible { outline: 4px solid #9be3a8; outline-offset: 4px; }
+
+  #menu.diving .play { opacity: 0; transform: scale(0.85); pointer-events: none; }
+  #menu.diving .lock {
+    transform: scale(48);
+    transition: transform 1.15s cubic-bezier(0.55, 0, 0.9, 0.35) 0.2s;
+  }
+  #menu.diving .keyhole { fill: #14171b; }
+
+  #flash {
+    position: fixed; inset: 0; background: #14171b;
+    opacity: 0; pointer-events: none; z-index: 2;
+    transition: opacity 0.25s;
+  }
+  #flash.on { opacity: 1; }
+
+  /* Кнопка «Вернуться в меню» на экранах раундов */
+  .topbar { width: 100%; max-width: 640px; margin-inline: auto; display: flex; flex: none; }
+  .back-btn {
+    border: none; border-radius: 12px;
+    padding: 10px 16px;
+    background: #fff;
+    box-shadow: 0 2px 0 #dfe4ea, 0 6px 16px rgba(35, 42, 49, 0.06);
+    font: 600 15px "Rubik", sans-serif; color: var(--ink);
+    cursor: pointer;
+  }
+  .back-btn:hover { box-shadow: 0 2px 0 #dfe4ea, 0 0 0 2px var(--green); }
+
+  /* ---------- Уровень ---------- */
+  #level {
+    z-index: 3;
+    background:
+      radial-gradient(circle at 50% 35%, #ffffff 0, transparent 60%),
+      var(--wall);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .hint {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 0 #dfe4ea, 0 8px 24px rgba(35, 42, 49, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hint .step {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--green-dark);
+  }
+  .hint p { margin: 0; font-size: 17px; line-height: 1.4; text-wrap: balance; }
+  .hint.flash { animation: hintFlash 0.5s; }
+  @keyframes hintFlash { 30% { background: #fff4d6; } }
+
+  .stage {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .door {
+    background: linear-gradient(160deg, var(--metal-1), var(--metal-2));
+    border-radius: 22px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 18px 40px rgba(20, 24, 28, 0.25);
+  }
+  .door.shake { animation: shake 0.45s; }
+  @keyframes shake {
+    20% { transform: translateX(-8px); } 40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); } 80% { transform: translateX(3px); }
+  }
+  .door-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .door-top span { color: #9aa5b1; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .led {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 0 10px var(--red);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .door.open .led { background: var(--lcd-text); box-shadow: 0 0 12px var(--lcd-text); }
+  .display {
+    background: var(--lcd);
+    color: var(--lcd-text);
+    font: 30px/1 "Share Tech Mono", ui-monospace, monospace;
+    letter-spacing: 0.35em;
+    text-align: center;
+    padding: 14px 0 14px 0.35em;
+    border-radius: 10px;
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 0 8px rgba(92, 240, 138, 0.5);
+    white-space: nowrap;
+  }
+  .display.bad { color: var(--red); text-shadow: 0 0 8px rgba(229,72,77,0.5); }
+
+  .keypad-wrap { position: relative; border-radius: 14px; }
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, var(--key));
+    grid-auto-rows: var(--key);
+    gap: var(--gap);
+  }
+  .key {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(#f3f5f7, #cdd3d9);
+    color: var(--ink);
+    font: 600 clamp(20px, 5vw, 26px)/1 "Rubik", system-ui, sans-serif;
+    box-shadow: 0 4px 0 #8f99a4;
+    cursor: pointer;
+    transition: transform 0.06s, box-shadow 0.06s;
+  }
+  .key.small { font-size: 16px; color: var(--muted); }
+  .key:active { transform: translateY(3px); box-shadow: 0 1px 0 #8f99a4; }
+  .key::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,0.9) 0 6%, transparent 7%),
+      radial-gradient(circle at 68% 70%, rgba(255,255,255,0.6) 0 4%, transparent 5%),
+      linear-gradient(135deg, rgba(80, 165, 230, 0.5), rgba(80, 165, 230, 0.18));
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .key.wet::after { opacity: 1; }
+
+  .pour {
+    position: absolute;
+    top: -70px; right: -34px;
+    width: 64px;
+    transform-origin: 50% 80%;
+    animation: tilt 1.3s ease-in-out forwards;
+    pointer-events: none;
+    z-index: 4;
+  }
+  @keyframes tilt {
+    0% { transform: rotate(0) translateY(-10px); opacity: 0; }
+    20% { opacity: 1; transform: rotate(-20deg); }
+    45%, 75% { transform: rotate(-115deg); }
+    100% { transform: rotate(0) translateY(-10px); opacity: 0; }
+  }
+  .drop {
+    position: absolute;
+    width: 10px; height: 14px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: #4aa3df;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* Плёнка */
+  .film {
+    position: absolute;
+    inset: -8px;
+    padding: 8px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, var(--key));
+    grid-auto-rows: var(--key);
+    gap: var(--gap);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.35) 0 18%, transparent 18% 60%, rgba(255,255,255,0.22) 60% 66%, transparent 66%),
+      rgba(190, 225, 248, calc(0.3 + var(--dust, 0) * 0.15));
+    border: 1.5px solid rgba(130, 180, 212, 0.9);
+    box-shadow: 0 6px 16px rgba(20, 60, 90, 0.18);
+    cursor: pointer;
+    touch-action: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .film.reading { pointer-events: none; }
+  .film .cell { position: relative; display: grid; place-items: center; }
+  .print { width: 74%; opacity: 0; color: #2a2e34; transition: opacity 0.15s; }
+  .print svg { display: block; width: 100%; height: auto; }
+  .badge {
+    position: absolute; top: 2px; right: 4px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--green); color: #fff;
+    font: 700 12px/20px "Rubik", sans-serif; text-align: center;
+  }
+  .dust {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    background: #55606b; pointer-events: none;
+  }
+
+  /* Стол */
+  .desk {
+    background:
+      repeating-linear-gradient(92deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 22px),
+      linear-gradient(170deg, var(--desk), var(--desk-dark));
+    border-radius: 18px;
+    padding: 18px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 14px 30px rgba(90, 64, 30, 0.22);
+  }
+  .desk-label {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(60, 40, 15, 0.7); font-weight: 600;
+  }
+  .desk-slot {
+    position: relative;
+    width: calc(3 * var(--key) + 2 * var(--gap));
+    height: calc(4 * var(--key) + 3 * var(--gap));
+    margin: 8px;
+    border-radius: 10px;
+    outline: 2px dashed rgba(60, 40, 15, 0.25);
+    outline-offset: 6px;
+  }
+
+  /* Инструменты */
+  .tray {
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .tool {
+    width: 96px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 12px 6px 10px;
+    border-radius: 16px;
+    background: #fff;
+    border: 2px solid #e1e6eb;
+    font: 500 13px/1.2 "Rubik", sans-serif;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.1s;
+  }
+  .tool:hover { border-color: #b9c3cd; }
+  .tool:active { transform: scale(0.96); }
+  .tool svg { width: 52px; height: 52px; transition: opacity 0.2s; }
+  .tool.empty svg { opacity: 0.12; }
+  .tool.empty { color: var(--muted); }
+  .tool.nope { animation: shake 0.4s; }
+
+  .pulse { animation: pulse 1.3s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(47, 191, 74, 0.65); }
+    100% { box-shadow: 0 0 0 14px rgba(47, 191, 74, 0); }
+  }
+
+  #held {
+    position: fixed; left: 0; top: 0;
+    width: 64px; height: 64px;
+    pointer-events: none;
+    z-index: 50;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25));
+  }
+  #held svg { width: 100%; height: 100%; }
+
+  /* Раунд 3 — взлом */
+  #level2 {
+    z-index: 3;
+    background:
+      radial-gradient(circle at 50% 35%, #ffffff 0, transparent 60%),
+      var(--wall);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .lockbox {
+    width: min(560px, 100%);
+    background: #fff;
+    border-radius: 20px;
+    padding: 14px;
+    box-shadow: 0 2px 0 #dfe4ea, 0 14px 30px rgba(35, 42, 49, 0.08);
+  }
+  .lockbox.shake { animation: shake 0.45s; }
+  #cyl { display: block; width: 100%; height: auto; touch-action: none; user-select: none; }
+  #cyl .driver.wobble { animation: wob 0.16s infinite; }
+  @keyframes wob { 50% { transform: translateX(1.4px); } }
+  .side2 { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .face { width: 110px; height: 110px; }
+  #faceCore { transform-box: view-box; transform-origin: 50px 50px; transition: transform 0.35s cubic-bezier(0.3, 1.4, 0.5, 1); }
+  .picks { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .picks-row { display: flex; gap: 6px; }
+  .picks-row i { width: 8px; height: 26px; border-radius: 4px; background: #2f6fb5; }
+  .picks-row i.gone { background: #dfe4ea; }
+  #codeBox { display: flex; flex-direction: column; gap: 4px; }
+
+  .door2 {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 20px;
+    overflow: hidden;
+  }
+  .door2 svg {
+    width: min(60vw, 300px);
+    max-width: 100%;
+    height: auto;
+    transform-origin: 50% 45.83%;
+  }
+  .door2.diving svg { transform: scale(40); transition: transform 1.1s cubic-bezier(0.55, 0, 0.9, 0.35); }
+  .kh2 { fill: #2b2418; transition: fill 0.4s; }
+  .door2.diving .kh2 { fill: #14171b; }
+  .door2.diving .kh-ring, .door2.diving .door2-cap { opacity: 0; }
+  .kh-hit { cursor: pointer; }
+  .kh-ring { fill: none; stroke: #2fbf4a; stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: ring 1.4s infinite; pointer-events: none; }
+  @keyframes ring { from { transform: scale(1); opacity: 0.9; } to { transform: scale(2); opacity: 0; } }
+  .door2-cap { margin: 0; color: var(--muted); font-size: 15px; text-align: center; transition: opacity 0.2s; }
+  @media (prefers-reduced-motion: reduce) {
+    .door2.diving svg { transform: none; transition: none; }
+    .kh-ring { animation: none; }
+  }
+
+  /* Меню: продолжение */
+  .menu-box { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .resume { margin: 0; color: var(--muted); font-size: 15px; background: rgba(255,255,255,0.85); padding: 4px 10px; border-radius: 8px; }
+  .reset { background: none; border: none; color: var(--green-dark); font: 500 14px "Rubik", sans-serif; text-decoration: underline; cursor: pointer; }
+  #menu.diving .resume, #menu.diving .reset { opacity: 0; pointer-events: none; }
+
+  /* Раунд 2 — сейф на электрозамке */
+  #level3 {
+    z-index: 3;
+    background:
+      radial-gradient(circle at 50% 35%, #ffffff 0, transparent 60%),
+      var(--wall);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  /* Сейф */
+  .safe {
+    position: relative;
+    width: min(380px, 100%);
+    aspect-ratio: 1 / 1.04;
+    background: linear-gradient(160deg, #4a5663, #2a3139);
+    border-radius: 20px;
+    perspective: 1000px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 22px 40px rgba(20, 24, 28, 0.3);
+  }
+  .safe::before, .safe::after {
+    content: ""; position: absolute; bottom: -10px; width: 36px; height: 12px;
+    background: #1d2227; border-radius: 0 0 6px 6px;
+  }
+  .safe::before { left: 28px; }
+  .safe::after { right: 28px; }
+  .safe-inside {
+    position: absolute; inset: 16px;
+    border-radius: 12px;
+    background: linear-gradient(#161a1e, #232a31);
+    box-shadow: inset 0 6px 20px rgba(0,0,0,0.7);
+    display: flex; align-items: flex-end; justify-content: center; gap: 6px;
+    padding-bottom: 20%;
+  }
+  .gold {
+    width: 22%; height: 15%;
+    background: linear-gradient(160deg, #ffe38a, #d9a520 60%, #b8860b);
+    clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%);
+  }
+  .safe-door {
+    position: absolute; inset: 16px;
+    border-radius: 12px;
+    background: linear-gradient(160deg, #637280, #3d4853);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.06), 0 4px 12px rgba(0,0,0,0.35);
+    display: flex; align-items: center; justify-content: center; gap: 4%;
+    padding: 6%;
+    transform-origin: left center;
+    transition: transform 1.1s cubic-bezier(0.3, 0.7, 0.2, 1);
+    backface-visibility: hidden;
+  }
+  .safe.open .safe-door { transform: rotateY(-108deg); pointer-events: none; }
+  .bolt { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9aa5b1, #4a5560); }
+  /* Сцена: сейф, кабель и электрощиток рядом */
+  #level4 {
+    z-index: 3;
+    background:
+      radial-gradient(circle at 50% 35%, #ffffff 0, transparent 60%),
+      var(--wall);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .scene3 { display: flex; align-items: center; justify-content: center; width: 100%; }
+  .scene3 .safe { width: min(300px, calc(100% - 128px)); flex: none; }
+  .safe-lock {
+    width: 84%;
+    background: #1c232a;
+    border: 3px solid #3b444e; border-radius: 10px;
+    padding: 10px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .lock-top { width: 100%; display: flex; align-items: center; justify-content: space-between; color: #9aa5b1; font: 600 10px "Rubik", sans-serif; letter-spacing: 0.12em; }
+  .led3 { width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px var(--red); transition: background 0.3s, box-shadow 0.3s; flex: none; }
+  .safe.live .led3 { background: var(--lcd-text); box-shadow: 0 0 10px var(--lcd-text); }
+  .lcd3 {
+    align-self: stretch; text-align: center;
+    background: var(--lcd); border-radius: 4px; padding: 5px 6px;
+    font: 15px "Share Tech Mono", ui-monospace, monospace; letter-spacing: 0.08em;
+    color: var(--red);
+  }
+  .safe.live .lcd3 { color: var(--lcd-text); text-shadow: 0 0 6px var(--lcd-text); }
+  .wheel { width: 56%; }
+  .safe.shake { animation: shake 0.45s; }
+
+  .cable3 { width: 24px; height: 8px; flex: none; background: #1d2227; border-radius: 4px; margin-top: 30%; }
+  .cable3.live {
+    background: repeating-linear-gradient(90deg, #ffe38a 0 6px, #1d2227 6px 12px);
+    background-size: 12px 100%;
+    box-shadow: 0 0 10px #ffe38a;
+    animation: cableFlow 0.35s linear infinite;
+  }
+  @keyframes cableFlow { from { background-position: 12px 0; } }
+
+  .box3 {
+    width: 104px; height: 156px; flex: none;
+    border: none; border-radius: 10px;
+    background: linear-gradient(160deg, #c3cbd3, #8a949e);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.3), 0 12px 24px rgba(20, 24, 28, 0.25);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .box3:active { transform: scale(0.97); }
+  .box3 svg { width: 52px; height: 46px; }
+  .vents { display: flex; flex-direction: column; gap: 5px; }
+  .vents i { display: block; width: 56px; height: 4px; border-radius: 2px; background: #5f6973; }
+  .box3-label { font: 600 11px "Rubik", sans-serif; letter-spacing: 0.14em; color: #3d4650; }
+
+  /* Открытый электрощиток */
+  #panel3 {
+    position: fixed; inset: 0; z-index: 55;
+    background: rgba(14, 18, 22, 0.78);
+    display: grid; place-items: center;
+    padding-inline: 16px;
+  }
+  .panel-box { width: min(420px, 100%); display: flex; flex-direction: column; align-items: center; gap: 14px; animation: pop 0.35s ease-out; }
+  .board3 {
+    width: 100%; box-sizing: border-box;
+    padding: 12px; border-radius: 16px;
+    background: linear-gradient(160deg, #c3cbd3, #8a949e);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.3), 0 20px 40px rgba(0,0,0,0.35);
+  }
+  #grid3 { display: block; width: 100%; height: auto; touch-action: none; user-select: none; }
+  #grid3.shake { animation: shake 0.35s; }
+  .path3 { fill: none; stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; }
+  .flow3 {
+    fill: none; stroke: rgba(255, 255, 220, 0.9); stroke-width: 8;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 10 26;
+    animation: flow3 0.6s linear infinite;
+  }
+  @keyframes flow3 { to { stroke-dashoffset: -36; } }
+  #grid3.live .path3 { filter: drop-shadow(0 0 10px rgba(255, 255, 220, 0.8)); }
+  #note3 { color: #fff; font-size: 16px; }
+  @media (prefers-reduced-motion: reduce) {
+    .flow3, .cable3.live { animation: none; }
+  }
+
+  /* Раунд 4 — сейф с проводами и запиской электрика */
+  .mem-col { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+
+  /* Щиток с проводами на дверце сейфа */
+  .wp {
+    width: 100%; height: 100%;
+    background: #1c232a;
+    border: 3px solid #3b444e; border-radius: 10px;
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 8px;
+  }
+  .wp.shake { animation: shake 0.45s; }
+  .bus {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: #2a3139; border-radius: 6px;
+    padding: 6px 10px;
+    color: #9aa5b1; font: 600 11px "Rubik", sans-serif; letter-spacing: 0.14em;
+  }
+  .led4 { width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px var(--red); transition: background 0.3s, box-shadow 0.3s; }
+  .wp.live .led4 { background: var(--lcd-text); box-shadow: 0 0 10px var(--lcd-text); }
+  .lcd4 {
+    background: var(--lcd); border-radius: 4px; padding: 3px 8px;
+    font: 13px "Share Tech Mono", ui-monospace, monospace; letter-spacing: 0.08em;
+    color: #e5484d;
+  }
+  .wp.live .lcd4 { color: var(--lcd-text); text-shadow: 0 0 6px var(--lcd-text); }
+  .slots { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; min-height: 0; }
+  .slot {
+    border: none; border-radius: 8px;
+    background: #12171c;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 6px 0 4px;
+    font: inherit; cursor: pointer;
+    transition: box-shadow 0.15s;
+  }
+  .wp.holding .slot { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), inset 0 0 0 2px #9be3a8; }
+  .lamp { width: 10px; height: 10px; border-radius: 50%; background: #3b444e; transition: background 0.2s, box-shadow 0.2s; }
+  .lamp.ok { background: var(--lcd-text); box-shadow: 0 0 8px var(--lcd-text); }
+  .lamp.bad { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .pin { width: 16px; height: 8px; border-radius: 3px; background: linear-gradient(#c4ccd4, #7d8791); flex: none; }
+  .socket { flex: 1; width: 100%; display: flex; justify-content: center; min-height: 0; }
+  .socket::before {
+    content: ""; width: 12px; height: 100%;
+    border: 2px dashed #3b444e; border-radius: 7px;
+  }
+  .socket.full::before {
+    border: none; width: 14px;
+    background-color: var(--c);
+    box-shadow: inset -3px 0 0 rgba(0,0,0,0.2), inset 3px 0 0 rgba(255,255,255,0.25);
+  }
+  .slot.bad .socket::before { animation: spark 0.12s 4; }
+  @keyframes spark { 50% { filter: brightness(2.2); box-shadow: 0 0 14px #fff; } }
+  .wp.live .socket.full::before {
+    background-image: repeating-linear-gradient(180deg, transparent 0 12px, rgba(255, 255, 220, 0.9) 12px 18px);
+    background-size: 100% 30px;
+    box-shadow: 0 0 12px var(--c);
+    animation: flow 0.45s linear infinite;
+  }
+  @keyframes flow { to { background-position: 0 30px; } }
+  .num { color: #6a7682; font: 600 12px "Rubik", sans-serif; }
+
+  /* Провода, которые можно взять */
+  .wire-tray { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .wire {
+    width: 70px; height: 46px;
+    border: none; border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 0 0 2px #e1e6eb, 0 4px 0 #d3d9df;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .wire svg { width: 56px; height: 22px; }
+  .wire.sel { transform: translateY(-6px); box-shadow: 0 0 0 3px var(--green), 0 6px 0 var(--green-dark); }
+  .wire.used { visibility: hidden; }
+
+  /* Записка электрика */
+  .note4 {
+    box-sizing: border-box;
+    width: min(380px, 100%);
+    background: #fff4b8;
+    border-radius: 4px;
+    padding: 12px 16px;
+    box-shadow: 0 6px 14px rgba(35, 42, 49, 0.12);
+    transform: rotate(-1deg);
+  }
+  .note4 b { font-size: 14px; }
+  .note4 ol { margin: 6px 0 0; padding-left: 20px; font-size: 16px; line-height: 1.5; }
+  .cw { font-weight: 600; white-space: nowrap; }
+  .cw::before {
+    content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--c); margin-right: 4px; vertical-align: 0;
+  }
+
+  /* Кнопка «три полоски» и список раундов */
+  .menu-row { display: flex; align-items: center; gap: 14px; }
+  .burger {
+    width: 76px; height: 76px;
+    border: none; border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 0 0 2px #e1e6eb, 0 8px 0 #d3d9df;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+    cursor: pointer;
+    transition: transform 0.08s, box-shadow 0.08s;
+  }
+  .burger i { width: 34px; height: 5px; border-radius: 3px; background: var(--ink); }
+  .burger:active { transform: translateY(6px); box-shadow: 0 0 0 2px #e1e6eb, 0 2px 0 #d3d9df; }
+  #menu.diving .burger { opacity: 0; pointer-events: none; }
+  #rounds {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(20, 24, 28, 0.45);
+    display: grid; place-items: center;
+    padding-inline: 16px;
+  }
+  .rounds-card {
+    width: 100%; max-width: 380px;
+    background: #fff;
+    border-radius: 22px;
+    padding: 22px;
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    animation: pop 0.3s ease-out;
+  }
+  .rounds-head { display: flex; align-items: center; justify-content: space-between; }
+  .rounds-head h2 { margin: 0; font-size: 22px; font-weight: 800; }
+  .x-btn { width: 36px; height: 36px; border: none; border-radius: 10px; background: #eef1f5; font: 600 20px/1 "Rubik", sans-serif; color: var(--ink); cursor: pointer; }
+  .round-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    border: 2px solid #e1e6eb; border-radius: 16px;
+    background: #fff;
+    font: inherit; color: inherit; text-align: left;
+    cursor: pointer;
+  }
+  .round-item:hover:not(:disabled) { border-color: var(--green); }
+  .round-item:disabled { cursor: default; background: #f5f7f9; color: var(--muted); }
+  .round-badge {
+    width: 44px; height: 44px; flex: none;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font: 800 20px "Rubik", sans-serif;
+    background: #eef1f5; color: var(--ink);
+  }
+  .round-item.done .round-badge { background: var(--green); color: #fff; }
+  .round-item:disabled .round-badge { background: #e3e7eb; }
+  .round-badge svg { width: 24px; height: 24px; }
+  .round-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .round-info b { font-size: 16px; }
+  .round-info span { font-size: 13px; color: var(--muted); }
+  .round-stars { color: #ffc83d; font-size: 16px; letter-spacing: 1px; white-space: nowrap; }
+  .round-stars .off { color: #dfe4ea; }
+
+  /* Микроскоп */
+  #scope {
+    position: fixed; inset: 0; z-index: 55;
+    background: rgba(14, 18, 22, 0.78);
+    display: grid; place-items: center;
+    padding-inline: 16px;
+  }
+  .scope-box { display: flex; flex-direction: column; align-items: center; gap: 16px; animation: pop 0.35s ease-out; }
+  .scope-title { color: #fff; font-size: 18px; font-weight: 600; margin: 0; text-align: center; }
+  .scope-note { color: #b9c3cd; font-size: 14px; margin: 0; text-align: center; min-height: 1.4em; }
+  .lens {
+    position: relative;
+    width: min(340px, 82vw);
+    aspect-ratio: 1;
+    max-width: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle, #fbfdff 0 55%, #dfe7ee 80%, #b9c6d2);
+    border: 10px solid #1d2329;
+    box-shadow: 0 0 0 3px #4a5560, inset 0 0 40px rgba(0,0,0,0.35);
+    display: grid; place-items: center;
+  }
+  .lens-inner {
+    position: relative;
+    width: calc(3 * var(--key) + 2 * var(--gap));
+    height: calc(4 * var(--key) + 3 * var(--gap));
+    transform: scale(1.12);
+  }
+  .lens-inner .film { cursor: default; box-shadow: none; }
+  .lens .print.scanned { filter: drop-shadow(0 0 4px rgba(47, 191, 74, 0.9)); }
+  .lens .badge { animation: pop 0.3s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .scanline {
+    position: absolute; left: 0; right: 0; height: 3px;
+    background: rgba(47, 191, 74, 0.8);
+    box-shadow: 0 0 12px rgba(47, 191, 74, 0.9);
+    animation: scan 1.2s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes scan { from { top: 8%; } to { top: 92%; } }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* Победа */
+  #win {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(20, 24, 28, 0.5);
+    display: grid; place-items: center;
+    padding-inline: 16px;
+  }
+  .win-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px 26px 24px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    animation: pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+  }
+  @keyframes pop { from { transform: scale(0.8); opacity: 0; } }
+  .win-card h2 { margin: 0; font-size: 28px; font-weight: 800; }
+  .win-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.45; }
+  .stars { display: flex; justify-content: center; gap: 6px; margin-block: 4px; }
+  .star { width: 64px; height: 64px; }
+  .star:nth-child(2) { width: 78px; height: 78px; margin-top: -10px; }
+  .star path { fill: #e3e7eb; stroke: #c9d0d6; stroke-width: 2; stroke-linejoin: round; }
+  .star.on path { fill: #ffc83d; stroke: #e0a200; }
+  .star.on { animation: starIn 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+  @keyframes starIn { from { transform: scale(0) rotate(-40deg); } }
+  .stats { font-size: 13px !important; }
+  .win-card .code { font: 26px "Share Tech Mono", monospace; letter-spacing: 0.3em; color: var(--green-dark); }
+  .win-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+  .btn {
+    border: none; border-radius: 12px; padding: 12px 22px;
+    font: 600 16px "Rubik", sans-serif; cursor: pointer;
+  }
+  .btn.primary { background: var(--green); color: #fff; box-shadow: 0 4px 0 var(--green-dark); }
+  .btn.ghost { background: #eef1f5; color: var(--ink); }
+
+  /* Замок камеры в пятом раунде: тот же экран, что в первом, но в тюремном оформлении */
+  #level.prison {
+    background:
+      repeating-linear-gradient(90deg, rgba(12, 15, 18, 0.55) 0 12px, rgba(255, 255, 255, 0.05) 12px 14px, transparent 14px 86px),
+      radial-gradient(circle at 50% 30%, #56606b 0, #2b3138 55%, #1b1f24 100%);
+  }
+  #level.prison .back-btn { background: #2a3037; color: #e9ecef; box-shadow: 0 2px 0 #14181c; }
+  #level.prison .hint { background: #23282e; box-shadow: 0 2px 0 #14181c, 0 8px 24px rgba(0, 0, 0, 0.35); }
+  #level.prison .hint .step { color: #f08a24; }
+  #level.prison .hint p { color: #e9ecef; }
+  #level.prison .hint.flash { animation: hintFlashPrison 0.5s; }
+  @keyframes hintFlashPrison { 30% { background: #5a3a1a; } }
+  #level.prison .door {
+    border: 8px solid transparent;
+    border-image: repeating-linear-gradient(45deg, #ffc83d 0 12px, #23282e 12px 24px) 8;
+    border-radius: 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  }
+  #level.prison .desk {
+    background:
+      radial-gradient(circle at 14px 14px, #9aa5b1 0 4px, transparent 5px),
+      radial-gradient(circle at calc(100% - 14px) 14px, #9aa5b1 0 4px, transparent 5px),
+      radial-gradient(circle at 14px calc(100% - 14px), #9aa5b1 0 4px, transparent 5px),
+      radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #9aa5b1 0 4px, transparent 5px),
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 26px),
+      linear-gradient(170deg, #6b7580, #3d4650);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  }
+  #level.prison .desk-label { color: #d0d5db; }
+  #level.prison .desk-slot { outline-color: rgba(255, 255, 255, 0.25); }
+  #level.prison .tool { background: #2a3037; border-color: #3b444e; color: #e9ecef; }
+  #level.prison .tool:hover { border-color: #f08a24; }
+  #level.prison .tool.empty { color: #7d8791; }
+  #level.prison .tool.empty svg { opacity: 0.2; }
+
+  /* Раунд 5 — побег из тюрьмы */
+  #level5 {
+    z-index: 3;
+    background:
+      radial-gradient(circle at 50% 35%, #ffffff 0, transparent 60%),
+      var(--wall);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .scene5-wrap { width: min(760px, 100%, max(320px, calc((100dvh - 470px) * 1.9))); flex: none; }
+  .ctrl5 { width: 100%; max-width: 640px; display: flex; justify-content: center; flex: none; }
+  .ctrl5 > div { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: pop 0.3s ease-out; }
+  #dial5.shake { animation: shake 0.4s; }
+  #dial5 { display: block; width: min(230px, 66vw); height: auto; touch-action: manipulation; }
+  .mark5 { fill: none; stroke: #ffc83d; stroke-width: 18; transition: stroke 0.1s; }
+  .mark5.near { stroke: #fff3b0; }
+  .cap5 { margin: 0; font-size: 15px; color: var(--muted); min-height: 1.3em; text-align: center; }
+  .big5 { font-size: 20px; padding: 14px 34px; }
+  .hearts5 { font-size: 28px; line-height: 1; letter-spacing: 4px; color: var(--red); }
+  .hearts5 .off { color: #dfe4ea; }
+  .ctrl5 > .code5 {
+    display: grid; justify-content: center; align-items: start; gap: 12px;
+    grid-template-columns: auto minmax(0, 260px);
+    grid-template-areas: "timer timer" "door note";
+  }
+  @media (min-width: 560px) {
+    .ctrl5 > .code5 { grid-template-areas: "door timer" "door note"; grid-template-rows: auto 1fr; }
+  }
+  .door5 { grid-area: door; --key: clamp(36px, 9vw, 46px); --gap: 8px; padding: 14px; gap: 10px; }
+  #level5.coding .scene5-wrap { width: min(760px, 100%, max(300px, calc((100dvh - 530px) * 1.9))); }
+  .door5 .display { font-size: 24px; padding: 8px 0 8px 0.35em; }
+  .timer5 {
+    grid-area: timer;
+    background: #fff; border-radius: 14px; padding: 10px 14px;
+    box-shadow: 0 2px 0 #dfe4ea, 0 8px 24px rgba(35, 42, 49, 0.06);
+    display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 6px 8px;
+  }
+  .timer5 b { font: 800 32px/1 "Rubik", sans-serif; }
+  .timer5 span { color: var(--muted); font-size: 15px; }
+  .timer5 i { grid-column: 1 / -1; display: block; height: 8px; border-radius: 4px; background: #eef1f5; overflow: hidden; }
+  .timer5 em { display: block; height: 100%; background: var(--green); }
+  .timer5.low b { color: var(--red); }
+  .timer5.low em { background: var(--red); }
+  .note5 { grid-area: note; width: 100%; padding: 12px 14px; transform: rotate(1deg); }
+  .legend5 { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 6px 12px; margin: 8px 0 10px; font: 600 18px/1 "Rubik", sans-serif; }
+  .legend5 span { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .note5 p { margin: 0; font-size: 15px; }
+  .seq5 { display: flex; gap: 8px; margin-top: 4px; }
+  .sym5 { width: 18px; height: 18px; flex: none; }
+  .seq5 .sym5 { width: 30px; height: 30px; }
+
+  .scene5-wrap { position: relative; aspect-ratio: 1.9; border-radius: 18px; overflow: hidden; background: #111; box-shadow: 0 14px 30px rgba(35, 42, 49, 0.18); }
+  #c5 { display: block; width: 100%; height: 100%; touch-action: manipulation; }
+  .fade5 { position: absolute; inset: 0; background: #000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .fade5.on { opacity: 1; }
+  .hurt5 { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: rgba(229, 72, 77, 0.18); box-shadow: inset 0 0 90px 30px rgba(229, 72, 77, 0.85); }
+  .banner5 {
+    position: absolute; left: 50%; top: 8%; transform: translateX(-50%);
+    display: none; padding: 8px 26px; border-radius: 16px; color: #fff;
+    font: 800 clamp(24px, 5vw, 40px)/1.1 "Rubik", sans-serif; white-space: nowrap; pointer-events: none;
+  }
+  .banner5.on { display: block; animation: pop5 0.35s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  @keyframes pop5 { from { transform: translateX(-50%) scale(0.7); opacity: 0; } }
+  .nogl5 { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 16px; color: #fff; text-align: center; font-size: 15px; }
+</style>
+
+<section id="menu" class="screen">
+  <svg class="lock" viewBox="0 0 200 240" aria-hidden="true">
+    <path d="M50 110 V70 a50 50 0 0 1 100 0 V110" fill="none" stroke="#d6dbe0" stroke-width="22" stroke-linecap="round"/>
+    <rect x="20" y="100" width="160" height="130" rx="22" fill="var(--lock)"/>
+    <circle class="keyhole" cx="100" cy="155" r="16"/>
+    <rect class="keyhole" x="93" y="160" width="14" height="36" rx="7"/>
+  </svg>
+  <div class="menu-box">
+    <div class="menu-row">
+      <button class="play" id="play" type="button">Играть</button>
+      <button class="burger" id="burger" type="button" aria-label="Все раунды"><i></i><i></i><i></i></button>
+    </div>
+    <p class="resume" id="resumeNote" hidden></p>
+    <button class="reset" id="resetBtn" type="button" hidden>Начать с первого раунда</button>
+  </div>
+</section>
+
+<div id="flash"></div>
+
+<section id="level" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint">
+    <span class="step" id="stepLabel">Обучение · шаг 1 из 10</span>
+    <p id="hintText"></p>
+  </div>
+
+  <div class="stage">
+    <div class="door" id="door">
+      <div class="door-top"><span id="doorName">Кодовый замок</span><div class="led"></div></div>
+      <div class="display" id="display">____</div>
+      <div class="keypad-wrap" id="keypadWrap">
+        <div class="keypad" id="keypad"></div>
+      </div>
+    </div>
+
+    <div class="desk">
+      <div class="desk-label" id="deskName">Стол</div>
+      <div class="desk-slot" id="deskSlot"></div>
+    </div>
+  </div>
+
+  <div class="tray" id="tray">
+    <button class="tool" type="button" data-tool="liquid" id="tool-liquid"></button>
+    <button class="tool" type="button" data-tool="film" id="tool-film"></button>
+    <button class="tool" type="button" data-tool="brush" id="tool-brush"></button>
+    <button class="tool" type="button" data-tool="microscope" id="tool-microscope"></button>
+  </div>
+</section>
+
+<section id="level2" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint2">
+    <span class="step" id="stepLabel2">Раунд 3 · отмычка</span>
+    <p id="hintText2"></p>
+  </div>
+
+  <div class="door2" id="door2">
+    <svg viewBox="0 0 200 240" aria-label="Замок снаружи">
+      <rect x="30" y="10" width="140" height="220" rx="24" fill="#cfa84e" stroke="#8c6d25" stroke-width="4"/>
+      <circle cx="100" cy="30" r="5" fill="#8c6d25"/>
+      <circle cx="100" cy="210" r="5" fill="#8c6d25"/>
+      <circle cx="100" cy="120" r="52" fill="#e6c66f" stroke="#8c6d25" stroke-width="3"/>
+      <circle class="kh2" cx="100" cy="110" r="12"/>
+      <path class="kh2" d="M93 114h14l5 34h-24z"/>
+      <circle class="kh-ring" cx="100" cy="122" r="24"/>
+      <circle class="kh-hit" id="khHit" cx="100" cy="122" r="30" fill="transparent"/>
+    </svg>
+    <p class="door2-cap">Перед тобой запертая дверь.</p>
+  </div>
+
+  <div class="stage" id="stage2">
+    <div class="lockbox" id="lockbox">
+      <svg id="cyl" viewBox="0 0 400 300" aria-label="Замок в разрезе">
+        <rect x="20" y="20" width="360" height="262" rx="16" fill="#cfa84e" stroke="#8c6d25" stroke-width="3"/>
+        <rect x="40" y="150" width="320" height="110" rx="10" fill="#e6c66f" stroke="#8c6d25" stroke-width="2"/>
+        <g id="pins"></g>
+        <rect x="40" y="222" width="320" height="26" fill="#2b2418"/>
+        <line x1="24" y1="150" x2="376" y2="150" stroke="#2fbf4a" stroke-width="2.5" stroke-dasharray="7 5"/>
+        <path id="wrench" d="M72 244H8V296" fill="none" stroke="#3d4650" stroke-width="6" stroke-linejoin="round" visibility="hidden"/>
+        <path id="pick" fill="none" stroke="#8a939c" stroke-width="5" stroke-linecap="round" visibility="hidden"/>
+        <rect id="pickHandle" x="-2" y="233" width="30" height="14" rx="6" fill="#2f6fb5" visibility="hidden"/>
+      </svg>
+    </div>
+    <div class="side2">
+      <svg class="face" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="#cfa84e" stroke="#8c6d25" stroke-width="3"/>
+        <g id="faceCore">
+          <circle cx="50" cy="50" r="30" fill="#e6c66f" stroke="#8c6d25" stroke-width="2"/>
+          <path d="M50 30a8 8 0 0 1 5 14l3 22h-16l3 -22a8 8 0 0 1 5 -14z" fill="#2b2418"/>
+        </g>
+      </svg>
+      <div class="picks">Отмычки<div class="picks-row" id="picksRow"></div></div>
+    </div>
+  </div>
+
+  <div class="tray" id="tray2">
+    <button class="tool" type="button" data-tool="tension" id="tool2-tension"></button>
+    <button class="tool" type="button" data-tool="pick" id="tool2-pick"></button>
+  </div>
+</section>
+
+<section id="level3" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint3">
+    <span class="step" id="stepLabel3">Раунд 2 · сейф</span>
+    <p id="hintText3"></p>
+  </div>
+
+  <div class="stage">
+    <div class="scene3">
+      <div class="safe" id="safe">
+        <div class="safe-inside"><div class="gold"></div><div class="gold"></div><div class="gold"></div></div>
+        <div class="safe-door">
+          <span class="bolt" style="left:10px;top:10px"></span>
+          <span class="bolt" style="right:10px;top:10px"></span>
+          <span class="bolt" style="left:10px;bottom:10px"></span>
+          <span class="bolt" style="right:10px;bottom:10px"></span>
+          <div class="safe-lock">
+            <div class="lock-top"><span>ЭЛЕКТРОЗАМОК</span><i class="led3"></i></div>
+            <div class="lcd3" id="core3">НЕТ ТОКА</div>
+            <svg class="wheel" viewBox="-50 -50 100 100" aria-hidden="true">
+              <circle r="44" fill="none" stroke="#3b444e" stroke-width="6"/>
+              <path d="M0 -40V40M-40 0H40M-28 -28L28 28M28 -28L-28 28" stroke="#5f6973" stroke-width="6" stroke-linecap="round"/>
+              <circle r="14" fill="#8f99a4" stroke="#5f6973" stroke-width="3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="cable3" id="cable3"></div>
+      <button class="box3" type="button" id="box3" aria-label="Электрощиток">
+        <svg viewBox="0 0 52 46" aria-hidden="true"><path d="M26 3L49 43H3z" fill="#ffc83d" stroke="#23303c" stroke-width="3" stroke-linejoin="round"/><path d="M28 13l-8 15h7l-3 11 9-16h-7z" fill="#23303c"/></svg>
+        <span class="vents"><i></i><i></i><i></i></span>
+        <span class="box3-label">ЩИТОК</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div id="panel3" hidden>
+  <div class="panel-box">
+    <p class="scope-title">Электрощиток</p>
+    <div class="board3"><svg id="grid3" viewBox="0 0 500 500" aria-label="Схема проводов"></svg></div>
+    <p class="scope-note" id="note3"></p>
+    <div class="win-actions">
+      <button class="btn ghost" type="button" id="reset3">Стереть всё</button>
+      <button class="btn primary" type="button" id="close3">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<section id="level4" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint4">
+    <span class="step" id="stepLabel4">Раунд 4 · провода</span>
+    <p id="hintText4"></p>
+  </div>
+
+  <div class="stage">
+    <div class="mem-col">
+      <div class="safe" id="safe4">
+        <div class="safe-inside"><div class="gold"></div><div class="gold"></div><div class="gold"></div></div>
+        <div class="safe-door">
+          <span class="bolt" style="left:10px;top:10px"></span>
+          <span class="bolt" style="right:10px;top:10px"></span>
+          <span class="bolt" style="left:10px;bottom:10px"></span>
+          <span class="bolt" style="right:10px;bottom:10px"></span>
+          <div class="wp" id="wp4">
+            <div class="bus"><span>⚡ ПИТАНИЕ</span><i class="led4"></i></div>
+            <div class="slots" id="slots4"></div>
+            <div class="bus"><span>ЗАМОК</span><span class="lcd4" id="core4">НЕТ ТОКА</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="wire-tray" id="wires4"></div>
+      <div class="note4"><b>Записка электрика</b><ol id="clues4"></ol></div>
+      <button class="btn primary" type="button" id="power4">Включить ток</button>
+    </div>
+  </div>
+</section>
+
+<section id="level5" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint5">
+    <span class="step" id="stepLabel5">Раунд 5 · побег</span>
+    <p id="hintText5"></p>
+  </div>
+
+  <div class="scene5-wrap">
+    <canvas id="c5" aria-label="Побег от первого лица"></canvas>
+    <div class="fade5" id="fade5"></div>
+    <div class="hurt5" id="hurt5"></div>
+    <div class="banner5" id="banner5"></div>
+    <p class="nogl5" id="nogl5" hidden>Не получилось включить 3D в этом браузере, но раунд можно пройти.</p>
+  </div>
+
+  <div class="ctrl5">
+    <div id="dodge5" hidden>
+      <div class="hearts5" id="hearts5"></div>
+      <svg id="dial5" viewBox="-120 -120 240 240" aria-label="Круг уворота"></svg>
+      <p class="cap5" id="dodgeNote5"></p>
+      <button class="btn primary big5" type="button" id="dodgeBtn5">Увернуться!</button>
+    </div>
+    <div id="code5" class="code5" hidden>
+      <div class="door door5" id="door5">
+        <div class="door-top"><span>Выход</span><div class="led"></div></div>
+        <div class="display" id="display5">____</div>
+        <div class="keypad" id="keypad5"></div>
+      </div>
+      <div class="timer5" id="timer5"><b id="secs5">30</b><span>секунд до охраны</span><i><em id="bar5"></em></i></div>
+      <div class="note4 note5"><b>Шпаргалка охранника</b><div class="legend5" id="legend5"></div><p>Код двери:</p><div class="seq5" id="seq5"></div></div>
+    </div>
+  </div>
+</section>
+
+<div id="rounds" hidden>
+  <div class="rounds-card">
+    <div class="rounds-head">
+      <h2>Раунды</h2>
+      <button class="x-btn" type="button" id="roundsClose" aria-label="Закрыть">×</button>
+    </div>
+    <div id="roundList" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div>
+</div>
+
+<div id="held" hidden></div>
+
+<div id="scope" hidden>
+  <div class="scope-box">
+    <p class="scope-title">Микроскоп</p>
+    <div class="lens" id="lens">
+      <div class="lens-inner" id="lensInner"></div>
+      <div class="scanline" id="scanline"></div>
+    </div>
+    <p class="scope-note" id="scopeNote">Изучаю отпечатки…</p>
+    <button class="btn primary" type="button" id="scopeDone" disabled>Готово</button>
+  </div>
+</div>
+
+<div id="win" hidden>
+  <div class="win-card">
+    <h2 id="winTitle">Замок открыт!</h2>
+    <div class="stars" id="stars"></div>
+    <p id="rateText"></p>
+    <div id="codeBox">
+      <p>Код от замка:</p>
+      <div class="code" id="winCode"></div>
+    </div>
+    <p class="stats" id="stats"></p>
+    <div class="win-actions">
+      <button class="btn ghost" type="button" id="againBtn">Ещё раз</button>
+      <button class="btn ghost" type="button" id="menuBtn">В меню</button>
+      <button class="btn primary" type="button" id="nextBtn">Раунд 2 →</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  // Курсор — рука в синей перчатке, кончик указательного пальца = точка клика
+  const GLOVE = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
+    <g stroke="#1d3a5f" stroke-width="1.6" stroke-linejoin="round">
+      <rect x="16" y="13" width="5" height="9" rx="2.5" fill="#4f8fd6"/>
+      <rect x="20.5" y="14" width="5" height="8" rx="2.5" fill="#4f8fd6"/>
+      <rect x="24" y="16" width="4.5" height="7" rx="2.25" fill="#4f8fd6"/>
+      <rect x="9.5" y="16" width="19" height="18" rx="6" fill="#4f8fd6"/>
+      <rect x="10" y="1.5" width="6.5" height="22" rx="3.25" fill="#5d9be0"/>
+      <ellipse cx="8.5" cy="25" rx="3.5" ry="5.5" transform="rotate(-25 8.5 25)" fill="#4f8fd6"/>
+      <rect x="10" y="32" width="18" height="7" rx="2" fill="#9cc6f2"/>
+    </g>
+    <path d="M12 35h14M12 37h14" stroke="#5d8fc6" stroke-width="1"/>
+    <path d="M12.3 5v12" stroke="#fff" stroke-opacity=".55" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>`;
+  const cursorStyle = document.createElement("style");
+  cursorStyle.textContent = `*, *::before, *::after { cursor: url("data:image/svg+xml,${encodeURIComponent(GLOVE)}") 13 2, auto !important; }`;
+  document.head.appendChild(cursorStyle);
+
+  const ICONS = {
+    liquid: `<svg viewBox="0 0 48 64"><rect x="18" y="2" width="12" height="10" rx="2" fill="#5b6570"/><path d="M16 12h16v6l6 8v30a6 6 0 0 1 -6 6H16a6 6 0 0 1 -6 -6V26l6 -8z" fill="#e4eef6" stroke="#9fb3c6" stroke-width="2"/><path d="M11 36h26v20a5 5 0 0 1 -5 5H16a5 5 0 0 1 -5 -5z" fill="#4aa3df"/><rect x="14" y="40" width="4" height="14" rx="2" fill="#fff" opacity=".5"/></svg>`,
+    film: `<svg viewBox="0 0 64 64"><g transform="rotate(-8 32 32)"><rect x="9" y="9" width="46" height="46" rx="4" fill="rgba(170,212,240,.45)" stroke="#7fa9c4" stroke-width="2"/><path d="M16 20l12 -3M16 27l7 -2" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g></svg>`,
+    brush: `<svg viewBox="0 0 64 64"><g transform="rotate(35 32 32)"><rect x="28" y="2" width="8" height="32" rx="4" fill="#b7793f"/><rect x="26" y="33" width="12" height="9" rx="1" fill="#aeb6bf"/><path d="M26 42h12l3 15q-9 5 -18 0z" fill="#2e2a27"/></g></svg>`
+  };
+  ICONS.microscope = `<svg viewBox="0 0 64 64"><rect x="10" y="55" width="42" height="6" rx="3" fill="#4b5560"/><path d="M42 55q12 -16 -3 -30" fill="none" stroke="#6b7682" stroke-width="5" stroke-linecap="round"/><rect x="14" y="44" width="26" height="4" rx="2" fill="#9aa5b1"/><g transform="rotate(-28 30 24)"><rect x="24" y="6" width="12" height="28" rx="3" fill="#2f6fb5"/><rect x="22" y="2" width="16" height="6" rx="2" fill="#23303c"/><rect x="26" y="34" width="8" height="7" fill="#23303c"/></g></svg>`;
+  const TOOL_NAMES = { liquid: "Жидкость", film: "Плёнка", brush: "Кисточка", microscope: "Микроскоп" };
+  const KEYS = ["1","2","3","4","5","6","7","8","9","C","0","←"];
+
+  const STEPS = [
+    "Возьми бутылочку с жидкостью.",
+    "Полей жидкостью кнопки замка — нажми на кнопки.",
+    "Возьми прозрачную плёнку.",
+    "Приложи плёнку к кнопкам замка.",
+    "Сними плёнку — нажми на неё. Она ляжет на стол.",
+    "Возьми кисточку.",
+    "Води кисточкой по плёнке на столе, пока не проступят отпечатки.",
+    "Возьми микроскоп.",
+    "Наведи микроскоп на плёнку — нажми на неё.",
+    "Возьми плёнку со стола.",
+    "Приложи плёнку обратно к кнопкам замка.",
+    "Введи пароль: нажимай кнопки по номерам отпечатков — 1, 2, 3, 4."
+  ];
+  // Что подсвечивать на каждом шаге
+  const TARGETS = ["tool-liquid", "keypadWrap", "tool-film", "keypadWrap", "film", "tool-brush", "film", "tool-microscope", "film", "film", "keypadWrap", null];
+  const ENTRY = STEPS.length - 1;
+  const WEIGHTS = [0.32, 0.52, 0.74, 1];
+
+  let S;
+  let pointer = { x: innerWidth / 2, y: innerHeight / 2 };
+
+  // ---------- Меню → уровень ----------
+  function dive(n) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("play").disabled = true;
+    $("menu").classList.add("diving");
+    setTimeout(() => $("flash").classList.add("on"), reduce ? 150 : 1150);
+    setTimeout(() => showRound(n), reduce ? 450 : 1400);
+  }
+  $("play").addEventListener("click", () => dive(getUnlocked()));
+
+  // ---------- Список раундов (кнопка «три полоски») ----------
+  const ROUND_INFO = [
+    { n: 1, name: "Отпечатки", sub: "Кодовый замок" },
+    { n: 2, name: "Сейф", sub: "Электрощиток" },
+    { n: 3, name: "Отмычка", sub: "Штифтовый замок" },
+    { n: 4, name: "Провода", sub: "Сейф с запиской электрика" },
+    { n: 5, name: "Побег", sub: "Тюрьма, погоня и забор" }
+  ];
+  const LOCK_ICON = `<svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3" fill="none" stroke="#8f99a4" stroke-width="2.5"/><rect x="4" y="11" width="16" height="11" rx="3" fill="#8f99a4"/></svg>`;
+  const CHECK_ICON = `<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  function renderRounds() {
+    const open = getUnlocked(), stars = getStars();
+    $("roundList").innerHTML = ROUND_INFO.map(({ n, name, sub }) => {
+      const locked = n > open, done = stars[n] > 0;
+      const badge = locked ? LOCK_ICON : done ? CHECK_ICON : n;
+      const status = locked ? `Пройди раунд ${n - 1}, чтобы открыть` : done ? "Пройден" : "Открыт — ещё не пройден";
+      const starRow = done ? `<span class="round-stars">${"★".repeat(stars[n])}<span class="off">${"★".repeat(3 - stars[n])}</span></span>` : "";
+      return `<button class="round-item${done ? " done" : ""}" type="button" data-n="${n}"${locked ? " disabled" : ""}>
+        <span class="round-badge">${badge}</span>
+        <span class="round-info"><b>Раунд ${n} · ${name}</b><span>${sub}. ${status}</span></span>${starRow}
+      </button>`;
+    }).join("");
+  }
+  $("burger").addEventListener("click", () => { renderRounds(); $("rounds").hidden = false; });
+  $("roundsClose").addEventListener("click", () => ($("rounds").hidden = true));
+  $("rounds").addEventListener("click", (e) => {
+    if (e.target === $("rounds")) { $("rounds").hidden = true; return; }
+    const item = e.target.closest(".round-item");
+    if (!item || item.disabled) return;
+    $("rounds").hidden = true;
+    dive(Number(item.dataset.n));
+  });
+
+  // ---------- Прогресс: какой раунд открыт ----------
+  const PROG_KEY = "lockgame.unlocked";
+  function getUnlocked() {
+    try { return Math.min(5, Math.max(1, parseInt(localStorage.getItem(PROG_KEY), 10) || 1)); }
+    catch (e) { return 1; }
+  }
+  function unlock(n) {
+    try { if (n > getUnlocked()) localStorage.setItem(PROG_KEY, String(Math.min(5, n))); } catch (e) {}
+  }
+  // Лучшие звёзды за каждый раунд: раунд с звёздами считается пройденным
+  const STARS_KEY = "lockgame.stars";
+  function getStars() {
+    try { return JSON.parse(localStorage.getItem(STARS_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveStars(n, s) {
+    const all = getStars();
+    if (!(all[n] >= s)) all[n] = s;
+    try { localStorage.setItem(STARS_KEY, JSON.stringify(all)); } catch (e) {}
+  }
+  function renderMenuNote() {
+    const n = getUnlocked();
+    $("resumeNote").hidden = $("resetBtn").hidden = n === 1;
+    $("resumeNote").textContent = `Продолжишь с раунда ${n}`;
+  }
+  $("resetBtn").addEventListener("click", () => {
+    try { localStorage.removeItem(PROG_KEY); localStorage.removeItem(STARS_KEY); } catch (e) {}
+    renderMenuNote();
+  });
+  renderMenuNote();
+
+  const SCREENS = { 1: "level", 2: "level3", 3: "level2", 4: "level4", 5: "level5" };
+  function stopRounds() {
+    cancelAnimationFrame(raf);
+    if (Q) Q.token++;
+    if (Q4) Q4.token++;
+    if (Q5) Q5.token++;
+    cancelAnimationFrame(raf5);
+    dropHeld();
+    $("panel3").hidden = true;
+    $("level").style.zIndex = "";
+    Object.values(SCREENS).forEach((id) => ($(id).hidden = true));
+  }
+
+  function showRound(n) {
+    $("win").hidden = true;
+    stopRounds();
+    round = n;
+    const lv = $(SCREENS[n]);
+    lv.hidden = false;
+    if (n === 1) startLevel();
+    else if (n === 2) startRound2();
+    else if (n === 3) startRound3();
+    else if (n === 4) startRound4();
+    else startRound5();
+    lv.animate(
+      [{ clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(100% at 50% 50%)" }],
+      { duration: 850, easing: "cubic-bezier(.2,.7,.2,1)" }
+    ).onfinish = () => {
+      $("menu").hidden = true;
+      $("flash").classList.remove("on");
+    };
+  }
+
+  function backToMenu() {
+    $("win").hidden = true;
+    stopRounds();
+    const menu = $("menu");
+    menu.hidden = false;
+    menu.classList.remove("diving");
+    $("play").disabled = false;
+    renderMenuNote();
+  }
+
+  // ---------- Уровень ----------
+  function fingerprint(rot) {
+    let s = `<svg viewBox="-20 -24 40 48" style="transform:rotate(${rot}deg)">`;
+    for (let i = 0; i < 7; i++) {
+      const rx = 2.5 + i * 2.4, ry = rx * 1.35;
+      const a = 4 + ((i * 7) % 5) * 2, b = 1.5 + (i % 3);
+      s += `<ellipse rx="${rx}" ry="${ry}" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="${a} ${b}" stroke-dashoffset="${i * 3}"/>`;
+    }
+    return s + `</svg>`;
+  }
+
+  function startLevel(five = false) {
+    const digits = ["0","1","2","3","4","5","6","7","8","9"];
+    for (let i = digits.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [digits[i], digits[j]] = [digits[j], digits[i]];
+    }
+    S = { five, step: 0, held: null, busy: false, code: digits.slice(0, 4), entered: "", wrong: 0, miss: 0, t0: performance.now(), progress: 0, filmAt: "tray", last: null, dustAcc: 0 };
+
+    // Кнопки замка
+    const pad = $("keypad");
+    pad.innerHTML = "";
+    KEYS.forEach((k) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "key" + (/\d/.test(k) ? "" : " small");
+      b.textContent = k;
+      b.dataset.k = k;
+      b.addEventListener("click", () => onKey(k));
+      pad.appendChild(b);
+    });
+
+    // Плёнка (сетка повторяет кнопки, чтобы отпечатки легли точно на них)
+    document.querySelectorAll(".film").forEach((f) => f.remove());
+    const film = document.createElement("div");
+    film.className = "film";
+    film.id = "film";
+    film.hidden = true;
+    KEYS.forEach((k) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      const order = S.code.indexOf(k);
+      if (order >= 0) {
+        cell.innerHTML = `<div class="print" data-w="${WEIGHTS[order]}">${fingerprint(Math.round(Math.random() * 50 - 25))}</div><span class="badge" hidden>${order + 1}</span>`;
+      }
+      film.appendChild(cell);
+    });
+    film.addEventListener("click", onFilmClick);
+    film.addEventListener("pointermove", onBrush);
+    film.addEventListener("pointerleave", () => (S.last = null));
+    $("keypadWrap").appendChild(film);
+
+    $("door").classList.remove("open");
+    $("level").classList.toggle("prison", five);
+    $("doorName").textContent = five ? "Замок камеры" : "Кодовый замок";
+    $("deskName").textContent = five ? "Нары" : "Стол";
+    renderTools();
+    updateDisplay();
+    render();
+  }
+
+  function renderTools() {
+    ["liquid", "film", "brush", "microscope"].forEach((t) => {
+      const el = $("tool-" + t);
+      el.innerHTML = ICONS[t] + `<span>${TOOL_NAMES[t]}</span>`;
+      const gone = S.held === t || (t === "film" && S.filmAt !== "tray");
+      el.classList.toggle("empty", gone);
+    });
+  }
+
+  function render() {
+    $("stepLabel").textContent = `${S.five ? "Раунд 5 · замок камеры" : "Обучение"} · шаг ${S.step + 1} из ${STEPS.length}`;
+    $("hintText").textContent = S.five ? STEPS[S.step].replace("на столе", "на нарах").replace("на стол", "на нары").replace("со стола", "с нар") : STEPS[S.step];
+    document.querySelectorAll(".pulse").forEach((el) => el.classList.remove("pulse"));
+    const t = TARGETS[S.step];
+    if (t && $(t)) $(t).classList.add("pulse");
+  }
+
+  function next() { S.step++; render(); }
+
+  function nudge(el, count = true) {
+    if (count) S.miss++;
+    const h = $("hint");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+    if (el) { el.classList.remove("nope"); void el.offsetWidth; el.classList.add("nope"); }
+  }
+
+  // ---------- Инструмент в руке ----------
+  function hold(t) {
+    S.held = t;
+    const h = $("held");
+    h.innerHTML = ICONS[t];
+    h.hidden = false;
+    moveHeld();
+    renderTools();
+  }
+  function dropHeld() {
+    if (S) S.held = null;
+    $("held").hidden = true;
+    if (S) renderTools();
+  }
+  function moveHeld() {
+    $("held").style.transform = `translate(${pointer.x - 18}px, ${pointer.y - 56}px)`;
+  }
+  const trackPointer = (e) => { pointer = { x: e.clientX, y: e.clientY }; if (!$("held").hidden) moveHeld(); };
+  addEventListener("pointermove", trackPointer);
+  addEventListener("pointerdown", trackPointer);
+
+  document.querySelectorAll("#tray .tool").forEach((el) => {
+    el.addEventListener("click", () => {
+      if (S.busy) return;
+      const t = el.dataset.tool;
+      const want = { 0: "liquid", 2: "film", 5: "brush", 7: "microscope" }[S.step];
+      if (t === want && !S.held) { hold(t); next(); }
+      else nudge(el);
+    });
+  });
+
+  // ---------- Действия с замком ----------
+  $("keypadWrap").addEventListener("click", () => {
+    if (S.busy || S.step === ENTRY) return;
+    if (S.step === 1 && S.held === "liquid") pour();
+    else if (S.step === 3 && S.held === "film") placeFilm(false);
+    else if (S.step === 10 && S.held === "film") placeFilm(true);
+    else nudge();
+  });
+
+  function pour() {
+    S.busy = true;
+    dropHeld();
+    const wrap = $("keypadWrap");
+    const bottle = document.createElement("div");
+    bottle.className = "pour";
+    bottle.innerHTML = ICONS.liquid;
+    wrap.appendChild(bottle);
+    const keys = [...$("keypad").querySelectorAll(".key")];
+    keys.forEach((k, i) => {
+      const delay = 450 + i * 55;
+      const drop = document.createElement("div");
+      drop.className = "drop";
+      drop.style.left = k.offsetLeft + k.offsetWidth / 2 - 5 + "px";
+      drop.style.top = k.offsetTop + k.offsetHeight / 2 - 7 + "px";
+      drop.style.opacity = 0;
+      wrap.appendChild(drop);
+      drop.animate(
+        [{ transform: "translateY(-90px)", opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: "translateY(0) scale(1.6, .4)", opacity: 0.9, offset: 0.85 }, { transform: "scale(2.2, .2)", opacity: 0 }],
+        { duration: 520, delay, easing: "ease-in" }
+      ).onfinish = () => drop.remove();
+      setTimeout(() => k.classList.add("wet"), delay + 420);
+    });
+    setTimeout(() => { bottle.remove(); S.busy = false; renderTools(); next(); }, 1500);
+  }
+
+  function flipMove(el, parent) {
+    const a = el.getBoundingClientRect();
+    parent.appendChild(el);
+    const b = el.getBoundingClientRect();
+    return el.animate(
+      [{ transform: `translate(${a.left - b.left}px, ${a.top - b.top}px) rotate(-4deg)` }, { transform: "none" }],
+      { duration: 550, easing: "cubic-bezier(.3,.8,.3,1)" }
+    ).finished;
+  }
+
+  function placeFilm(reading) {
+    const film = $("film");
+    dropHeld();
+    $("keypadWrap").appendChild(film);
+    film.hidden = false;
+    film.classList.toggle("reading", reading);
+    S.filmAt = "lock";
+    renderTools();
+    S.busy = true;
+    film.animate(
+      [{ transform: "scale(1.12)", opacity: 0 }, { transform: "scale(0.98)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }],
+      { duration: 450, easing: "ease-out" }
+    ).onfinish = () => {
+      S.busy = false;
+      if (reading) { updateDisplay(); }
+      next();
+    };
+  }
+
+  function onFilmClick(e) {
+    e.stopPropagation();
+    if (S.busy) return;
+    const film = $("film");
+    if (S.step === 4) {
+      S.busy = true;
+      S.filmAt = "desk";
+      flipMove(film, $("deskSlot")).then(() => { S.busy = false; next(); });
+    } else if (S.step === 8 && S.held === "microscope") {
+      openScope();
+    } else if (S.step === 9) {
+      film.hidden = true;
+      S.filmAt = "hand";
+      hold("film");
+      next();
+    } else if (S.step !== 6) {
+      nudge();
+    }
+  }
+
+  // ---------- Микроскоп ----------
+  function openScope() {
+    dropHeld();
+    S.busy = true;
+    const inner = $("lensInner");
+    inner.innerHTML = "";
+    const copy = $("film").cloneNode(true);
+    copy.removeAttribute("id");
+    copy.classList.remove("pulse");
+    copy.querySelectorAll(".dust").forEach((d) => d.remove());
+    inner.appendChild(copy);
+    $("scanline").hidden = false;
+    $("scopeNote").textContent = "Изучаю отпечатки…";
+    $("scopeDone").disabled = true;
+    $("scope").hidden = false;
+
+    // Номера появляются от самого старого (бледного) отпечатка к самому свежему
+    const prints = [...copy.querySelectorAll(".print")].sort((a, b) => a.dataset.w - b.dataset.w);
+    prints.forEach((p, i) => {
+      setTimeout(() => {
+        p.classList.add("scanned");
+        p.parentElement.querySelector(".badge").hidden = false;
+        $("scopeNote").textContent = `Отпечаток ${i + 1} из 4: ${["самый старый", "постарше", "посвежее", "самый свежий"][i]}`;
+      }, 900 + i * 800);
+    });
+    setTimeout(() => {
+      $("scanline").hidden = true;
+      $("scopeNote").textContent = "Готово! Номер показывает, в каком порядке нажимали кнопки.";
+      $("scopeDone").disabled = false;
+    }, 900 + prints.length * 800);
+  }
+
+  $("scopeDone").addEventListener("click", () => {
+    $("scope").hidden = true;
+    document.querySelectorAll("#film .badge").forEach((b) => (b.hidden = false));
+    S.busy = false;
+    next();
+  });
+
+  function onBrush(e) {
+    if (S.step !== 6 || S.held !== "brush" || S.filmAt !== "desk") return;
+    const film = $("film");
+    if (S.last) {
+      const d = Math.hypot(e.clientX - S.last.x, e.clientY - S.last.y);
+      S.progress = Math.min(1, S.progress + d / 1400);
+      S.dustAcc += d;
+      if (S.dustAcc > 26) { S.dustAcc = 0; spawnDust(film, e); }
+      film.style.setProperty("--dust", S.progress);
+      film.querySelectorAll(".print").forEach((p) => (p.style.opacity = p.dataset.w * S.progress));
+      if (S.progress >= 1) {
+        S.last = null;
+        dropHeld();
+        next();
+        return;
+      }
+    }
+    S.last = { x: e.clientX, y: e.clientY };
+  }
+
+  function spawnDust(film, e) {
+    const r = film.getBoundingClientRect();
+    const d = document.createElement("span");
+    d.className = "dust";
+    d.style.left = e.clientX - r.left - 3 + "px";
+    d.style.top = e.clientY - r.top - 3 + "px";
+    film.appendChild(d);
+    const dx = (Math.random() - 0.5) * 30, dy = 10 + Math.random() * 20;
+    d.animate([{ transform: "none", opacity: 0.7 }, { transform: `translate(${dx}px, ${dy}px) scale(.4)`, opacity: 0 }], { duration: 600, easing: "ease-out" })
+      .onfinish = () => d.remove();
+  }
+
+  // ---------- Ввод пароля ----------
+  function updateDisplay(text, bad) {
+    const d = $("display");
+    d.classList.toggle("bad", !!bad);
+    d.textContent = text ?? (S.entered + "____").slice(0, 4);
+  }
+
+  function onKey(k) {
+    if (S.step !== ENTRY || S.busy) return;
+    if (k === "C") S.entered = "";
+    else if (k === "←") S.entered = S.entered.slice(0, -1);
+    else if (S.entered.length < 4) S.entered += k;
+    updateDisplay();
+    if (S.entered.length === 4) check();
+  }
+
+  function check() {
+    S.busy = true;
+    if (S.entered === S.code.join("")) {
+      updateDisplay("OPEN");
+      $("door").classList.add("open");
+      document.querySelectorAll(".pulse").forEach((el) => el.classList.remove("pulse"));
+      setTimeout(showWin, 900);
+      return;
+    }
+    S.wrong++;
+    updateDisplay("ERR", true);
+    const door = $("door");
+    door.classList.remove("shake"); void door.offsetWidth; door.classList.add("shake");
+    setTimeout(() => {
+      S.entered = "";
+      S.busy = false;
+      updateDisplay();
+      $("hintText").textContent = "Не тот порядок. Сначала кнопка с отпечатком №1, потом №2, №3 и №4.";
+      nudge(null, false);
+    }, 750);
+  }
+
+  // ---------- Оценка раунда ----------
+  // 3 звезды — ни одной ошибки в пароле и не больше 2 лишних действий;
+  // 2 звезды — не больше 1 ошибки в пароле и не больше 6 лишних действий; иначе 1.
+  const fmtTime = (t0) => {
+    const secs = Math.round((performance.now() - t0) / 1000);
+    return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+  };
+
+  function showResult({ title, stars, text, code, stats, next }) {
+    $("winTitle").textContent = title;
+    const STAR = `<svg class="star" viewBox="0 0 50 48"><path d="M25 3l6.5 14 15 1.8-11 10.4 2.9 15L25 36.8 11.6 44.2l2.9-15-11-10.4 15-1.8z"/></svg>`;
+    const box = $("stars");
+    box.innerHTML = STAR.repeat(3);
+    [...box.children].forEach((s, i) => {
+      if (i < stars) { s.classList.add("on"); s.style.animationDelay = 250 + i * 280 + "ms"; }
+    });
+    $("rateText").textContent = text;
+    $("codeBox").hidden = !code;
+    if (code) $("winCode").textContent = code;
+    $("stats").textContent = stats;
+    $("nextBtn").hidden = !next;
+    if (stars > 0) saveStars(round, stars);
+    if (next) unlock(next);
+    if (next) { $("nextBtn").textContent = `Раунд ${next} →`; $("nextBtn").dataset.round = next; }
+    $("menuBtn").className = "btn " + (next ? "ghost" : "primary");
+    $("win").hidden = false;
+  }
+
+  function showWin() {
+    if (S.five) { fpDone5(S.wrong, S.miss); return; }
+    let stars = 1;
+    if (S.wrong === 0 && S.miss <= 2) stars = 3;
+    else if (S.wrong <= 1 && S.miss <= 6) stars = 2;
+    showResult({
+      title: "Замок открыт!",
+      stars,
+      text: ["", "Замок открыт, но ошибок было много. Попробуй ещё раз!", "Хорошо! Ещё чуть аккуратнее — и будет три звезды.", "Идеально! Ни одной лишней ошибки."][stars],
+      code: S.code.join(""),
+      stats: `Ошибки в пароле: ${S.wrong} · Лишние действия: ${S.miss} · Время: ${fmtTime(S.t0)}`,
+      next: 2
+    });
+  }
+
+  // =================== Раунд 3: отмычка ===================
+  ICONS.tension = `<svg viewBox="0 0 64 64"><path d="M16 10v38h34" fill="none" stroke="#3d4650" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  ICONS.pick = `<svg viewBox="0 0 64 64"><g transform="rotate(-35 32 32)"><rect x="2" y="28" width="24" height="10" rx="4.5" fill="#2f6fb5"/><path d="M26 33H52q6 0 6 -7" fill="none" stroke="#8a939c" stroke-width="3.5" stroke-linecap="round"/></g></svg>`;
+
+  const PIN_X = [80, 140, 200, 260, 320];
+  const REST = 222, SHEAR = 150, DRIVER = 40, TOP = 40, MAXLIFT = 72, TOL = 5, SPEED = 34;
+  const SVGNS = "http://www.w3.org/2000/svg";
+  let R = null, raf = 0, round = 1;
+
+  function startRound3() {
+    round = 3;
+    const order = [0, 1, 2, 3, 4];
+    for (let i = 4; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    const g = $("pins");
+    g.innerHTML = "";
+    // У каждого штифта своя высота — ни одна не повторяется
+    const heights = [30, 37, 44, 51, 58];
+    for (let i = 4; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [heights[i], heights[j]] = [heights[j], heights[i]]; }
+    const pins = PIN_X.map((cx, idx) => {
+      const kh = heights[idx];
+      const mk = (tag, attrs) => {
+        const el = document.createElementNS(SVGNS, tag);
+        for (const k in attrs) el.setAttribute(k, attrs[k]);
+        g.appendChild(el);
+        return el;
+      };
+      mk("rect", { x: cx - 13, y: TOP, width: 26, height: REST - TOP, fill: "#3b2f19" });
+      const spring = mk("path", { fill: "none", stroke: "#9aa5b1", "stroke-width": 2.5, "stroke-linejoin": "round" });
+      const driver = mk("rect", { class: "driver", x: cx - 10, width: 20, height: DRIVER, rx: 3, fill: "#d9534f", stroke: "#8e2c29", "stroke-width": 1.5 });
+      const key = mk("rect", { x: cx - 10, width: 20, height: kh, rx: 3, fill: "#d5dbe1", stroke: "#7d8791", "stroke-width": 1.5 });
+      return { cx, kh, L: REST - kh - SHEAR, lift: 0, keyLift: 0, drvLift: 0, set: false, spring, driver, key };
+    });
+    $("door2").hidden = false;
+    $("door2").classList.remove("diving");
+    $("stage2").hidden = true;
+    $("tray2").hidden = true;
+    R = { inside: false, held: null, tension: false, pickIn: false, pins, order, bind: 0, hover: 2, holding: null, over: 0, picks: 3, broken: 0, miss: 0, t0: performance.now(), done: false, msg: null };
+    $("faceCore").style.transform = "rotate(0deg)";
+    renderTools2();
+    render2Hint();
+    cancelAnimationFrame(raf);
+    let last = performance.now();
+    const loop = (t) => {
+      const dt = Math.min(0.05, (t - last) / 1000);
+      last = t;
+      tick2(dt);
+      draw2();
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+  }
+
+  function renderTools2() {
+    const t = $("tool2-tension"), p = $("tool2-pick");
+    t.innerHTML = ICONS.tension + `<span>Натяжитель</span>`;
+    p.innerHTML = ICONS.pick + `<span>Отмычка ×${R.picks}</span>`;
+    t.classList.toggle("empty", R.held === "tension" || R.tension);
+    p.classList.toggle("empty", R.held === "pick" || R.pickIn || R.picks === 0);
+    $("picksRow").innerHTML = [0, 1, 2].map((i) => `<i class="${i < R.picks ? "" : "gone"}"></i>`).join("");
+  }
+
+  function render2Hint() {
+    $("stepLabel2").textContent = R.inside ? `Раунд 3 · штифты ${R.bind} из 5` : "Раунд 3 · отмычка";
+    $("hintText2").textContent = R.msg || (R.inside ? "Взломай замок." : "Перед тобой запертая дверь.");
+  }
+
+  function say2(text) {
+    R.msg = text;
+    render2Hint();
+    const h = $("hint2");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+
+
+  // Вход в замок: полёт в скважину, потом вид изнутри
+  $("khHit").addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (R.inside || $("door2").classList.contains("diving")) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const flash = $("flash");
+    $("door2").classList.add("diving");
+    setTimeout(() => { flash.style.zIndex = 4; flash.classList.add("on"); }, reduce ? 100 : 1000);
+    setTimeout(() => {
+      $("door2").hidden = true;
+      $("stage2").hidden = false;
+      $("tray2").hidden = false;
+      R.inside = true;
+      R.msg = null;
+      render2Hint();
+      flash.style.transition = "opacity 0.6s";
+      flash.classList.remove("on");
+      setTimeout(() => { flash.style.transition = ""; flash.style.zIndex = ""; }, 650);
+    }, reduce ? 350 : 1300);
+  });
+  document.querySelector("#door2 svg").addEventListener("click", () => {
+    if (R.inside || $("door2").classList.contains("diving")) return;
+    R.miss++;
+    say2("Не туда.");
+  });
+
+  function hold2(t) {
+    R.held = t;
+    const h = $("held");
+    h.innerHTML = ICONS[t];
+    h.hidden = false;
+    moveHeld();
+    renderTools2();
+  }
+  function drop2() { R.held = null; $("held").hidden = true; renderTools2(); }
+
+  document.querySelectorAll("#tray2 .tool").forEach((el) => {
+    el.addEventListener("click", () => {
+      if (R.done) return;
+      const t = el.dataset.tool;
+      if (R.held === t) { drop2(); return; } // положить обратно
+      const free = t === "tension" ? !R.tension : !R.pickIn && R.picks > 0;
+      if (free) { hold2(t); R.msg = null; render2Hint(); return; }
+      el.classList.remove("nope"); void el.offsetWidth; el.classList.add("nope");
+    });
+  });
+
+  function toSvg(e) {
+    const svg = $("cyl");
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+  function hoverFrom(e) {
+    const x = toSvg(e).x;
+    let best = 0;
+    PIN_X.forEach((cx, i) => { if (Math.abs(cx - x) < Math.abs(PIN_X[best] - x)) best = i; });
+    R.hover = best;
+  }
+
+  $("cyl").addEventListener("pointermove", (e) => {
+    if (R && R.pickIn && R.holding === null) hoverFrom(e);
+  });
+
+  $("cyl").addEventListener("pointerdown", (e) => {
+    if (!R || R.done) return;
+    if (R.held === "tension") { R.tension = true; drop2(); return; }
+    if (R.held === "pick") { R.pickIn = true; drop2(); hoverFrom(e); return; }
+    if (R.pickIn) {
+      hoverFrom(e);
+      if (!R.tension) { R.miss++; say2("Штифты не держатся — они сразу падают обратно."); return; }
+      if (R.pins[R.hover].set) return;
+      R.holding = R.hover;
+      R.over = 0;
+      $("cyl").setPointerCapture(e.pointerId);
+      return;
+    }
+    R.miss++;
+    say2("Голыми руками замок не открыть.");
+  });
+
+  const release = () => {
+    if (!R || R.holding === null) return;
+    const i = R.holding;
+    R.holding = null;
+    const p = R.pins[i];
+    if (p.lift < 4) return;
+    const binding = R.order[R.bind];
+    if (i === binding && Math.abs(p.lift - p.L) <= TOL) {
+      p.set = true;
+      p.drvLift = p.L;
+      p.lift = 0;
+      click();
+      R.bind++;
+      R.msg = R.bind < 5 ? "Щёлк! Штифт встал. Ищи следующий, который дрожит." : null;
+      $("faceCore").style.transform = `rotate(${R.bind * 4}deg)`;
+      render2Hint();
+      if (R.bind === 5) win2();
+      return;
+    }
+    R.miss++;
+    if (i !== binding) say2("Этот штифт не зажат — он пружинит обратно. Ищи тот, что дрожит.");
+    else if (p.lift < p.L) say2("Чуть выше! Отпусти, когда стык штифтов дойдёт до зелёной линии.");
+    else say2("Слишком высоко — стык проскочил линию. Попробуй ещё раз.");
+  };
+  $("cyl").addEventListener("pointerup", release);
+  $("cyl").addEventListener("pointercancel", release);
+
+  function breakPick() {
+    R.holding = null;
+    R.pickIn = false;
+    R.picks--;
+    R.broken++;
+    const box = $("lockbox");
+    box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+    if (R.picks === 0) {
+      R.done = true;
+      renderTools2();
+      setTimeout(() => showResult({
+        title: "Отмычки сломались",
+        stars: 0,
+        text: "Не держи штифт слишком долго — если поднять его до упора, отмычка ломается.",
+        stats: `Штифтов поднято: ${R.bind} из 5 · Промахи: ${R.miss} · Время: ${fmtTime(R.t0)}`,
+        next: false
+      }), 600);
+      return;
+    }
+    renderTools2();
+    say2(`Хрусь! Отмычка сломалась — штифт упёрся в пружину. Осталось отмычек: ${R.picks}.`);
+  }
+
+  function win2() {
+    R.done = true;
+    setTimeout(() => { $("faceCore").style.transform = "rotate(90deg)"; }, 250);
+    let stars = 1;
+    if (R.broken === 0 && R.miss <= 3) stars = 3;
+    else if (R.broken <= 1 && R.miss <= 8) stars = 2;
+    setTimeout(() => showResult({
+      title: "Замок взломан!",
+      stars,
+      text: ["", "Замок открыт, но отмычки пострадали. Попробуй ещё раз!", "Хорошо! Ещё аккуратнее — и будет три звезды.", "Чистая работа! Как настоящий взломщик."][stars],
+      stats: `Сломано отмычек: ${R.broken} · Промахи: ${R.miss} · Время: ${fmtTime(R.t0)}`,
+      next: 4
+    }), 1100);
+  }
+
+  function tick2(dt) {
+    R.pins.forEach((p, i) => {
+      if (p.set) { p.keyLift = Math.max(0, p.keyLift - 140 * dt); return; }
+      if (i === R.holding) {
+        p.lift = Math.min(MAXLIFT, p.lift + SPEED * dt);
+        if (p.lift >= MAXLIFT) {
+          R.over += dt;
+          if (R.over > 0.35) { breakPick(); }
+        }
+      } else {
+        p.lift = Math.max(0, p.lift - 160 * dt);
+      }
+      p.keyLift = p.drvLift = p.lift;
+    });
+  }
+
+  function draw2() {
+    const binding = R.done ? -1 : R.order[R.bind];
+    R.pins.forEach((p, i) => {
+      const keyTop = REST - p.kh - p.keyLift;
+      const drvTop = REST - p.kh - p.drvLift - DRIVER;
+      p.key.setAttribute("y", keyTop);
+      p.driver.setAttribute("y", drvTop);
+      p.driver.setAttribute("fill", p.set ? "#2fbf4a" : "#d9534f");
+      p.driver.setAttribute("stroke", p.set ? "#1f8f35" : "#8e2c29");
+      p.driver.classList.toggle("wobble", R.pickIn && i === binding && i === R.hover && R.holding === null);
+      let d = `M${p.cx} ${TOP}`;
+      const n = 8, h = (drvTop - TOP) / n;
+      for (let k = 1; k <= n; k++) d += `L${p.cx + (k % 2 ? 8 : -8)} ${TOP + h * k - (k === n ? 0 : h / 2)}`;
+      d += `L${p.cx} ${drvTop}`;
+      p.spring.setAttribute("d", d);
+    });
+    const vis = (id, on) => $(id).setAttribute("visibility", on ? "visible" : "hidden");
+    vis("wrench", R.tension);
+    vis("pick", R.pickIn);
+    vis("pickHandle", R.pickIn);
+    if (R.pickIn) {
+      const tip = R.pins[R.hover];
+      const tx = tip.cx;
+      const ty = R.holding !== null ? REST - tip.keyLift : 230;
+      $("pick").setAttribute("d", `M20 240H${tx - 9}Q${tx} 240 ${tx} ${ty}`);
+    }
+  }
+
+  let actx;
+  function click() {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = "square";
+      o.frequency.value = 1800;
+      g.gain.setValueAtTime(0.08, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.05);
+      o.connect(g).connect(actx.destination);
+      o.start();
+      o.stop(actx.currentTime + 0.06);
+    } catch (e) {}
+  }
+
+  // =================== Раунд 2: сейф и электрощиток ===================
+  // Сейф на электрозамке, а тока нет. Рядом электрощиток: в нём надо нарисовать
+  // провода — соединить точки одного цвета так, чтобы линии не пересекались.
+  const N3 = 5, CELL = 100;
+  const COLORS3 = [
+    { name: "красную", c: "#e5484d" },
+    { name: "зелёную", c: "#2fbf4a" },
+    { name: "синюю", c: "#3b8fe0" }
+  ];
+  // Каждая схема собрана из готового решения, поэтому точно решается.
+  // Прямые линии в них упираются друг в друга — провод приходится вести в обход.
+  const BOARDS3 = [
+    [[[0, 0], [4, 3]], [[0, 3], [4, 4]], [[1, 1], [4, 2]]],
+    [[[2, 1], [3, 3]], [[2, 2], [4, 2]], [[0, 2], [4, 0]]],
+    [[[1, 1], [3, 3]], [[2, 2], [4, 2]], [[0, 2], [4, 4]]]
+  ];
+  let Q = null;
+
+  function beep(freq, dur, type = "triangle", vol = 0.12) {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = type;
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(vol, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
+      o.connect(g).connect(actx.destination);
+      o.start();
+      o.stop(actx.currentTime + dur + 0.02);
+    } catch (e) {}
+  }
+
+  function startRound2() {
+    round = 2;
+    // Случайная схема, повёрнутая/отражённая, с перемешанными цветами
+    const t = Math.floor(Math.random() * 8);
+    const tf = ([r, c]) => {
+      if (t & 1) [r, c] = [c, r];
+      if (t & 2) r = N3 - 1 - r;
+      if (t & 4) c = N3 - 1 - c;
+      return [r, c];
+    };
+    const pairs = BOARDS3[Math.floor(Math.random() * BOARDS3.length)].map((pr) => pr.map(tf));
+    for (let i = pairs.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pairs[i], pairs[j]] = [pairs[j], pairs[i]]; }
+    Q = {
+      token: (Q ? Q.token : 0) + 1,
+      dots: pairs,
+      paths: [[], [], []],
+      cur: null,
+      crossed: false,
+      cross: 0,
+      phase: "scene",
+      t0: performance.now()
+    };
+    $("panel3").hidden = true;
+    $("safe").classList.remove("open", "live", "shake");
+    $("cable3").classList.remove("live");
+    $("grid3").classList.remove("live");
+    $("core3").textContent = "НЕТ ТОКА";
+    $("stepLabel3").textContent = "Раунд 2 · сейф";
+    $("hintText3").textContent = "Сейф на электрозамке, но тока нет. Открой сейф.";
+    draw3();
+  }
+
+  const same = (a, b) => a && b && a[0] === b[0] && a[1] === b[1];
+  const done3 = (k) => { const p = Q.paths[k]; return p.length > 1 && Q.dots[k].some((d) => same(d, p[p.length - 1]) && !same(d, p[0])); };
+  const dotColor = (cell) => Q.dots.findIndex((pr) => pr.some((d) => same(d, cell)));
+  const pathColor = (cell) => Q.paths.findIndex((p) => p.some((x) => same(x, cell)));
+
+  function note3() {
+    const n = [0, 1, 2].filter(done3).length;
+    $("note3").textContent = Q.warn && n < 3
+      ? "Провода не должны пересекаться — веди линию в обход."
+      : n === 3
+      ? "Все провода соединены! Ток пошёл…"
+      : `Соединено: ${n} из 3`;
+  }
+
+  function draw3() {
+    const ctr = ([r, c]) => `${c * CELL + CELL / 2},${r * CELL + CELL / 2}`;
+    let g = `<rect width="500" height="500" rx="18" fill="#1c232a"/>`;
+    for (let r = 0; r < N3; r++) for (let c = 0; c < N3; c++) {
+      g += `<rect x="${c * CELL + 4}" y="${r * CELL + 4}" width="${CELL - 8}" height="${CELL - 8}" rx="12" fill="#232b33"/>`;
+    }
+    Q.paths.forEach((p, k) => {
+      if (p.length < 2) return;
+      const pts = p.map(ctr).join(" ");
+      g += `<polyline class="path3" points="${pts}" stroke="${COLORS3[k].c}"/>`;
+      if (done3(k)) g += `<polyline class="flow3" points="${pts}"/>`;
+    });
+    Q.dots.forEach((pr, k) => pr.forEach(([r, c]) => {
+      g += `<circle cx="${c * CELL + CELL / 2}" cy="${r * CELL + CELL / 2}" r="30" fill="${COLORS3[k].c}" stroke="rgba(255,255,255,0.55)" stroke-width="4"/>`;
+    }));
+    $("grid3").innerHTML = g;
+    note3();
+  }
+
+  // Клик по сейфу без тока — подсказка
+  $("safe").addEventListener("click", () => {
+    if (!Q || Q.phase !== "scene") return;
+    const sf = $("safe");
+    sf.classList.remove("shake"); void sf.offsetWidth; sf.classList.add("shake");
+    $("hintText3").textContent = "Без тока сейф не откроется.";
+    const h = $("hint3"); h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  });
+
+  $("box3").addEventListener("click", () => {
+    if (!Q || Q.phase !== "scene") return;
+    Q.phase = "panel";
+    $("panel3").hidden = false;
+    draw3();
+  });
+
+  $("close3").addEventListener("click", () => {
+    if (!Q || Q.phase !== "panel") return;
+    Q.phase = "scene";
+    Q.cur = null;
+    $("panel3").hidden = true;
+    $("hintText3").textContent = "Ток всё ещё не идёт.";
+  });
+
+  $("reset3").addEventListener("click", () => {
+    if (!Q || Q.phase !== "panel") return;
+    Q.paths = [[], [], []];
+    draw3();
+  });
+
+  function cellAt(e) {
+    const svg = $("grid3");
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const r = Math.floor(p.y / CELL), c = Math.floor(p.x / CELL);
+    return r >= 0 && r < N3 && c >= 0 && c < N3 ? [r, c] : null;
+  }
+
+  function blocked3() {
+    if (!Q.crossed) { Q.crossed = true; Q.cross++; }
+    beep(110, 0.18, "sawtooth", 0.06);
+    const g = $("grid3");
+    g.classList.remove("shake"); void g.offsetWidth; g.classList.add("shake");
+    Q.warn = true;
+    note3();
+  }
+
+  // Один шаг провода в соседнюю клетку. false — дальше не идём.
+  function step3(cell) {
+    const k = Q.cur, p = Q.paths[k];
+    if (done3(k)) {
+      if (same(cell, p[p.length - 2])) { p.pop(); return true; }
+      return false;
+    }
+    const own = p.findIndex((x) => same(x, cell));
+    if (own >= 0) { p.length = own + 1; return true; }
+    const dc = dotColor(cell);
+    if (dc >= 0 && dc !== k) { blocked3(); return false; }
+    const pc = pathColor(cell);
+    if (pc >= 0 && pc !== k) { blocked3(); return false; }
+    p.push(cell);
+    if (dc === k) { click(); return false; } // дошли до второй точки
+    return true;
+  }
+
+  function extend3(target) {
+    for (let guard = 0; guard < 12; guard++) {
+      const p = Q.paths[Q.cur], head = p[p.length - 1];
+      if (same(head, target)) return;
+      const dr = target[0] - head[0], dc = target[1] - head[1];
+      const next = Math.abs(dr) >= Math.abs(dc) ? [head[0] + Math.sign(dr), head[1]] : [head[0], head[1] + Math.sign(dc)];
+      if (!step3(next)) return;
+    }
+  }
+
+  $("grid3").addEventListener("pointerdown", (e) => {
+    if (!Q || Q.phase !== "panel") return;
+    const cell = cellAt(e);
+    if (!cell) return;
+    const dc = dotColor(cell);
+    if (dc >= 0) {
+      Q.cur = dc;
+      Q.paths[dc] = [cell]; // начинаем провод этого цвета заново
+    } else {
+      const pc = pathColor(cell);
+      if (pc < 0) {
+        return;
+      }
+      Q.cur = pc;
+      const p = Q.paths[pc];
+      p.length = p.findIndex((x) => same(x, cell)) + 1;
+    }
+    Q.crossed = false;
+    Q.warn = false;
+    $("grid3").setPointerCapture(e.pointerId);
+    draw3();
+  });
+
+  $("grid3").addEventListener("pointermove", (e) => {
+    if (!Q || Q.cur === null || Q.phase !== "panel") return;
+    const cell = cellAt(e);
+    if (!cell) return;
+    const before = Q.paths[Q.cur].length;
+    extend3(cell);
+    if (Q.paths[Q.cur].length !== before) draw3();
+    if ([0, 1, 2].every(done3)) finish3();
+  });
+
+  const endStroke3 = () => { if (Q) Q.cur = null; };
+  $("grid3").addEventListener("pointerup", endStroke3);
+  $("grid3").addEventListener("pointercancel", endStroke3);
+
+  function finish3() {
+    const token = Q.token;
+    Q.phase = "done";
+    Q.cur = null;
+    $("grid3").classList.add("live");
+    draw3();
+    [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.25), i * 120));
+    setTimeout(() => {
+      if (Q.token !== token) return;
+      $("panel3").hidden = true;
+      $("cable3").classList.add("live");
+      $("hintText3").textContent = "Ток пошёл по кабелю к сейфу…";
+    }, 1400);
+    setTimeout(() => {
+      if (Q.token !== token) return;
+      $("safe").classList.add("live");
+      $("core3").textContent = "ТОК ЕСТЬ";
+      beep(880, 0.2);
+    }, 2100);
+    setTimeout(() => {
+      if (Q.token !== token) return;
+      $("core3").textContent = "ОТКРЫТО";
+      click();
+    }, 2800);
+    setTimeout(() => {
+      if (Q.token !== token) return;
+      $("safe").classList.add("open");
+      $("hintText3").textContent = "Сейф открыт! Внутри золото.";
+    }, 3200);
+    const stars = Q.cross === 0 ? 3 : Q.cross <= 2 ? 2 : 1;
+    setTimeout(() => {
+      if (Q.token !== token) return;
+      showResult({
+        title: "Сейф открыт!",
+        stars,
+        text: ["", "Сейф открыт, но провода часто сталкивались. Попробуй ещё раз!", "Хорошо! Ещё аккуратнее — и будет три звезды.", "Идеально! Ни одного столкновения."][stars],
+        stats: `Столкновения проводов: ${Q.cross} · Время: ${fmtTime(Q.t0)}`,
+        next: 3
+      });
+    }, 4800);
+  }
+
+  // =================== Раунд 4: сейф с проводами ===================
+  // Четыре провода нужно вставить в колонны в правильном порядке — его подсказывает
+  // записка электрика. Когда все стоят верно, ток доходит до замка и сейф открывается.
+  const WIRES = [
+    { name: "красный", gen: "красного", c: "#e5484d" },
+    { name: "синий", gen: "синего", c: "#3b8fe0" },
+    { name: "жёлтый", gen: "жёлтого", c: "#ffc83d" },
+    { name: "зелёный", gen: "зелёного", c: "#2fbf4a" }
+  ];
+  let Q4 = null;
+
+  const shuffle = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+  // Все 24 расстановки: pos[c] — номер колонны (0–3) для провода цвета c
+  const PERMS = (() => {
+    const out = [];
+    const go = (cur) => {
+      if (cur.length === 4) { out.push(cur); return; }
+      for (let i = 0; i < 4; i++) if (!cur.includes(i)) go([...cur, i]);
+    };
+    go([]);
+    return out;
+  })();
+
+  // Подсказки: подбираем случайные верные утверждения, пока ответ не станет единственным
+  function makeClues(pos) {
+    const W = (c) => `<span class="cw" style="--c:${WIRES[c].c}">${WIRES[c].name}</span>`;
+    const Wg = (c) => `<span class="cw" style="--c:${WIRES[c].c}">${WIRES[c].gen}</span>`;
+    const cap = (h) => h.replace(/(">)(.)/, (m, a, ch) => a + ch.toUpperCase());
+    const pool = [];
+    for (let a = 0; a < 4; a++) {
+      for (let k = 0; k < 4; k++) {
+        pool.push({ kind: "at", html: `${cap(W(a))} — в колонне ${k + 1}.`, test: (p) => p[a] === k });
+        pool.push({ kind: "not", html: `${cap(W(a))} — не в колонне ${k + 1}.`, test: (p) => p[a] !== k });
+      }
+      pool.push({ kind: "edge", html: `${cap(W(a))} — с краю.`, test: (p) => p[a] === 0 || p[a] === 3 });
+      pool.push({ kind: "edge", html: `${cap(W(a))} — не с краю.`, test: (p) => p[a] === 1 || p[a] === 2 });
+      for (let b = 0; b < 4; b++) {
+        if (a === b) continue;
+        pool.push({ kind: "rel", html: `${cap(W(a))} — сразу правее ${Wg(b)}.`, test: (p) => p[a] === p[b] + 1 });
+        pool.push({ kind: "rel", html: `${cap(W(a))} — левее ${Wg(b)}.`, test: (p) => p[a] < p[b] });
+        if (a < b) pool.push({ kind: "rel", html: `${cap(W(a))} и ${W(b)} — не рядом.`, test: (p) => Math.abs(p[a] - p[b]) > 1 });
+      }
+    }
+    // Прямое «в колонне N» — не больше одного, иначе слишком просто
+    const truths = shuffle(pool.filter((c) => c.test(pos)));
+    let picked = [], left = PERMS, direct = 0;
+    for (const c of truths) {
+      if (left.length === 1) break;
+      if (c.kind === "at" && direct >= 1) continue;
+      const next = left.filter(c.test);
+      if (next.length < left.length) { picked.push(c); left = next; if (c.kind === "at") direct++; }
+    }
+    // Убираем подсказки, без которых ответ всё равно единственный
+    for (let i = picked.length - 1; i >= 0; i--) {
+      const rest = picked.filter((_, j) => j !== i);
+      if (PERMS.filter((p) => rest.every((c) => c.test(p))).length === 1) picked = rest;
+    }
+    return shuffle(picked).map((c) => c.html);
+  }
+
+  function startRound4() {
+    round = 4;
+    const pos = PERMS[Math.floor(Math.random() * PERMS.length)];
+    Q4 = {
+      token: (Q4 ? Q4.token : 0) + 1,
+      pos,
+      placed: [null, null, null, null],
+      held: null,
+      phase: "place",
+      fails: 0,
+      t0: performance.now()
+    };
+    $("clues4").innerHTML = makeClues(pos).map((h) => `<li>${h}</li>`).join("");
+    $("slots4").innerHTML = [0, 1, 2, 3].map((k) =>
+      `<button class="slot" type="button" data-s="${k}" aria-label="Колонна ${k + 1}"><i class="lamp"></i><span class="pin"></span><span class="socket"></span><span class="pin"></span><b class="num">${k + 1}</b></button>`
+    ).join("");
+    $("wires4").innerHTML = shuffle([0, 1, 2, 3]).map((c) =>
+      `<button class="wire" type="button" data-c="${c}" style="--c:${WIRES[c].c}" aria-label="${WIRES[c].name} провод"><svg viewBox="0 0 60 24"><rect x="1" y="7" width="9" height="10" rx="2" fill="#aeb6bf"/><rect x="50" y="7" width="9" height="10" rx="2" fill="#aeb6bf"/><rect x="8" y="8" width="44" height="8" rx="4" style="fill:var(--c)"/></svg></button>`
+    ).join("");
+    $("wp4").classList.remove("live", "shake");
+    $("core4").textContent = "НЕТ ТОКА";
+    $("safe4").classList.remove("open");
+    $("power4").disabled = false;
+    render4("Сейф на электрозамке, но ток не доходит до замка. Открой сейф.");
+  }
+
+  function render4(text) {
+    if (text) $("hintText4").textContent = text;
+    const filled = Q4.placed.filter((c) => c !== null).length;
+    $("stepLabel4").textContent = `Раунд 4 · провода · проводов на месте: ${filled} из 4`;
+    $("wp4").classList.toggle("holding", Q4.held !== null);
+    document.querySelectorAll("#slots4 .slot").forEach((el, k) => {
+      const c = Q4.placed[k], sock = el.querySelector(".socket");
+      sock.classList.toggle("full", c !== null);
+      if (c !== null) sock.style.setProperty("--c", WIRES[c].c);
+      el.setAttribute("aria-label", `Колонна ${k + 1}${c !== null ? ": " + WIRES[c].name : ""}`);
+    });
+    document.querySelectorAll("#wires4 .wire").forEach((el) => {
+      const c = Number(el.dataset.c);
+      el.classList.toggle("used", Q4.placed.includes(c));
+      el.classList.toggle("sel", Q4.held === c);
+    });
+  }
+
+  function clearLamps4() {
+    document.querySelectorAll("#slots4 .slot").forEach((el) => {
+      el.classList.remove("bad");
+      el.querySelector(".lamp").classList.remove("ok", "bad");
+    });
+  }
+
+  const nudge4 = () => { const h = $("hint4"); h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash"); };
+
+  $("wires4").addEventListener("click", (e) => {
+    const w = e.target.closest(".wire");
+    if (!w || !Q4 || Q4.phase !== "place") return;
+    const c = Number(w.dataset.c);
+    Q4.held = Q4.held === c ? null : c;
+    render4(null);
+  });
+
+  $("slots4").addEventListener("click", (e) => {
+    const el = e.target.closest(".slot");
+    if (!el || !Q4 || Q4.phase !== "place") return;
+    const k = Number(el.dataset.s);
+    clearLamps4();
+    if (Q4.held !== null) {
+      // Провод из колонны, куда вставляем новый, возвращается к остальным
+      Q4.placed[k] = Q4.held;
+      Q4.held = null;
+      click();
+      render4(null);
+    } else if (Q4.placed[k] !== null) {
+      Q4.held = Q4.placed[k];
+      Q4.placed[k] = null;
+      render4(null);
+    } else {
+      nudge4();
+    }
+  });
+
+  $("power4").addEventListener("click", () => {
+    if (!Q4 || Q4.phase !== "place") return;
+    if (Q4.placed.some((c) => c === null)) {
+      render4("Ток не пойдёт: вставлены не все провода.");
+      nudge4();
+      return;
+    }
+    const token = Q4.token;
+    Q4.phase = "test";
+    Q4.held = null;
+    $("power4").disabled = true;
+    render4("Включаю ток…");
+    const ok = Q4.placed.map((c, k) => Q4.pos[c] === k);
+    const slots = document.querySelectorAll("#slots4 .slot");
+    // Лампочки загораются по очереди: зелёная — провод на своём месте, красная — нет
+    ok.forEach((good, k) => setTimeout(() => {
+      if (Q4.token !== token) return;
+      slots[k].querySelector(".lamp").classList.add(good ? "ok" : "bad");
+      if (good) beep(440 + k * 110, 0.15);
+      else { slots[k].classList.add("bad"); beep(90, 0.25, "sawtooth", 0.08); }
+    }, 250 + k * 280));
+    setTimeout(() => {
+      if (Q4.token !== token) return;
+      if (ok.every(Boolean)) { powerOn4(); return; }
+      Q4.fails++;
+      Q4.phase = "place";
+      $("power4").disabled = false;
+      const wp = $("wp4");
+      wp.classList.remove("shake"); void wp.offsetWidth; wp.classList.add("shake");
+      const bad = ok.filter((g) => !g).length;
+      render4(`Короткое замыкание! ${bad === 4 ? "Все провода" : "Провода с красными лампочками"} не на своих местах.`);
+    }, 250 + 4 * 280 + 200);
+  });
+
+  function powerOn4() {
+    const token = Q4.token;
+    Q4.phase = "done";
+    $("wp4").classList.add("live");
+    $("core4").textContent = "ТОК ЕСТЬ";
+    render4("Ток пошёл! Электричество бежит по проводам к замку…");
+    [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.25), i * 120));
+    setTimeout(() => {
+      if (Q4.token !== token) return;
+      $("core4").textContent = "ОТКРЫТО";
+      click();
+    }, 900);
+    setTimeout(() => {
+      if (Q4.token !== token) return;
+      $("safe4").classList.add("open");
+      render4("Сейф открыт! Внутри золото.");
+    }, 1300);
+    const stars = Q4.fails === 0 ? 3 : Q4.fails === 1 ? 2 : 1;
+    setTimeout(() => {
+      if (Q4.token !== token) return;
+      showResult({
+        title: "Сейф открыт!",
+        stars,
+        text: ["", "Сейф открыт, но замыканий было много. Попробуй ещё раз!", "Хорошо! Ещё внимательнее к записке — и будет три звезды.", "Идеально! С первого раза."][stars],
+        stats: `Замыкания: ${Q4.fails} · Время: ${fmtTime(Q4.t0)}`,
+        next: 5
+      });
+    }, 2900);
+  }
+
+  // =================== Раунд 5: побег из тюрьмы (3D, от первого лица) ===================
+  // Героя сажают в камеру. Он открывает кодовый замок по отпечаткам, убегает по коридору,
+  // уворачиваясь от пуль охранника, за 30 секунд вводит код на двери выхода и перелезает через забор.
+  let Q5 = null, raf5 = 0, W3 = null;
+  const STOP5 = {};
+  const noop = () => {};
+  const REDUCE5 = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Каждая локация стоит в своём месте мира, переход между ними — через затемнение
+  const SETS5 = { cell: 0, hall: 100, exit: 200, street: 300 };
+  const C5 = { x: 0, y: 1.6, z: 0, yaw: 0, pitch: 0, bob: 0, phase: 0, hands: 0, climb: 0 };
+  const G5 = { show: false, x: 0, z: 0, yaw: 0, walk: 0, phase: 0, aim: 0, grab: 0, follow: null };
+  const tweens5 = [];
+  const ease5 = {
+    lin: (k) => k,
+    inOut: (k) => (k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2),
+    out: (k) => 1 - (1 - k) ** 2,
+    in: (k) => k * k
+  };
+
+  const wait5 = (ms) => {
+    const tok = Q5.token;
+    return new Promise((res, rej) => setTimeout(() => (Q5.token === tok ? res() : rej(STOP5)), ms));
+  };
+  const run5 = (fn) => fn().catch((e) => { if (e !== STOP5) throw e; });
+
+  function tw5(obj, to, ms, ease = ease5.inOut) {
+    const tok = Q5.token;
+    return new Promise((res, rej) => {
+      const from = {};
+      for (const k in to) from[k] = obj[k];
+      tweens5.push({ obj, from, to, t: 0, ms, ease, res, rej, tok });
+    });
+  }
+  function stepTweens5(dtMs) {
+    for (let i = tweens5.length - 1; i >= 0; i--) {
+      const w = tweens5[i];
+      if (w.tok !== Q5.token) { tweens5.splice(i, 1); w.rej(STOP5); continue; }
+      w.t += dtMs;
+      const k = Math.min(1, w.t / w.ms), e = w.ease(k);
+      for (const key in w.to) w.obj[key] = w.from[key] + (w.to[key] - w.from[key]) * e;
+      if (k >= 1) { tweens5.splice(i, 1); w.res(); }
+    }
+  }
+  // Шаги: камера идёт, пока идёт анимация, и качается в такт
+  async function walkC5(to, ms, bob = 0.05, ease = ease5.inOut) {
+    C5.bob = bob;
+    await tw5(C5, to, ms, ease);
+    C5.bob = 0;
+  }
+  async function walkG5(x, z, ms, speed = 1) {
+    G5.yaw = Math.atan2(x - G5.x, z - G5.z);
+    G5.walk = speed;
+    await tw5(G5, { x, z }, ms, ease5.lin);
+    G5.walk = 0;
+  }
+
+  // ---------- Постройка 3D-мира ----------
+  function canvasTex(w, h, draw) {
+    const cv = document.createElement("canvas");
+    cv.width = w;
+    cv.height = h;
+    draw(cv.getContext("2d"), w, h);
+    const t = new THREE.CanvasTexture(cv);
+    t.anisotropy = 4;
+    return t;
+  }
+  const drawPad5 = (led) => (g, w, h) => {
+    g.fillStyle = "#1c232a"; g.fillRect(0, 0, w, h);
+    g.fillStyle = led; g.beginPath(); g.arc(w - 12, 12, 6, 0, 7); g.fill();
+    g.fillStyle = "#aeb6bf";
+    const kw = (w - 20) / 3, kh = (h - 36) / 4;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) g.fillRect(10 + c * kw + 3, 28 + r * kh + 3, kw - 6, kh - 6);
+  };
+
+  function init3d5() {
+    if (W3 !== null) return;
+    W3 = false;
+    if (!window.THREE) { $("nogl5").hidden = false; return; }
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: $("c5"), antialias: true }); }
+    catch (e) { $("nogl5").hidden = false; return; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(70, 1.9, 0.05, 400);
+    camera.rotation.order = "YXZ";
+    scene.add(camera);
+    const W = { renderer, scene, camera, sets: {}, arms: [] };
+
+    const mat = (c, opt = {}) => new THREE.MeshPhongMaterial({ color: c, specular: 0x000000, shininess: 0, ...opt });
+    const basic = (c, opt = {}) => new THREE.MeshBasicMaterial({ color: c, ...opt });
+    const geoms = {};
+    const box = (parent, w, h, d, m, x, y, z) => {
+      const key = w + "," + h + "," + d;
+      const mesh = new THREE.Mesh(geoms[key] || (geoms[key] = new THREE.BoxGeometry(w, h, d)), typeof m === "string" ? mat(m) : m);
+      mesh.position.set(x, y, z);
+      parent.add(mesh);
+      return mesh;
+    };
+    const plane = (parent, w, h, m, x, y, z) => {
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m);
+      mesh.position.set(x, y, z);
+      parent.add(mesh);
+      return mesh;
+    };
+    const set = (name, bg, fog) => {
+      const g = new THREE.Group();
+      g.position.x = SETS5[name];
+      g.visible = false;
+      g.userData = { bg: new THREE.Color(bg), fog };
+      scene.add(g);
+      W.sets[name] = g;
+      return g;
+    };
+
+    // Камера
+    const cell = set("cell", "#20252b", null);
+    const wallM = mat("#c3c9d0"), cellM = mat("#a9b0b8"), barM = mat("#4a525b"), darkM = mat("#3b424b");
+    box(cell, 12, 0.1, 16, "#8d959d", 0, -0.05, -2);
+    box(cell, 12, 0.1, 16, "#d7dce1", 0, 3.05, -2);
+    box(cell, 6, 3, 0.1, cellM, 0, 1.5, 4);
+    box(cell, 0.1, 3, 4, cellM, -3, 1.5, 2);
+    box(cell, 0.1, 3, 4, cellM, 3, 1.5, 2);
+    box(cell, 0.1, 3, 16, wallM, -6, 1.5, -2);
+    box(cell, 0.1, 3, 16, wallM, 6, 1.5, -2);
+    box(cell, 12, 3, 0.1, wallM, 0, 1.5, -8);
+    box(cell, 3, 3, 0.1, wallM, -4.5, 1.5, 0.05);
+    box(cell, 3, 3, 0.1, wallM, 4.5, 1.5, 0.05);
+    box(cell, 1.2, 0.8, 0.05, basic("#8fc3ee"), -1, 2.2, 3.94);
+    [-1.3, -1, -0.7].forEach((x) => box(cell, 0.05, 0.8, 0.05, barM, x, 2.2, 3.9));
+    box(cell, 1.8, 0.08, 0.6, "#7a5b3a", -1.9, 0.5, 3.4);
+    box(cell, 0.08, 0.5, 0.5, "#5e4428", -2.6, 0.25, 3.4);
+    box(cell, 0.08, 0.5, 0.5, "#5e4428", -1.2, 0.25, 3.4);
+    for (let x = -2.85; x <= 0.45; x += 0.25) box(cell, 0.05, 3, 0.05, barM, x, 1.5, 0);
+    box(cell, 6.2, 0.12, 0.12, darkM, 0, 2.95, 0);
+    box(cell, 0.14, 3, 0.14, darkM, 3, 1.5, 0);
+    const door = new THREE.Group();
+    cell.add(door);
+    for (let x = 0.65; x <= 2.85; x += 0.25) box(door, 0.05, 2.9, 0.05, barM, x, 1.45, -0.08);
+    box(door, 2.4, 0.08, 0.08, darkM, 1.7, 2.6, -0.08);
+    box(door, 2.4, 0.08, 0.08, darkM, 1.7, 0.6, -0.08);
+    box(door, 0.08, 2.9, 0.08, darkM, 0.55, 1.45, -0.08);
+    const padM = new THREE.MeshPhongMaterial({ specular: 0x000000, shininess: 0, map: canvasTex(64, 96, drawPad5("#e5484d")), emissive: new THREE.Color("#2fbf4a"), emissiveIntensity: 0 });
+    W.cellPad = box(door, 0.2, 0.3, 0.04, padM, 2.55, 1.25, 0);
+    W.cellPadHit = box(door, 0.6, 0.7, 0.2, basic("#000", { transparent: true, opacity: 0, depthWrite: false }), 2.55, 1.25, 0);
+    W.cellDoor = door;
+    plane(cell, 1.1, 1.4, mat("#fff", { map: canvasTex(220, 280, (g, w, h) => {
+      g.fillStyle = "#f4ecd8"; g.fillRect(0, 0, w, h);
+      g.fillStyle = "#8e2c29"; g.font = "800 24px Rubik, sans-serif"; g.textAlign = "center"; g.fillText("РАЗЫСКИВАЕТСЯ", w / 2, 40);
+      g.fillStyle = "#f2c9a0"; g.beginPath(); g.arc(w / 2, 130, 50, 0, 7); g.fill();
+      g.fillStyle = "#2b3138"; g.beginPath(); g.arc(w / 2, 120, 50, Math.PI, 0); g.fill();
+      g.fillStyle = "#23282e"; g.fillRect(w / 2 - 48, 112, 96, 20);
+      g.font = "700 28px Rubik, sans-serif"; g.fillText("№ 042", w / 2, 240);
+    }) }), -1.5, 1.7, -7.94);
+    box(cell, 0.8, 0.05, 0.3, basic("#fff6d0"), 0, 2.98, 2);
+    box(cell, 0.8, 0.05, 0.3, basic("#fff6d0"), 0, 2.98, -4);
+    cell.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const l1 = new THREE.PointLight(0xfff2d6, 0.9, 12); l1.position.set(0, 2.7, 2); cell.add(l1);
+    const l2 = new THREE.PointLight(0xfff2d6, 0.9, 14); l2.position.set(0, 2.7, -4); cell.add(l2);
+
+    // Коридор: повторяется каждые 10 метров, поэтому бег по нему можно «зациклить»
+    const hall = set("hall", "#1a1d22", new THREE.Fog("#1a1d22", 10, 55));
+    const HL = 420;
+    const floorTex = canvasTex(128, 128, (g) => {
+      g.fillStyle = "#858d96"; g.fillRect(0, 0, 128, 128);
+      g.fillStyle = "#737b84"; g.fillRect(0, 0, 64, 64); g.fillRect(64, 64, 64, 64);
+    });
+    floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(1.6, HL / 2);
+    const floor = plane(hall, 3.2, HL, mat("#fff", { map: floorTex }), 0, 0, 20 - HL / 2);
+    floor.rotation.x = -Math.PI / 2;
+    box(hall, 3.2, 0.1, HL, "#d0d5db", 0, 3.05, 20 - HL / 2);
+    box(hall, 0.1, 3, HL, "#c2c8d0", -1.65, 1.5, 20 - HL / 2);
+    box(hall, 0.1, 3, HL, "#c2c8d0", 1.65, 1.5, 20 - HL / 2);
+    const doorM = mat("#8f99a4"), winM = mat("#4a525b"), lampM = basic("#fff6d0"), stripeM = mat("#e5484d");
+    for (let z = 15; z > -400; z -= 10) {
+      [-1, 1].forEach((sd) => {
+        box(hall, 0.06, 2.1, 1.0, doorM, sd * 1.58, 1.05, z);
+        box(hall, 0.07, 0.35, 0.3, winM, sd * 1.57, 1.65, z);
+        box(hall, 0.04, 0.12, 10, stripeM, sd * 1.6, 0.9, z - 5);
+      });
+      box(hall, 0.8, 0.05, 0.3, lampM, 0, 2.98, z - 5);
+    }
+    hall.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.7));
+    W.hallLight = new THREE.PointLight(0xfff2d6, 1.1, 16); hall.add(W.hallLight);
+    W.alarm = new THREE.PointLight(0xff3030, 0, 12); hall.add(W.alarm);
+    W.muzzle = new THREE.PointLight(0xffd36b, 0, 8); hall.add(W.muzzle);
+    W.hall = hall;
+
+    // Дверь выхода
+    const ex = set("exit", "#1a1d22", null);
+    box(ex, 3.2, 0.1, 16, "#8d959d", 0, -0.05, -5);
+    box(ex, 3.2, 0.1, 16, "#d7dce1", 0, 3.05, -5);
+    box(ex, 0.1, 3, 16, "#cdd3da", -1.65, 1.5, -5);
+    box(ex, 0.1, 3, 16, "#cdd3da", 1.65, 1.5, -5);
+    box(ex, 1.0, 3, 0.1, "#cdd3da", -1.1, 1.5, -12);
+    box(ex, 1.0, 3, 0.1, "#cdd3da", 1.1, 1.5, -12);
+    box(ex, 1.2, 0.8, 0.1, "#cdd3da", 0, 2.6, -12);
+    plane(ex, 1.4, 2.4, basic("#1b2a48"), 0, 1.1, -12.4);
+    box(ex, 0.08, 2.3, 0.14, darkM, -0.62, 1.12, -12);
+    box(ex, 0.08, 2.3, 0.14, darkM, 0.62, 1.12, -12);
+    const hinge = new THREE.Group();
+    hinge.position.set(-0.6, 0, -12);
+    ex.add(hinge);
+    box(hinge, 1.2, 2.2, 0.06, "#6b7a88", 0.6, 1.1, 0);
+    box(hinge, 0.6, 0.4, 0.07, "#4d5a66", 0.6, 1.6, 0);
+    box(hinge, 0.14, 0.05, 0.08, "#2b3138", 1.05, 1.05, 0.04);
+    W.exitHinge = hinge;
+    plane(ex, 0.9, 0.3, basic("#fff", { map: canvasTex(180, 60, (g, w, h) => {
+      g.fillStyle = "#2fbf4a"; g.fillRect(0, 0, w, h);
+      g.fillStyle = "#fff"; g.font = "800 38px Rubik, sans-serif"; g.textAlign = "center"; g.fillText("ВЫХОД", w / 2, 44);
+    }) }), 0, 2.5, -11.94);
+    W.exitPadTex = canvasTex(64, 96, drawPad5("#e5484d"));
+    W.setExitLed = (c) => { drawPad5(c)(W.exitPadTex.image.getContext("2d"), 64, 96); W.exitPadTex.needsUpdate = true; };
+    box(ex, 0.2, 0.3, 0.04, mat("#fff", { map: W.exitPadTex }), 0.95, 1.3, -11.93);
+    // Тень охранника на двери растёт, когда он подбегает сзади
+    W.shadow = plane(ex, 1, 2, basic("#000", { transparent: true, opacity: 0, depthWrite: false, map: canvasTex(128, 256, (g) => {
+      g.fillStyle = "#fff";
+      g.beginPath(); g.arc(64, 42, 22, 0, 7); g.fill();
+      g.fillRect(38, 14, 52, 16);
+      g.fillRect(34, 66, 60, 100);
+      g.fillRect(16, 70, 18, 80); g.fillRect(94, 70, 18, 80);
+      g.fillRect(38, 164, 22, 92); g.fillRect(68, 164, 22, 92);
+    }) }), 0, 1.1, -11.9);
+    box(ex, 0.8, 0.05, 0.3, basic("#fff6d0"), 0, 2.98, -8);
+    ex.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const l3 = new THREE.PointLight(0xfff2d6, 1, 14); l3.position.set(0, 2.7, -8); ex.add(l3);
+
+    // Улица и забор
+    const st = set("street", "#0f1a30", new THREE.Fog("#0f1a30", 30, 110));
+    const ground = plane(st, 220, 220, mat("#2a4630"), 0, 0, -40);
+    ground.rotation.x = -Math.PI / 2;
+    const road = plane(st, 220, 6, mat("#2b2f36"), 0, 0.01, -16);
+    road.rotation.x = -Math.PI / 2;
+    box(st, 40, 5, 0.5, "#5d6671", 0, 2.5, 1.5);
+    const meshTex = canvasTex(64, 64, (g) => {
+      g.strokeStyle = "#aeb6bf"; g.lineWidth = 4;
+      g.beginPath(); g.moveTo(0, 0); g.lineTo(64, 64); g.moveTo(64, 0); g.lineTo(0, 64); g.stroke();
+    });
+    meshTex.wrapS = meshTex.wrapT = THREE.RepeatWrapping;
+    meshTex.repeat.set(50, 7.5);
+    plane(st, 20, 3, mat("#fff", { map: meshTex, transparent: true, alphaTest: 0.4, side: THREE.DoubleSide }), 0, 1.5, -10);
+    for (let x = -10; x <= 10; x += 2.5) box(st, 0.08, 3.1, 0.08, "#7d8791", x, 1.55, -10);
+    box(st, 20, 0.06, 0.06, "#7d8791", 0, 3.05, -10);
+    const wire = [];
+    for (let x = -10; x <= 10; x += 0.25) wire.push(new THREE.Vector3(x, 3.18 + (Math.round(x * 4) % 2 ? 0.1 : -0.06), -10));
+    st.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(wire), new THREE.LineBasicMaterial({ color: "#c5ccd3" })));
+    const winTex = canvasTex(64, 128, (g) => {
+      g.fillStyle = "#1b2743"; g.fillRect(0, 0, 64, 128);
+      for (let r = 0; r < 8; r++) for (let c = 0; c < 4; c++) {
+        g.fillStyle = (r * 7 + c * 3) % 5 === 0 ? "#ffe9a8" : "#24314f";
+        g.fillRect(6 + c * 15, 6 + r * 15, 9, 9);
+      }
+    });
+    for (let i = 0; i < 10; i++) {
+      const h = 7 + ((i * 37) % 12), w = 7 + ((i * 13) % 4);
+      box(st, w, h, 5, basic("#fff", { map: winTex }), -42 + i * 9.5, h / 2, -36 - ((i * 7) % 9));
+    }
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(3, 24, 16), basic("#f5f0c8"));
+    moon.position.set(25, 30, -90);
+    st.add(moon);
+    const starPos = [];
+    for (let i = 0; i < 260; i++) starPos.push(((i * 97) % 200) - 100, 12 + ((i * 53) % 50), -70 - ((i * 31) % 50));
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.Float32BufferAttribute(starPos, 3));
+    st.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.35, fog: false })));
+    box(st, 0.12, 5, 0.12, "#3b444e", 4, 2.5, -14);
+    box(st, 0.9, 0.08, 0.08, "#3b444e", 3.6, 5, -14);
+    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 8), basic("#ffe9a8"));
+    bulb.position.set(3.2, 4.85, -14);
+    st.add(bulb);
+    const lamp = new THREE.PointLight(0xffd9a0, 1.3, 20); lamp.position.set(3.2, 4.6, -14); st.add(lamp);
+    const moonL = new THREE.DirectionalLight(0x9fb3e0, 0.45); moonL.position.set(10, 20, -10); st.add(moonL);
+    st.add(new THREE.AmbientLight(0x8a9ac0, 0.6));
+
+    // Охранник
+    const guard = new THREE.Group();
+    scene.add(guard);
+    const blue = mat("#2f5d9e"), navy = mat("#1f2f4a"), skin = mat("#e8b98f"), black = mat("#1d2227");
+    const limb = (w, h, d, m, px, py) => {
+      const pivot = new THREE.Group();
+      pivot.position.set(px, py, 0);
+      guard.add(pivot);
+      box(pivot, w, h, d, m, 0, -h / 2, 0);
+      return pivot;
+    };
+    const legL = limb(0.18, 0.88, 0.2, navy, -0.12, 0.9), legR = limb(0.18, 0.88, 0.2, mat("#2a4066"), 0.12, 0.9);
+    [legL, legR].forEach((l) => box(l, 0.2, 0.08, 0.3, black, 0, -0.86, 0.05));
+    box(guard, 0.5, 0.66, 0.28, blue, 0, 1.24, 0);
+    box(guard, 0.52, 0.07, 0.3, "#1b2433", 0, 0.94, 0);
+    box(guard, 0.08, 0.08, 0.02, "#ffc83d", 0.12, 1.42, 0.15);
+    const armL = limb(0.13, 0.62, 0.14, blue, -0.32, 1.54), armR = limb(0.13, 0.62, 0.14, blue, 0.32, 1.54);
+    [armL, armR].forEach((a) => box(a, 0.12, 0.12, 0.12, skin, 0, -0.66, 0));
+    const gun = box(armR, 0.07, 0.3, 0.1, black, 0, -0.78, 0.03);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 12), skin);
+    head.position.y = 1.78;
+    guard.add(head);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.1, 16), navy);
+    cap.position.y = 1.91;
+    guard.add(cap);
+    box(guard, 0.22, 0.03, 0.14, "#141c2a", 0, 1.87, 0.14);
+    box(guard, 0.05, 0.05, 0.02, "#ffc83d", 0, 1.93, 0.16);
+    box(guard, 0.035, 0.035, 0.02, black, -0.055, 1.8, 0.14);
+    box(guard, 0.035, 0.035, 0.02, black, 0.055, 1.8, 0.14);
+    box(guard, 0.12, 0.025, 0.02, "#5a3a22", 0, 1.72, 0.145);
+    W.g = { guard, legL, legR, armL, armR, gun };
+
+    // Руки героя в оранжевых рукавах — видны снизу кадра
+    const hands = new THREE.Group();
+    camera.add(hands);
+    [-1, 1].forEach((sd) => {
+      const a = new THREE.Group();
+      a.position.set(0.3 * sd, -0.34, -0.55);
+      a.rotation.set(0.35, -0.15 * sd, 0);
+      hands.add(a);
+      box(a, 0.12, 0.12, 0.5, "#f08a24", 0, 0, 0.1);
+      box(a, 0.1, 0.1, 0.14, "#f2c9a0", 0, 0, -0.2);
+      W.arms.push(a);
+    });
+    W.hands = hands;
+    const handLight = new THREE.PointLight(0xffffff, 0.5, 2.5);
+    handLight.position.set(0, 0.2, 0);
+    camera.add(handLight);
+
+    W.ray = new THREE.Raycaster();
+    W3 = W;
+    const wrap = $("c5").parentElement;
+    const fit = () => {
+      const r = wrap.getBoundingClientRect();
+      if (!r.width) return;
+      renderer.setSize(r.width, r.height, false);
+      camera.aspect = r.width / r.height;
+      camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(fit).observe(wrap);
+    fit();
+  }
+
+  function scene5(name) {
+    Q5.set = name;
+    if (!W3) return;
+    for (const k in W3.sets) W3.sets[k].visible = k === name;
+    W3.scene.background = W3.sets[name].userData.bg;
+    W3.scene.fog = W3.sets[name].userData.fog;
+  }
+
+  // Каждый кадр: камера, руки, охранник, пули
+  function apply5(dt, t) {
+    if (C5.bob > 0) C5.phase += dt * (C5.bob > 0.06 ? 13 : 8);
+    const bob = REDUCE5 ? 0 : Math.sin(C5.phase) * C5.bob;
+    Q5.shake = Math.max(0, (Q5.shake || 0) - dt * 0.5);
+    const sh = Q5.shake ? (Math.random() - 0.5) * Q5.shake : 0;
+    if (!W3) return;
+    const off = SETS5[Q5.set], cam = W3.camera;
+    cam.position.set(off + C5.x + sh, C5.y + bob, C5.z);
+    cam.rotation.set(C5.pitch, C5.yaw, sh * 0.6);
+    W3.hands.visible = C5.hands > 0;
+    W3.hands.position.y = (1 - C5.hands) * -0.5 + (REDUCE5 ? 0 : Math.cos(C5.phase * 0.5) * C5.bob * 0.6);
+    W3.arms.forEach((a, i) => {
+      const up = C5.climb ? 0.3 + Math.sin(C5.phase + i * Math.PI) * 0.08 : 0;
+      a.position.y = -0.34 + up;
+      a.rotation.x = 0.35 + (C5.climb ? 0.5 : 0);
+      a.position.z = -0.55 - (C5.climb ? 0.1 : 0);
+    });
+
+    const g = W3.g;
+    g.guard.visible = G5.show;
+    g.guard.position.set(off + G5.x, 0, G5.z);
+    g.guard.rotation.y = G5.yaw;
+    if (G5.walk > 0) G5.phase += dt * 9 * G5.walk;
+    const swing = G5.walk > 0 && !REDUCE5 ? Math.sin(G5.phase) * 0.7 : 0;
+    g.legL.rotation.x = swing;
+    g.legR.rotation.x = -swing;
+    g.armL.rotation.x = G5.grab ? -1.4 : -swing * 0.8;
+    g.armR.rotation.x = G5.grab ? -1.4 : G5.aim ? -Math.PI / 2 : swing * 0.8;
+    g.gun.visible = G5.aim > 0;
+
+    if (Q5.set === "hall") {
+      W3.hallLight.position.set(C5.x, 2.6, C5.z - 1.5);
+      W3.alarm.position.set(0, 2.8, C5.z - 3);
+      W3.alarm.intensity = Q5.alarm ? (Math.sin(t * 0.008) > 0 ? 1.4 : 0.2) : 0;
+    }
+    if (Q5.set === "cell" && W3.cellPad) W3.cellPad.material.emissiveIntensity = Q5.phase === "cell" ? 0.35 + 0.35 * Math.sin(t * 0.006) : 0;
+    stepBullets5(dt);
+    W3.renderer.render(W3.scene, cam);
+  }
+
+  function fade5(on) {
+    $("fade5").classList.toggle("on", on);
+    return wait5(320);
+  }
+  function hurt5() {
+    $("hurt5").animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-out" });
+    Q5.shake = 0.25;
+    beep(200, 0.12, "sawtooth", 0.08);
+  }
+  function banner5(text, color) {
+    const b = $("banner5");
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function say5(text, label) {
+    if (label) Q5.label = label;
+    $("hintText5").textContent = text;
+    $("stepLabel5").textContent = `Раунд 5 · ${Q5.label}` + (Q5.tries > 1 ? ` · попытка ${Q5.tries}` : "");
+  }
+  function nudge5() {
+    const h = $("hint5");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+  const shake5 = (el) => { el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); };
+  function ctrl5(id) {
+    ["dodge5", "code5"].forEach((k) => ($(k).hidden = k !== id));
+    $("level5").classList.toggle("coding", id === "code5");
+  }
+
+  function startRound5(tries = 1) {
+    round = 5;
+    init3d5();
+    Q5 = { token: (Q5 ? Q5.token : 0) + 1, tries, phase: "intro", label: "камера", set: "cell", fpWrong: 0, fpMiss: 0, dodgeMiss: 0, hits: 0, codeErr: 0, hearts: 3, shots: 0, last: 0, hallRun: 0, alarm: false, bullets: [] };
+    tweens5.splice(0).forEach((w) => w.rej(STOP5));
+    Object.assign(C5, { x: 0, y: 1.6, z: 0, yaw: 0, pitch: 0, bob: 0, hands: 0, climb: 0 });
+    Object.assign(G5, { show: false, walk: 0, aim: 0, grab: 0, follow: null });
+    if (W3) {
+      W3.hall.children.filter((o) => o.userData.bullet).forEach((o) => W3.hall.remove(o));
+      W3.exitHinge.rotation.y = 0;
+      W3.setExitLed("#e5484d");
+      W3.shadow.material.opacity = 0;
+      W3.muzzle.intensity = 0;
+    }
+    $("fade5").classList.remove("on");
+    banner5(null);
+    ctrl5(null);
+    cancelAnimationFrame(raf5);
+    raf5 = requestAnimationFrame(loop5);
+    run5(intro5);
+  }
+
+  function loop5(t) {
+    const dt = Q5.last ? Math.min(0.05, (t - Q5.last) / 1000) : 0;
+    Q5.last = t;
+    stepTweens5(dt * 1000);
+    if (Q5.hallRun) {
+      C5.z -= Q5.hallRun * dt;
+      if (G5.follow !== null) G5.z = C5.z + G5.follow;
+      if (C5.z < -300) {
+        C5.z += 200;
+        G5.z += 200;
+        Q5.bullets.forEach((b) => (b.mesh.position.z += 200));
+      }
+    }
+    if (Q5.phase === "dodge") tickDodge5(dt);
+    else if (Q5.phase === "code") tickCode5(dt);
+    apply5(dt, t);
+    raf5 = requestAnimationFrame(loop5);
+  }
+
+  // ---------- Охранник заводит героя в камеру ----------
+  async function intro5() {
+    scene5("cell");
+    if (W3) W3.cellDoor.position.x = -2.3;
+    Object.assign(C5, { x: 1.7, y: 1.6, z: -5.2, yaw: Math.PI, pitch: 0 });
+    Object.assign(G5, { show: true, x: 1.0, z: -3.1, yaw: 0 });
+    say5("Тебя поймали и ведут в камеру…", "камера");
+    await fade5(false);
+    walkG5(0.2, -1.4, 2300, 1).catch(noop);
+    await walkC5({ z: 2.2 }, 3200, 0.05);
+    await walkG5(1.7, -1.1, 800, 1);
+    G5.yaw = 0;
+    await tw5(C5, { yaw: 0 }, 1000);
+    if (W3) await tw5(W3.cellDoor.position, { x: 0 }, 700, ease5.out);
+    beep(160, 0.2, "square", 0.1);
+    Q5.shake = 0.08;
+    say5("Дверь заперта. Охранник уходит…");
+    await wait5(500);
+    await walkG5(-5, -3, 2200, 1);
+    G5.show = false;
+    Q5.phase = "cell";
+    say5("Ты в камере. Взломай кодовый замок на двери и беги.");
+  }
+
+  $("c5").addEventListener("pointerdown", (e) => {
+    if (!Q5 || $("level5").hidden) return;
+    if (Q5.phase === "dodge") { press5(); return; }
+    if (Q5.phase !== "cell") return;
+    if (W3) {
+      const r = $("c5").getBoundingClientRect();
+      W3.ray.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), W3.camera);
+      if (!W3.ray.intersectObject(W3.cellPadHit).length) {
+        say5("Замок — на двери камеры, справа.");
+        nudge5();
+        return;
+      }
+    }
+    openFp5();
+  });
+
+  function openFp5() {
+    Q5.phase = "walk";
+    run5(async () => {
+      await walkC5({ x: 2.2, z: 0.8, pitch: -0.12 }, 800, 0.03);
+      say5("На двери камеры кодовый замок.", "замок камеры");
+      await wait5(250);
+      Q5.phase = "fp";
+      const lv = $("level");
+      lv.style.zIndex = 5;
+      lv.hidden = false;
+      startLevel(true);
+      lv.animate(
+        [{ clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(100% at 50% 50%)" }],
+        { duration: 700, easing: "cubic-bezier(.2,.7,.2,1)" }
+      );
+    });
+  }
+
+  // Замок камеры открывается так же, как в первом раунде: по отпечаткам на кнопках
+  function fpDone5(wrong, miss) {
+    const lv = $("level");
+    if (!Q5 || Q5.phase !== "fp" || lv.hidden) return;
+    Q5.fpWrong = wrong;
+    Q5.fpMiss = miss;
+    lv.animate(
+      [{ clipPath: "circle(100% at 50% 50%)" }, { clipPath: "circle(0% at 50% 50%)" }],
+      { duration: 600, easing: "cubic-bezier(.5,0,.8,.3)" }
+    ).onfinish = () => { lv.hidden = true; lv.style.zIndex = ""; };
+    openCell5();
+  }
+
+  function openCell5() {
+    Q5.phase = "run";
+    run5(async () => {
+      [659, 880].forEach((f, i) => setTimeout(() => beep(f, 0.15), i * 110));
+      await wait5(600);
+      if (W3) tw5(W3.cellDoor.position, { x: -2.3 }, 800).catch(noop);
+      say5("Замок открыт! Беги!", "побег");
+      await tw5(C5, { pitch: 0, x: 1.7 }, 700);
+      C5.hands = 1;
+      await walkC5({ z: -3.2 }, 1300, 0.08, ease5.in);
+      await fade5(true);
+      await hall5();
+    });
+  }
+
+  // ---------- Погоня по коридору ----------
+  async function hall5() {
+    scene5("hall");
+    Object.assign(C5, { x: 0, y: 1.6, z: 0, yaw: 0, pitch: 0, hands: 1, bob: 0.08 });
+    Object.assign(G5, { show: true, x: 0, z: 9, yaw: Math.PI, walk: 1.5, follow: 9, aim: 0 });
+    Q5.hallRun = 7;
+    Q5.alarm = true;
+    await fade5(false);
+    say5("Тревога! Охранник гонится за тобой и стреляет. Уворачивайся от пуль!", "погоня");
+    await wait5(1300);
+    await tw5(C5, { yaw: Math.PI }, 800);
+    G5.aim = 1;
+    await tw5(G5, { follow: 6 }, 600);
+    startDodge5();
+  }
+
+  const W5 = 18, WAVE5 = 3, BULLETS5 = 6;
+  const angDiff = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
+  const arcPt = (deg, r) => [Math.sin((deg * Math.PI) / 180) * r, -Math.cos((deg * Math.PI) / 180) * r];
+
+  function startDodge5() {
+    Q5.a = 0;
+    Q5.speed = 105;
+    Q5.ammo = BULLETS5;
+    wave5();
+    buildDial5();
+    drawHearts5();
+    $("dodgeNote5").textContent = `Пуль в обойме: ${BULLETS5}`;
+    ctrl5("dodge5");
+    Q5.phase = "dodge";
+  }
+  // Черточки новой волны ставим впереди стрелки, чтобы до первой было время
+  function wave5() {
+    Q5.marks = Array.from({ length: WAVE5 }, (_, i) => ({ m: (Q5.a + 60 + i * 70 + Math.random() * 16) % 360, alive: true }));
+  }
+  function buildDial5() {
+    let g = `<circle r="112" fill="#1c232a"/><circle r="96" fill="none" stroke="#2a3139" stroke-width="18"/>`;
+    for (let d = 0; d < 360; d += 15) {
+      const [x1, y1] = arcPt(d, 76), [x2, y2] = arcPt(d, 83);
+      g += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#4a5560" stroke-width="2"/>`;
+    }
+    Q5.marks.forEach((mk, i) => {
+      if (!mk.alive) return;
+      const [x1, y1] = arcPt(mk.m - W5, 96), [x2, y2] = arcPt(mk.m + W5, 96);
+      g += `<path class="mark5" data-i="${i}" d="M${x1} ${y1}A96 96 0 0 1 ${x2} ${y2}"/>`;
+    });
+    g += `<g id="needle5" transform="rotate(${Q5.a})"><line y2="-104" stroke="#e5484d" stroke-width="6" stroke-linecap="round"/><circle r="30" fill="#e9ecef" stroke="#8f99a4" stroke-width="3"/><path d="M0 -21L9 -5H-9z" fill="#e5484d"/><circle r="5" fill="#8f99a4"/></g>`;
+    $("dial5").innerHTML = g;
+  }
+  function drawHearts5() {
+    $("hearts5").innerHTML = "♥".repeat(Q5.hearts) + `<span class="off">${"♥".repeat(3 - Q5.hearts)}</span>`;
+  }
+  function tickDodge5(dt) {
+    const prev = Q5.a, cur = (prev + Q5.speed * dt) % 360;
+    Q5.a = cur;
+    const passed = (e) => (cur >= prev ? prev < e && e <= cur : e > prev || e <= cur);
+    for (const mk of Q5.marks) {
+      if (mk.alive && passed((mk.m + W5) % 360)) {
+        mk.alive = false;
+        shot5(false);
+        if (Q5.phase !== "dodge") return;
+      }
+    }
+    $("needle5").setAttribute("transform", `rotate(${cur})`);
+    $("dial5").querySelectorAll(".mark5").forEach((el) => el.classList.toggle("near", angDiff(cur, Q5.marks[el.dataset.i].m) <= W5));
+  }
+  function pressDodge5() {
+    const mk = Q5.marks.find((m) => m.alive && angDiff(Q5.a, m.m) <= W5);
+    if (!mk) {
+      Q5.dodgeMiss++;
+      beep(110, 0.15, "sawtooth", 0.06);
+      shake5($("dial5"));
+      $("dodgeNote5").textContent = "Мимо! Стрелка была не на жёлтой черточке.";
+      return;
+    }
+    mk.alive = false;
+    Q5.speed += 18;
+    shot5(true);
+  }
+
+  // Выстрел: пуля летит в лицо; если увернулся — пригибаешься или подпрыгиваешь, и она пролетает мимо
+  function shot5(dodged) {
+    const high = Q5.shots++ % 2 === 0;
+    beep(130, 0.09, "square", 0.14);
+    if (W3) {
+      const g = W3.g;
+      g.guard.updateMatrixWorld(true);
+      const from = new THREE.Vector3(0, -0.93, 0.03);
+      g.armR.localToWorld(from);
+      from.x -= SETS5.hall;
+      W3.muzzle.position.copy(from);
+      W3.muzzle.intensity = 3;
+      const tok = Q5.token;
+      setTimeout(() => { if (Q5.token === tok) W3.muzzle.intensity = 0; }, 90);
+      const target = new THREE.Vector3(C5.x, dodged ? (high ? 1.6 : 0.75) : C5.y, C5.z - Q5.hallRun * 0.16);
+      const dir = target.clone().sub(from).normalize();
+      const dist = from.distanceTo(target);
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.7), new THREE.MeshBasicMaterial({ color: "#ffe38a" }));
+      mesh.userData.bullet = true;
+      mesh.position.copy(from);
+      W3.hall.add(mesh);
+      mesh.lookAt(from.clone().add(dir).add(new THREE.Vector3(SETS5.hall, 0, 0)));
+      Q5.bullets.push({ mesh, vel: dir.multiplyScalar(45), ttl: dodged ? 1.2 : dist / 45, hit: !dodged });
+    }
+    const left = --Q5.ammo;
+    if (dodged) {
+      if (high) tw5(C5, { y: 0.95 }, 150, ease5.out).then(() => tw5(C5, { y: 1.6 }, 380)).catch(noop);
+      else tw5(C5, { y: 2.35 }, 180, ease5.out).then(() => tw5(C5, { y: 1.6 }, 340, ease5.in)).catch(noop);
+      $("dodgeNote5").textContent = (high ? "Пригнулся! " : "Подпрыгнул! ") + `Пуль в обойме: ${left}`;
+    } else {
+      Q5.hits++;
+      Q5.hearts--;
+      drawHearts5();
+      if (!W3) hurt5();
+      $("dodgeNote5").textContent = `В тебя попали! Пуль в обойме: ${left}`;
+      if (Q5.hearts <= 0) { caught5("shot"); return; }
+    }
+    if (left === 0) { buildDial5(); endDodge5(); return; }
+    if (Q5.marks.every((m) => !m.alive)) wave5();
+    buildDial5();
+  }
+  function stepBullets5(dt) {
+    for (let i = Q5.bullets.length - 1; i >= 0; i--) {
+      const b = Q5.bullets[i];
+      b.mesh.position.addScaledVector(b.vel, dt);
+      b.ttl -= dt;
+      if (b.ttl <= 0) {
+        if (b.hit) hurt5();
+        W3.hall.remove(b.mesh);
+        Q5.bullets.splice(i, 1);
+      }
+    }
+  }
+
+  function endDodge5() {
+    Q5.phase = "run";
+    run5(async () => {
+      say5("У охранника кончились патроны! Беги к выходу.");
+      G5.aim = 0;
+      G5.follow = null;
+      G5.walk = 0;
+      await wait5(500);
+      ctrl5(null);
+      await tw5(C5, { yaw: 0 }, 700);
+      Q5.hallRun = 10;
+      await wait5(1100);
+      await fade5(true);
+      Q5.hallRun = 0;
+      Q5.alarm = false;
+      await exit5();
+    });
+  }
+
+  // ---------- Дверь выхода: код за 30 секунд ----------
+  const SYMS5 = [
+    { c: "#e0a200", d: "M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z" },
+    { c: "#e5484d", d: "M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z" },
+    { c: "#2fbf4a", d: "M12 3l10 18H2z" },
+    { c: "#3b8fe0", d: "M4 4h16v16H4z" },
+    { c: "#8e5bd6", d: "M12 1.5L22.5 12 12 22.5 1.5 12z" },
+    { c: "#e05a9a", d: "M12 21s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-9 12-9 12z" }
+  ];
+  const TIME5 = 30;
+
+  async function exit5() {
+    scene5("exit");
+    Object.assign(C5, { x: 0, y: 1.6, z: 2, yaw: 0, pitch: 0, hands: 1 });
+    G5.show = false;
+    say5("Впереди дверь на улицу.", "выход");
+    await fade5(false);
+    await walkC5({ z: -10.4 }, 1600, 0.08, ease5.out);
+    startCode5();
+  }
+
+  function startCode5() {
+    const digits = shuffle(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]).slice(0, 6);
+    const legend = SYMS5.map((s, i) => ({ ...s, n: digits[i] }));
+    const code = shuffle([0, 1, 2, 3, 4, 5]).slice(0, 4);
+    const sym = (s) => `<svg class="sym5" viewBox="0 0 24 24" aria-hidden="true"><path d="${s.d}" fill="${s.c}"/></svg>`;
+    Q5.code = code.map((i) => legend[i].n).join("");
+    Q5.entered = "";
+    Q5.left = TIME5;
+    Q5.lastSec = TIME5;
+    Q5.busy = false;
+    Q5.stepT = 0;
+    $("legend5").innerHTML = shuffle(legend.slice()).map((s) => `<span>${sym(s)} = ${s.n}</span>`).join("");
+    $("seq5").innerHTML = code.map((i) => sym(legend[i])).join("");
+    $("door5").classList.remove("open");
+    display5();
+    drawTimer5();
+    ctrl5("code5");
+    Q5.phase = "code";
+    say5("Дверь на кодовом замке. Охрана уже бежит — у тебя 30 секунд!");
+  }
+
+  function display5(text, bad) {
+    const d = $("display5");
+    d.classList.toggle("bad", !!bad);
+    d.textContent = text ?? (Q5.entered + "____").slice(0, 4);
+  }
+  function drawTimer5() {
+    const s = Math.ceil(Q5.left);
+    $("secs5").textContent = s;
+    $("bar5").style.width = (Q5.left / TIME5) * 100 + "%";
+    $("timer5").classList.toggle("low", s <= 10);
+  }
+  function tickCode5(dt) {
+    Q5.left = Math.max(0, Q5.left - dt);
+    drawTimer5();
+    const s = Math.ceil(Q5.left);
+    if (s !== Q5.lastSec) {
+      Q5.lastSec = s;
+      if (s <= 10 && s > 0) beep(s <= 5 ? 1200 : 900, 0.06, "square", 0.05);
+    }
+    // Последние 20 секунд сзади слышны шаги охранника, а его тень на двери растёт
+    const gone = TIME5 - Q5.left;
+    if (gone > 10) {
+      const k = Math.min(1, (gone - 10) / (TIME5 - 10));
+      if (W3) {
+        const sc = 0.5 + 1.1 * k;
+        W3.shadow.material.opacity = 0.12 + 0.6 * k;
+        W3.shadow.scale.set(sc, sc, 1);
+        W3.shadow.position.y = sc * 1.0;
+      }
+      Q5.stepT += dt;
+      if (Q5.stepT > 0.6 - 0.35 * k) { Q5.stepT = 0; beep(70, 0.08, "sine", 0.1 + 0.1 * k); }
+    }
+    if (Q5.left <= 0) caught5("time");
+  }
+
+  function onKey5(k) {
+    if (!Q5 || Q5.phase !== "code" || Q5.busy) return;
+    if (k === "C") Q5.entered = "";
+    else if (k === "←") Q5.entered = Q5.entered.slice(0, -1);
+    else if (Q5.entered.length < 4) Q5.entered += k;
+    display5();
+    if (Q5.entered.length === 4) check5();
+  }
+  $("keypad5").innerHTML = KEYS.map((k) => `<button class="key${/\d/.test(k) ? "" : " small"}" type="button" data-k="${k}">${k}</button>`).join("");
+  $("keypad5").addEventListener("click", (e) => {
+    const b = e.target.closest(".key");
+    if (b) onKey5(b.dataset.k);
+  });
+
+  function check5() {
+    if (Q5.entered === Q5.code) { escape5(); return; }
+    Q5.codeErr++;
+    Q5.busy = true;
+    display5("ERR", true);
+    shake5($("door5"));
+    beep(110, 0.2, "sawtooth", 0.07);
+    const tok = Q5.token;
+    setTimeout(() => {
+      if (Q5.token !== tok || Q5.phase !== "code") return;
+      Q5.entered = "";
+      Q5.busy = false;
+      display5();
+    }, 700);
+  }
+
+  // ---------- Улица и забор ----------
+  function escape5() {
+    Q5.phase = "escape";
+    Q5.codeTime = TIME5 - Q5.left;
+    display5("OPEN");
+    $("door5").classList.add("open");
+    [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+    run5(async () => {
+      say5("Дверь открыта! Беги на улицу!");
+      if (W3) {
+        W3.setExitLed("#5cf08a");
+        tw5(W3.shadow.material, { opacity: 0 }, 300).catch(noop);
+        await wait5(300);
+        await tw5(W3.exitHinge.rotation, { y: -1.8 }, 700, ease5.out);
+      } else await wait5(1000);
+      ctrl5(null);
+      await walkC5({ z: -12.6 }, 1000, 0.06, ease5.in);
+      await fade5(true);
+      await street5();
+    });
+  }
+
+  async function street5() {
+    scene5("street");
+    Object.assign(C5, { x: 0, y: 1.6, z: 0, yaw: 0, pitch: 0, hands: 1, climb: 0 });
+    say5("Ты на улице! Осталось перелезть через забор.", "улица");
+    await fade5(false);
+    await walkC5({ z: -9.35 }, 1400, 0.08, ease5.lin);
+    C5.climb = 1;
+    C5.bob = 0.02;
+    await tw5(C5, { y: 3.3, pitch: -0.25 }, 1300);
+    await tw5(C5, { z: -10.5, y: 3.6, pitch: -0.6 }, 600);
+    C5.climb = 0;
+    C5.bob = 0;
+    await tw5(C5, { y: 1.6, z: -11.3, pitch: -0.15 }, 420, ease5.in);
+    beep(180, 0.1);
+    Q5.shake = 0.12;
+    await tw5(C5, { pitch: 0 }, 250);
+    banner5("СВОБОДА!", "#2fbf4a");
+    say5("Ты перелез через забор. Свобода!");
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.22), i * 120));
+    await walkC5({ z: -19 }, 1600, 0.08, ease5.lin);
+    finish5();
+  }
+
+  function finish5() {
+    Q5.phase = "done";
+    const miss = Q5.fpMiss + Q5.dodgeMiss, errs = Q5.fpWrong + Q5.codeErr;
+    let stars = 1;
+    if (Q5.hits === 0 && errs === 0 && miss <= 2) stars = 3;
+    else if (Q5.hits <= 1 && errs <= 1 && miss <= 6) stars = 2;
+    showResult({
+      title: "Побег удался!",
+      stars,
+      text: ["", "Ты сбежал, но еле-еле. Попробуй ещё раз!", "Ты на свободе! Ещё точнее — и будет три звезды.", "Чистый побег — ты прошёл все раунды!"][stars],
+      stats: `Попадания: ${Q5.hits} · Промахи: ${miss} · Ошибки в кодах: ${errs} · Код на выходе за ${Math.round(Q5.codeTime)} с` + (Q5.tries > 1 ? ` · Попытка ${Q5.tries}` : ""),
+      next: false
+    });
+  }
+
+  // ---------- Поймали: раунд заново ----------
+  function caught5(why) {
+    Q5.phase = "caught";
+    run5(async () => {
+      ctrl5(null);
+      C5.bob = 0;
+      if (why === "shot") {
+        await wait5(300);
+        Q5.hallRun = 0;
+        G5.follow = null;
+        G5.aim = 0;
+        await walkG5(C5.x, C5.z + 1.3, 500, 1.6);
+      } else {
+        if (W3) W3.shadow.material.opacity = 0;
+        Object.assign(G5, { show: true, x: 0, z: C5.z + 1.4, yaw: Math.PI });
+        await tw5(C5, { yaw: Math.PI }, 400);
+      }
+      G5.yaw = Math.PI;
+      G5.grab = 1;
+      hurt5();
+      banner5("ПОЙМАЛИ!", "#e5484d");
+      say5(why === "time"
+        ? "Время вышло — охрана тебя поймала. Раунд начнётся заново."
+        : "В тебя слишком много раз попали — охрана тебя поймала. Раунд начнётся заново.");
+      nudge5();
+      [880, 660, 880, 660].forEach((f, i) => setTimeout(() => beep(f, 0.22, "sine", 0.08), i * 260));
+      await wait5(2800);
+      await fade5(true);
+      startRound5(Q5.tries + 1);
+    });
+  }
+
+  function press5() {
+    if (!Q5) return;
+    if (Q5.phase === "dodge") pressDodge5();
+  }
+  $("dodgeBtn5").addEventListener("click", press5);
+  $("dial5").addEventListener("pointerdown", press5);
+  addEventListener("keydown", (e) => {
+    if (!Q5 || $("level5").hidden || e.repeat) return;
+    if (Q5.phase === "code") {
+      if (/^[0-9]$/.test(e.key)) onKey5(e.key);
+      else if (e.key === "Backspace") onKey5("←");
+      return;
+    }
+    if (e.key !== " " || (e.target.closest && e.target.closest("button"))) return;
+    if (Q5.phase === "dodge") { e.preventDefault(); press5(); }
+  });
+
+  $("menuBtn").addEventListener("click", backToMenu);
+  document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", backToMenu));
+  $("nextBtn").addEventListener("click", () => showRound(Number($("nextBtn").dataset.round)));
+  $("againBtn").addEventListener("click", () => {
+    $("win").hidden = true;
+    if (round === 5) startRound5();
+    else if (round === 4) startRound4();
+    else if (round === 3) startRound3();
+    else if (round === 2) startRound2();
+    else startLevel();
+  });
+})();
+</script>
+
+</body></html>
