@@ -979,7 +979,7 @@
   .nogl5 { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 16px; color: #fff; text-align: center; font-size: 15px; }
 
   /* Раунд 6 — своя дверь ночью: тот же экран, что в третьем раунде */
-  #level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15 {
+  #level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20 {
     background:
       radial-gradient(1.5px 1.5px at 12% 14%, #fff 50%, transparent 100%),
       radial-gradient(1.5px 1.5px at 84% 9%, #fff 50%, transparent 100%),
@@ -988,11 +988,11 @@
       radial-gradient(1.5px 1.5px at 92% 36%, #fff 50%, transparent 100%),
       radial-gradient(circle at 50% 35%, #2b3d63 0, #16223d 55%, #0f1a30 100%);
   }
-  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15) .back-btn { background: #1f2b45; color: #e9ecef; box-shadow: 0 2px 0 #0b1222; }
-  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15) .hint { background: #1c2740; box-shadow: 0 2px 0 #0b1222, 0 8px 24px rgba(0, 0, 0, 0.35); }
-  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15) .hint .step { color: #ffc83d; }
-  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15) .hint p { color: #e9ecef; }
-  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15) .hint.flash { animation: hintFlashHome 0.5s; }
+  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20) .back-btn { background: #1f2b45; color: #e9ecef; box-shadow: 0 2px 0 #0b1222; }
+  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20) .hint { background: #1c2740; box-shadow: 0 2px 0 #0b1222, 0 8px 24px rgba(0, 0, 0, 0.35); }
+  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20) .hint .step { color: #ffc83d; }
+  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20) .hint p { color: #e9ecef; }
+  :is(#level2.home, #level6, #level7, #level8, #level9, #level10, #level11, #level12, #level15, #level16, #level17, #level18, #level19, #level20) .hint.flash { animation: hintFlashHome 0.5s; }
   @keyframes hintFlashHome { 30% { background: #4a3d1a; } }
   #level2.home .door2-cap, #level2.home .picks { color: #b9c3d6; }
   #level2.home .picks-row i { background: #5d9be0; }
@@ -1014,7 +1014,7 @@
   }
 
   /* Раунды 6–9 и 11 — сцена 16:9 под подсказкой */
-  #level6, #level7, #level8, #level9, #level11, #level12 {
+  #level6, #level7, #level8, #level9, #level11, #level12, #level16, #level17, #level18, #level19, #level20 {
     z-index: 3;
     display: flex; flex-direction: column; align-items: center; gap: 14px;
     overflow-y: auto;
@@ -1529,6 +1529,212 @@
     .gas15 { width: 80px; height: 80px; }
   }
 
+  /* Раунд 16 — новоселье: улица у дома, потом квартира, которую все вместе убирают */
+  #flat16 { touch-action: none; user-select: none; -webkit-user-select: none; }
+  .hud12.hud16 { top: 10px; bottom: auto; left: 50%; right: auto; transform: translateX(-50%); white-space: nowrap; }
+  @media (max-width: 479px) { .hud12.hud16 { top: 6px; left: 50%; right: auto; } }
+  #room16, #flat16.inside #street16 { display: none; }
+  #flat16.inside #room16 { display: inline; }
+  .car16 { transform: translate(-470px, 21px); }
+  #flat16.arrive .car16 { transform: translate(-6px, 21px); transition: transform 2.6s cubic-bezier(0.2, 0.7, 0.3, 1); }
+  #flat16.moving .car16 .wheel6 { animation: spin6 0.35s linear infinite; }
+  .fig16 { transition: opacity 0.4s; }
+  .fig16.walk .body16 { animation: bob8 0.32s ease-in-out infinite alternate; }
+  #bubs16, #sun16, #gloss16, #dim16, #fx16, #tool16, #dirt16, #notes16, .sp16 { pointer-events: none; }
+  #flat16.work .wand16 { animation: wand16 0.7s ease-in-out infinite alternate; }
+  @keyframes wand16 { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
+  #flat16.work .rag16 { animation: rag16 0.3s ease-in-out infinite alternate; }
+  @keyframes rag16 { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+  .pop16 { transform-box: fill-box; transform-origin: bottom; animation: pop16 0.3s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  @keyframes pop16 { from { transform: scale(0.6); } }
+  #glassHi16 { display: none; fill: none; stroke: #2fbf4a; stroke-width: 4; stroke-dasharray: 12 8; }
+  #flat16.wipe #glassHi16 { display: inline; animation: hi16 0.9s ease-in-out infinite alternate; }
+  @keyframes hi16 { to { stroke-opacity: 0.25; } }
+  #dirt16 { transition: opacity 0.8s; }
+  #dirt16.clean { opacity: 0; }
+  #sun16 { opacity: 0; transition: opacity 1.4s; }
+  #flat16.sunny #sun16 { opacity: 1; }
+  #dim16 { opacity: 0.34; transition: opacity 1.4s; }
+  #flat16.sunny #dim16 { opacity: 0.12; }
+  #flat16.shiny #dim16 { opacity: 0; }
+  #gloss16 { opacity: 0; transition: opacity 1s; }
+  #flat16.shiny #gloss16 { opacity: 1; }
+  #pic16 { transform-box: fill-box; transform-origin: center; transform: rotate(-7deg); transition: transform 0.9s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  #flat16.shiny #pic16 { transform: none; }
+  .item16 { cursor: grab; }
+  .item16.drag { cursor: grabbing; }
+  .item16.out { display: none; }
+  .item16.kept { pointer-events: none; }
+  .item16 .shape16 { transform-box: fill-box; transform-origin: center; transition: transform 0.15s; }
+  .item16.drag .shape16 { transform: scale(1.15); }
+  .item16.drag .name12, #flat16.trash .item16:hover .name12 { opacity: 1; }
+  #zone16 { fill: rgba(47, 191, 74, 0.12); stroke: #2fbf4a; stroke-width: 3; stroke-dasharray: 10 8; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  #flat16.trash #zone16 { opacity: 0.55; }
+  #flat16.dragging #zone16 { opacity: 1; }
+  .knot16, #flat16.tied .mouth16 { display: none; }
+  #flat16.tied .knot16 { display: inline; }
+  .web16 { cursor: pointer; transform-box: view-box; transition: opacity 0.45s, transform 0.45s; }
+  .web16.gone { opacity: 0; transform: scale(0.2); pointer-events: none; }
+  #flat16.webs .web16:not(.gone) .ring6, #flat16.mop .stain16:not(.gone) .ring6 { display: inline; }
+  .sp16 { transition: transform 1s cubic-bezier(0.5, 0, 0.8, 0.6), opacity 0.3s 0.7s; }
+  .sp16.run { transform: translate(var(--dx), 150px); opacity: 0; }
+  .stain16 .ring6 { stroke-width: 3; }
+  .stain16.gone { opacity: 0 !important; transition: opacity 0.4s; pointer-events: none; }
+  #tool16, #tool16 > g { display: none; }
+  #flat16.hover:is(.webs, .wipe, .mop) #tool16 { display: inline; }
+  #flat16.hover:is(.webs, .wipe, .mop), #flat16.hover:is(.webs, .wipe, .mop) * { cursor: none !important; }
+  #flat16.webs .broom16, #flat16.wipe .sponge16, #flat16.mop .mop16 { display: inline; }
+  .sw16.swish { animation: swish16 0.28s ease-out; }
+  @keyframes swish16 { 40% { transform: rotate(-28deg); } }
+  .spark16 { transform-box: fill-box; transform-origin: center; animation: spark16 0.7s ease-out both; }
+  @keyframes spark16 { from { transform: scale(0.2); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+  .note16 { opacity: 0; }
+  #flat16.music .note16 { animation: note8 2s ease-out infinite; }
+  #flat16.music .note16:nth-child(2) { animation-delay: 0.7s; }
+  #flat16.music .note16:nth-child(3) { animation-delay: 1.4s; }
+  @media (prefers-reduced-motion: reduce) {
+    #flat16.work .wand16, #flat16.work .rag16, .fig16.walk .body16, #flat16.wipe #glassHi16, .pop16, .sw16.swish { animation: none; }
+    .spark16 { animation-duration: 0.01s; }
+    #flat16.music .note16 { animation: none; opacity: 1; }
+  }
+
+  /* Раунд 17 — мебель: пустая квартира (спальники на полу), магазин и квартира с мебелью */
+  #flat16.home17 :is(#bag16, #zone16, #items16, #stains16, #webs16, #dirt16, #dust16, #tool16, #glassHi16) { display: none; }
+  #flat16.furnished #boxes16, #furn17, #bags17 { display: none; }
+  #flat16.furnished #furn17, #flat16.empty17 #bags17 { display: inline; }
+  #level17 .scene6, #level19 .scene6, #level20 .scene6 { width: min(820px, 100%, max(300px, calc((100dvh - 330px) * 16 / 9))); }
+  #shop17 { user-select: none; -webkit-user-select: none; }
+  #pods17 { transition: opacity 0.25s; }
+  #pods17.swap { opacity: 0; }
+  .pod17 { cursor: pointer; }
+  .pod17 .item17 { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.2s; }
+  #shop17.pick .pod17:hover .item17 { transform: scale(1.06); }
+  .pod17.no .item17 { animation: shake 0.4s; }
+  .pod17.sold .item17 { opacity: 0; }
+  #fly17, #bub17, #who17, #liza17 { pointer-events: none; }
+  .money17 { left: 10px; right: auto; }
+  @media (max-width: 479px) { .money17 { left: 6px; right: auto; } }
+  #ctrl17 { flex: none; width: 100%; max-width: 820px; }
+  .opts17 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; animation: pop 0.3s ease-out; }
+  .opt17 {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    padding: 10px 6px; border: 2px solid #2b3a5c; border-radius: 14px; background: #1c2740; color: #e9ecef;
+    font: 600 14px/1.25 "Rubik", sans-serif; text-align: center; cursor: pointer; transition: border-color 0.15s, transform 0.1s;
+  }
+  .opt17 b { font-weight: 700; text-wrap: balance; }
+  .opt17 span { color: #b9c3d6; font-size: 13px; }
+  .opt17 em { font-style: normal; font-weight: 800; font-size: 18px; color: #ffc83d; }
+  .opt17:not(:disabled):hover { border-color: #ffc83d; }
+  .opt17:not(:disabled):active { transform: scale(0.97); }
+  .opt17:disabled { cursor: default; }
+  .opt17.no { animation: shake 0.4s; border-color: #e5484d; }
+  @media (max-width: 479px) { .opt17 { font-size: 12px; padding: 8px 4px; } .opt17 span { font-size: 11px; } .opt17 em { font-size: 15px; } }
+
+  /* Раунд 18 — грузчик: грузовик, стеллажи и коробки (перетаскиванием) */
+  #ware18 { touch-action: none; user-select: none; -webkit-user-select: none; }
+  .hud12.hud18 { top: auto; bottom: 10px; }
+  @media (max-width: 479px) { .hud12.hud18 { top: auto; bottom: 6px; } }
+  #truck18 { transition: transform 2.6s cubic-bezier(0.55, 0, 0.8, 0.3); }
+  #ware18.gone #truck18 { transform: translateX(-320px); }
+  .box18 { cursor: grab; }
+  .box18.drag { cursor: grabbing; }
+  .box18:not(.top), .box18.placed { pointer-events: none; }
+  .box18.hidden18 { display: none; }
+  .box18 .shape18 { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.15s; }
+  .box18.drag .shape18 { transform: scale(1.08); }
+  .hi18 { display: none; fill: none; stroke: #ffc83d; stroke-width: 3; }
+  #ware18.shift18 .box18.top:not(.drag) .hi18 { display: inline; animation: hi16 0.7s ease-in-out infinite alternate; }
+  .slot18 { fill: none; stroke: #fff; stroke-opacity: 0.6; stroke-width: 2; stroke-dasharray: 6 5; pointer-events: none; }
+  #ware18.dragging .slot18 { stroke: #ffc83d; stroke-opacity: 0.95; }
+  .slot18.full { display: none; }
+  .slot18.bad { stroke: #e5484d !important; stroke-opacity: 1 !important; stroke-width: 4; stroke-dasharray: none; }
+  #crew18, #bub18, #cash18 { pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) {
+    #ware18.shift18 .box18.top .hi18 { animation: none; }
+    #truck18 { transition: none; }
+  }
+
+  /* Раунд 19 — продукты: полки, список от Лизы под сценой, касса и кошелёк */
+  #shop19 { user-select: none; -webkit-user-select: none; }
+  #till19, #shop19.till #aisle19 { display: none; }
+  #shop19.till #till19 { display: inline; }
+  .prod19 { cursor: pointer; }
+  .prod19 .item19 { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.15s; }
+  #shop19.shop .prod19:hover .item19 { transform: scale(1.08); }
+  .prod19.no .item19 { animation: shake 0.4s; }
+  #hero19, #basket19, #fly19, #bub19, #belt19items, #tray19 { pointer-events: none; }
+  #shop19.cheer #basket19 { display: none; }
+  .belt19 { stroke-dasharray: 6 10; }
+  #shop19.scan .belt19 { animation: belt19 0.5s linear infinite; }
+  @keyframes belt19 { to { stroke-dashoffset: -16; } }
+  #ctrl19 { flex: none; width: 100%; max-width: 820px; display: flex; flex-direction: column; gap: 10px; }
+  .list19 {
+    margin: 0; padding: 10px 16px 12px; list-style: none;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 14px;
+    background: #fff4b8; color: #23282e; border-radius: 6px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    font: 600 15px/1.2 "Rubik", sans-serif; transform: rotate(-0.6deg);
+  }
+  .list19.pop { animation: pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .list19 .head19 { grid-column: 1 / -1; font-weight: 800; color: #8a5d3b; }
+  .row19 { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .row19 svg { width: 26px; height: 26px; flex: none; }
+  .row19 span { min-width: 0; }
+  .row19 b { margin-left: auto; font-variant-numeric: tabular-nums; color: #8a7a5c; white-space: nowrap; }
+  .row19.done span { text-decoration: line-through; color: #8a7a5c; }
+  .row19.done b { color: #1f8f35; }
+  .row19.hit { animation: pop 0.3s ease-out; }
+  .wallet19 { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; animation: pop 0.3s ease-out; }
+  .bill19 {
+    min-width: 76px; padding: 12px 10px; border: none; border-radius: 8px; cursor: pointer;
+    font: 800 16px "Rubik", sans-serif; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.4), 0 3px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  .bill19:active { transform: translateY(2px); }
+  .bill19.coin { min-width: 52px; border-radius: 50%; aspect-ratio: 1; padding: 0; color: #5a3d26; }
+  .bill19.used { visibility: hidden; }
+  @media (max-width: 479px) {
+    .list19 { grid-template-columns: repeat(2, minmax(0, 1fr)); font-size: 13px; padding: 8px 12px 10px; gap: 3px 10px; }
+    .row19 svg { width: 22px; height: 22px; }
+    .bill19 { min-width: 64px; padding: 10px 8px; font-size: 14px; }
+    .bill19.coin { min-width: 46px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #shop19.scan .belt19 { animation: none; } }
+
+  /* Раунд 20 — тир: спортивный магазин, школа стрельбы и 3D-стрельба по мишеням */
+  #shop20 { user-select: none; -webkit-user-select: none; }
+  #school20, #shop20.school #store20 { display: none; }
+  #shop20.school #school20 { display: inline; }
+  .ware20 { cursor: pointer; }
+  .ware20 .item20 { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.15s; }
+  #shop20.pick .ware20:hover .item20 { transform: scale(1.08); }
+  .ware20.no .item20 { animation: shake 0.4s; }
+  .ware20.sold { display: none; }
+  #bub20, #hero20 { pointer-events: none; }
+  .opts17.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .opt17.bought { opacity: 0.4; }
+  #ctrl20 { flex: none; width: 100%; max-width: 820px; }
+  #level20.gun { overflow: hidden; gap: 12px; }
+  #c20 { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  #scene20.playing, #scene20.playing * { cursor: none !important; }
+  .cross20 {
+    position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px;
+    border: 2px solid #ff4d4d; border-radius: 50%; pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(0, 0, 0, 0.45);
+  }
+  .cross20::before, .cross20::after { content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .cross20::before { width: 2px; height: 66px; background: linear-gradient(#ff4d4d 0 38%, transparent 38% 62%, #ff4d4d 62%); }
+  .cross20::after { width: 66px; height: 2px; background: linear-gradient(to right, #ff4d4d 0 38%, transparent 38% 62%, #ff4d4d 62%); }
+  #pops20 { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .pop20 {
+    position: absolute; transform: translate(-50%, -120%); white-space: nowrap;
+    font: 800 24px "Rubik", sans-serif; color: #ffc83d; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+    animation: pop20 0.9s ease-out forwards;
+  }
+  .pop20.miss { color: #e9ecef; font-size: 18px; }
+  @keyframes pop20 { to { transform: translate(-50%, -260%); opacity: 0; } }
+  @media (max-width: 479px) { .opts17.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: reduce) { .pop20 { animation-duration: 1.4s; } }
+
   /* ---------- Большие экраны: планшеты и компьютеры ---------- */
   /* Всё то же самое, только крупнее, чтобы игра не терялась посреди пустого экрана.
      Если по высоте не влезает, поле раундов 1–4 и так уменьшается целиком (см. «Под любой экран»). */
@@ -1564,7 +1770,7 @@
     #dial5 { width: min(300px, 66vw, max(160px, calc(100dvh - 520px))); }
     .door5 { --key: clamp(40px, 5dvh, 56px); }
     .scene6 { width: min(1120px, 100%, max(300px, calc((100dvh - 220px) * 16 / 9))); }
-    #level8 .scene6, #level9 .scene6 { width: min(1120px, 100%, max(300px, calc((100dvh - 350px) * 16 / 9))); }
+    #level8 .scene6, #level9 .scene6, #level17 .scene6, #level19 .scene6, #level20 .scene6 { width: min(1120px, 100%, max(300px, calc((100dvh - 350px) * 16 / 9))); }
     .pack6-card { width: min(640px, 100%); }
     .item6 svg { width: 50px; height: 50px; }
     .box8, .meter8 { width: min(360px, 82vw); }
@@ -1578,20 +1784,32 @@
   /* Подсказка и отступы компактнее, картинка крупнее, а кнопки (стереть, спички, звонок, удочка) — справа от неё.
      Первая колонка гибкая (1fr): длинная подсказка над ней не распирает сетку и не выталкивает кнопки за край. */
   @media (orientation: landscape) and (max-height: 560px) {
-    #level6, #level7, #level8, #level9, #level11, #level12 {
+    #level6, #level7, #level8, #level9, #level11, #level12, #level16, #level17, #level18, #level19, #level20 {
       display: grid; align-content: start; justify-content: stretch;
       grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "hint" "scene";
       gap: 8px 14px;
       padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
       padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
     }
-    :is(#level6, #level7, #level8, #level9, #level11, #level12) > .topbar { grid-area: top; }
-    :is(#level6, #level7, #level8, #level9, #level11, #level12) > .hint { grid-area: hint; max-width: none; }
-    :is(#level6, #level7, #level8, #level9, #level11, #level12) .scene6 { grid-area: scene; justify-self: center; width: min(calc((100dvh - 130px) * 16 / 9), 100%); }
-    #level7:has(#ctrl7:not([hidden])), #level8:has(#ctrl8 > div:not([hidden])), #level9:has(#ctrl9 > div:not([hidden])) {
+    :is(#level6, #level7, #level8, #level9, #level11, #level12, #level16, #level17, #level18, #level19, #level20) > .topbar { grid-area: top; }
+    :is(#level6, #level7, #level8, #level9, #level11, #level12, #level16, #level17, #level18, #level19, #level20) > .hint { grid-area: hint; max-width: none; }
+    :is(#level6, #level7, #level8, #level9, #level11, #level12, #level16, #level17, #level18, #level19, #level20) .scene6 { grid-area: scene; justify-self: center; width: min(calc((100dvh - 130px) * 16 / 9), 100%); }
+    #level7:has(#ctrl7:not([hidden])), #level8:has(#ctrl8 > div:not([hidden])), #level9:has(#ctrl9 > div:not([hidden])), #level17:has(#ctrl17:not([hidden])), #level19:has(#ctrl19:not([hidden])), #level20:has(#ctrl20:not([hidden])) {
       grid-template-columns: minmax(0, 1fr) 250px; grid-template-areas: "top top" "hint hint" "scene ctrl";
     }
-    #ctrl7, #ctrl8, #ctrl9 { justify-self: center; width: 250px; max-width: 250px; }
+    #ctrl7, #ctrl8, #ctrl9, #ctrl17, #ctrl19, #ctrl20 { justify-self: center; width: 250px; max-width: 250px; }
+    #level17:has(#ctrl17:not([hidden])) #ctrl17, #level19:has(#ctrl19:not([hidden])) #ctrl19, #level20:has(#ctrl20:not([hidden])) #ctrl20 { grid-area: ctrl; align-self: center; }
+    .opts17.four { grid-template-columns: minmax(0, 1fr); }
+    #level20.gun { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    #level20.gun .hint { padding: 6px 12px; }
+    #level20.gun .hint p { font-size: 14px; }
+    #level20.gun .back-btn { padding: 6px 12px; font-size: 13px; }
+    .list19 { grid-template-columns: minmax(0, 1fr); padding: 8px 12px; font-size: 13px; }
+    .row19 svg { width: 22px; height: 22px; }
+    .bill19 { min-width: 64px; padding: 8px 8px; font-size: 14px; }
+    .opts17 { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .opt17 { flex-direction: row; flex-wrap: wrap; column-gap: 8px; padding: 6px 10px; font-size: 13px; }
+    .opt17 em { font-size: 15px; }
     :is(#level7:has(#ctrl7:not([hidden])), #level8:has(#ctrl8 > div:not([hidden])), #level9:has(#ctrl9 > div:not([hidden]))) :is(#ctrl7, #ctrl8, #ctrl9) { grid-area: ctrl; align-self: center; }
     #ctrl7 .btn { font-size: 14px; padding: 10px 14px; }
     #ctrl8 > div, #ctrl9 > div { gap: 6px; }
@@ -1611,7 +1829,7 @@
   }
 
   /* Раунд 6 — вступление: надпись читает автодиктор */
-  #intro6 {
+  #intro6, #intro18 {
     position: fixed; inset: 0; z-index: 4;
     display: grid; place-items: center;
     overflow-y: auto;
@@ -1630,14 +1848,14 @@
   .voice6 { display: flex; align-items: center; gap: 4px; height: 20px; color: #8fa0c2; font: 600 12px "Rubik", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
   .voice6 i { width: 4px; height: 100%; border-radius: 2px; background: #ffc83d; transform: scaleY(0.25); }
   .voice6 span { margin-left: 6px; }
-  #intro6.talking .voice6 i { animation: talk6 0.45s ease-in-out infinite alternate; }
-  #intro6.talking .voice6 i:nth-child(2) { animation-delay: -0.15s; }
-  #intro6.talking .voice6 i:nth-child(3) { animation-delay: -0.3s; }
+  :is(#intro6, #intro18).talking .voice6 i { animation: talk6 0.45s ease-in-out infinite alternate; }
+  :is(#intro6, #intro18).talking .voice6 i:nth-child(2) { animation-delay: -0.15s; }
+  :is(#intro6, #intro18).talking .voice6 i:nth-child(3) { animation-delay: -0.3s; }
   @keyframes talk6 { to { transform: scaleY(1); } }
   .skip6 { position: fixed; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
   @media (prefers-reduced-motion: reduce) {
     .lines6 p, .intro6-art { transition: opacity 0.3s; transform: none; }
-    #intro6.talking .voice6 i { animation: none; transform: scaleY(0.7); }
+    :is(#intro6, #intro18).talking .voice6 i { animation: none; transform: scaleY(0.7); }
   }
 </style>
 
@@ -2702,6 +2920,137 @@
   </div>
 </section>
 
+<section id="level16" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint16">
+    <span class="step" id="stepLabel16">Раунд 16 · город</span>
+    <p id="hintText16"></p>
+  </div>
+  <div class="scene6">
+    <!-- Сначала улица у дома, потом квартира (обе собираются скриптом): мусор, паутина, грязное окно и пятна на полу -->
+    <svg id="flat16" viewBox="0 0 800 450" aria-label="Переезд в квартиру в городе и большая уборка">
+      <defs>
+        <linearGradient id="sky16" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fc0ea"/><stop offset="1" stop-color="#d6ecf8"/></linearGradient>
+        <pattern id="wall16" width="36" height="36" patternUnits="userSpaceOnUse"><rect width="36" height="36" fill="#cdbf9f"/><rect width="18" height="36" fill="#c4b594"/><circle cx="27" cy="12" r="2.2" fill="#b3a27f"/></pattern>
+        <pattern id="plank16" width="130" height="30" patternUnits="userSpaceOnUse"><rect width="130" height="30" fill="#9b7650"/><path d="M0 0.75H130M70 0V30" stroke="#7d5c3d" stroke-width="1.5"/></pattern>
+        <clipPath id="glass16"><rect x="108" y="68" width="196" height="176"/></clipPath>
+        <!-- Грязь на стекле видна там, где маска белая; губка рисует по маске чёрным -->
+        <mask id="mask16" maskUnits="userSpaceOnUse" x="100" y="60" width="212" height="192">
+          <rect x="100" y="60" width="212" height="192" fill="#fff"/>
+          <g id="wipes16" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"></g>
+        </mask>
+        <linearGradient id="beam16" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b0" stop-opacity="0.5"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></linearGradient>
+      </defs>
+      <g id="street16"></g>
+      <g id="room16"></g>
+      <g id="bubs16"></g>
+    </svg>
+    <div class="hud11 hud12 hud16" id="hud16" hidden>Чистота: <b id="clean16">0%</b></div>
+    <div class="fade5" id="fade16"></div>
+    <div class="banner5" id="banner16"></div>
+  </div>
+</section>
+
+<section id="level17" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint17">
+    <span class="step" id="stepLabel17">Раунд 17 · магазин</span>
+    <p id="hintText17"></p>
+  </div>
+  <div class="scene6">
+    <!-- Мебельный магазин (собирается скриптом): три подиума с мебелью, тележка и Лиза с деньгами -->
+    <svg id="shop17" viewBox="0 0 800 450" aria-label="Мебельный магазин: три варианта мебели на подиумах"></svg>
+    <div class="hud11 hud12 money17" id="money17"><span class="wide10">Деньги:</span> <b id="cash17">30 000 ₽</b></div>
+    <div class="fade5" id="fade17"></div>
+    <div class="banner5" id="banner17"></div>
+  </div>
+  <div id="ctrl17" hidden><div class="opts17" id="opts17"></div></div>
+</section>
+
+<section id="level18" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint18">
+    <span class="step" id="stepLabel18">Раунд 18 · склад</span>
+    <p id="hintText18"></p>
+  </div>
+  <div class="scene6">
+    <!-- Склад (собирается скриптом): грузовик с коробками, три стеллажа по цветам, бригадир и ты -->
+    <svg id="ware18" viewBox="0 0 800 450" aria-label="Склад: грузовик с коробками и стеллажи"></svg>
+    <div class="hud11 hud12 hud18" id="hud18" hidden>⏱ <span class="wide10">Грузовик уедет через</span> <b id="time18">1:30</b></div>
+    <div class="fade5" id="fade18"></div>
+    <div class="banner5" id="banner18"></div>
+  </div>
+</section>
+
+<section id="level19" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint19">
+    <span class="step" id="stepLabel19">Раунд 19 · магазин</span>
+    <p id="hintText19"></p>
+  </div>
+  <div class="scene6">
+    <!-- Продуктовый магазин (собирается скриптом): три отдела с полками, потом касса -->
+    <svg id="shop19" viewBox="0 0 800 450" aria-label="Продуктовый магазин: полки с продуктами и касса"></svg>
+    <div class="hud11 hud12 hud16" id="paid19" hidden>Дал: <b id="paidv19">0 ₽</b> из <b id="total19">0 ₽</b></div>
+    <div class="fade5" id="fade19"></div>
+    <div class="banner5" id="banner19"></div>
+  </div>
+  <div id="ctrl19" hidden>
+    <ul class="list19" id="list19"></ul>
+    <div class="wallet19" id="wallet19" hidden></div>
+  </div>
+</section>
+
+<section id="level20" class="screen" hidden>
+  <div class="topbar"><button class="back-btn" type="button" data-back>← Вернуться в меню</button></div>
+  <div class="hint" id="hint20">
+    <span class="step" id="stepLabel20">Раунд 20 · магазин</span>
+    <p id="hintText20"></p>
+  </div>
+  <div class="scene6" id="flat20">
+    <!-- Спортивный магазин и школа стрельбы (собираются скриптом) -->
+    <svg id="shop20" viewBox="0 0 800 450" aria-label="Спортивный магазин и школа стрельбы"></svg>
+    <div class="hud11 hud12 money17" id="money20" hidden><span class="wide10">Деньги:</span> <b id="cash20">4 330 ₽</b></div>
+    <div class="fade5" id="fade20"></div>
+    <div class="banner5" id="banner20"></div>
+  </div>
+  <div id="ctrl20" hidden><div class="opts17" id="opts20"></div></div>
+  <div class="scene10" id="scene20" hidden>
+    <canvas id="c20" aria-label="3D: тир, мишени на огневом рубеже"></canvas>
+    <div class="hud10">
+      <div class="meter10"><span class="wide10">Серия</span> <b id="ser20">1 из 3</b></div>
+      <div class="dist10"><span id="ammo20"></span><b id="pts20">0 очков</b></div>
+    </div>
+    <div class="cross20" id="cross20" hidden></div>
+    <div id="pops20"></div>
+    <div class="fade5" id="fadeg20"></div>
+    <div class="banner5" id="bannerg20"></div>
+    <div class="nogl10" id="nogl20" hidden>
+      <p>Не получилось включить 3D в этом браузере.</p>
+      <button class="btn primary" type="button" id="skip20">Пропустить раунд</button>
+    </div>
+  </div>
+</section>
+
+<!-- Раунд 18 — вступление: автодиктор рассказывает про новую работу -->
+<div id="intro18" hidden>
+  <div class="intro6-box">
+    <svg class="intro6-art" id="art18" viewBox="0 0 160 120" aria-hidden="true">
+      <rect width="160" height="120" rx="14" fill="#2b3138"/>
+      <rect x="36" y="54" width="88" height="54" rx="4" fill="#c9a26b" stroke="#9c7a48" stroke-width="3"/>
+      <path d="M36 72h88" stroke="#e8d3a5" stroke-width="8"/>
+      <rect x="68" y="80" width="24" height="18" rx="3" fill="#fff" stroke="#e5484d" stroke-width="2"/>
+      <circle cx="80" cy="89" r="5" fill="#e5484d"/>
+      <path d="M52 44a28 28 0 0 1 56 0z" fill="#ffc83d"/>
+      <rect x="42" y="42" width="76" height="8" rx="4" fill="#e0a200"/>
+      <path d="M80 16V28" stroke="#e0a200" stroke-width="6" stroke-linecap="round"/>
+    </svg>
+    <div class="lines6" id="lines18"></div>
+    <div class="voice6" id="voice18"><i></i><i></i><i></i><span>Автодиктор</span></div>
+  </div>
+  <button class="btn ghost skip6" type="button" id="skip18">Пропустить →</button>
+</div>
+
 <div id="rounds" hidden>
   <div class="rounds-card">
     <div class="rounds-head">
@@ -2826,7 +3175,12 @@
     { n: 12, name: "Сборы", sub: "Палатка и вещи — в машину" },
     { n: 13, name: "Ключи", sub: "Последняя рыбалка перед дорогой" },
     { n: 14, name: "Машина", sub: "Взлом своей машины и отъезд" },
-    { n: 15, name: "Погоня", sub: "3D: уходим от полиции на машине" }
+    { n: 15, name: "Погоня", sub: "3D: уходим от полиции на машине" },
+    { n: 16, name: "Новоселье", sub: "Квартира в городе и большая уборка" },
+    { n: 17, name: "Мебель", sub: "Мебельный магазин: выбрать и уложиться в деньги" },
+    { n: 18, name: "Грузчик", sub: "Первая работа: коробки на полки" },
+    { n: 19, name: "Продукты", sub: "Магазин, список покупок и касса" },
+    { n: 20, name: "Тир", sub: "3D: спортивная стрельба по мишеням" }
   ];
   const LOCK_ICON = `<svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3" fill="none" stroke="#8f99a4" stroke-width="2.5"/><rect x="4" y="11" width="16" height="11" rx="3" fill="#8f99a4"/></svg>`;
   const CHECK_ICON = `<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -2931,7 +3285,7 @@
     passNote(`Пароль администратора принят! Все ${ROUND_INFO.length} раундов открыты и пройдены на ★★★.`, "ok");
   });
 
-  const SCREENS = { 1: "level", 2: "level3", 3: "level2", 4: "level4", 5: "level5", 6: "level2", 7: "level7", 8: "level8", 9: "level9", 10: "level10", 11: "level11", 12: "level12", 13: "level9", 14: "level2", 15: "level15" };
+  const SCREENS = { 1: "level", 2: "level3", 3: "level2", 4: "level4", 5: "level5", 6: "level2", 7: "level7", 8: "level8", 9: "level9", 10: "level10", 11: "level11", 12: "level12", 13: "level9", 14: "level2", 15: "level15", 16: "level16", 17: "level16", 18: "level18", 19: "level19", 20: "level20" };
   function stopRounds() {
     cancelAnimationFrame(raf);
     if (Q) Q.token++;
@@ -2965,7 +3319,12 @@
     else if (n === 12) startRound12();
     else if (n === 13) startRound9(13);
     else if (n === 14) startRound14();
-    else startRound15();
+    else if (n === 15) startRound15();
+    else if (n === 16) startRound16();
+    else if (n === 17) startRound17();
+    else if (n === 18) startRound18();
+    else if (n === 19) startRound19();
+    else startRound20();
     lv.animate(
       [{ clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(100% at 50% 50%)" }],
       { duration: 850, easing: "cubic-bezier(.2,.7,.2,1)" }
@@ -5140,6 +5499,17 @@
     if (Q14) Q14.phase = "off";
     if (Q15) Q15.phase = "off";
     cancelAnimationFrame(raf15);
+    if (Q16) { Q16.phase = "off"; Q16.drag = null; Q16.rub = null; }
+    cancelAnimationFrame(raf16);
+    if (Q17) Q17.phase = "off";
+    $("level17").hidden = true;
+    if (Q18) { Q18.phase = "off"; Q18.drag = null; }
+    if (Q19) Q19.phase = "off";
+    if (Q20) Q20.phase = "off";
+    cancelAnimationFrame(raf20);
+    cancelAnimationFrame(raf18);
+    $("intro18").hidden = true;
+    $("intro18").classList.remove("talking");
     resetInput15();
     engineOff15();
     $("phone8").hidden = true;
@@ -9232,9 +9602,9 @@
     showResult({
       title: "Вы оторвались!",
       stars,
-      text: ["", "Вы доехали до города, но полиция висела на хвосте. Попробуй ещё раз!", "Вы оторвались! Ещё аккуратнее — и будет три звезды.", "Ты прошёл все раунды! Полиция осталась за переездом."][stars],
+      text: ["", "Вы доехали до города, но полиция висела на хвосте. Попробуй ещё раз!", "Вы оторвались! Ещё аккуратнее — и будет три звезды.", "Полиция осталась за переездом, а вы — в городе!"][stars],
       stats: `Столкновения: ${Q15.crashes} · Время в пути: ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}` + (Q15.tries > 1 ? ` · Попытка ${Q15.tries}` : ""),
-      next: false
+      next: 16
     });
   }
 
@@ -9265,6 +9635,2681 @@
   $("skip15").addEventListener("click", () => {
     if (!Q15 || W15) return;
     Q15.phase = "done";
+    showResult({ title: "Раунд пропущен", stars: 1, text: "В этом браузере не работает 3D, поэтому раунд засчитан без игры.", stats: "", next: 16 });
+  });
+
+  // =================== Раунд 16: новоселье ===================
+  // Вы оторвались от полиции и въехали в город. У дяди Макса есть пустая квартира — там вас никто не найдёт,
+  // только в ней сто лет никто не жил. Убираются все вместе: Тимур пылесосит, Лиза вытирает пыль, Макс заносит коробки,
+  // а ты выносишь мусор, сметаешь паутину, моешь окно и пол. Голос и ожидания общие с раундами 6–15 (токен I6).
+  const FLOOR16 = 334, DOOR16 = 742, STREET16 = 406;
+  const SPOT16 = { me: 46, timur: 350, liza: 552, max: 652 };
+  const FIGS16 = [{ id: "me", name: "Ты", c: "#f08a24", hair: "#3b2f2a", pitch: 1 }].concat(
+    PALS8.map(({ id, name, c, hair, long, pitch }) => ({ id, name, c, hair, long: !!long, pitch }))
+  );
+  const F16 = {};
+  const TRASH16 = [
+    { id: "can", name: "Банка", x: 172, y: 366,
+      svg: `<g transform="rotate(72)"><rect x="-8" y="-13" width="16" height="26" rx="3" fill="#e5484d"/><rect x="-8" y="-6" width="16" height="6" fill="#fff" opacity="0.8"/><ellipse cy="-13" rx="8" ry="2.5" fill="#c3cbd3"/></g>` },
+    { id: "news", name: "Старые газеты", x: 252, y: 366,
+      svg: `<g transform="rotate(-8)"><rect x="-24" y="-14" width="48" height="28" rx="2" fill="#e9e4d6" stroke="#b9b09a" stroke-width="1.5"/><path d="M-18 -7h20M8 -7h10M-18 -1h36M-18 5h36M-18 10h24" stroke="#8f99a4" stroke-width="2.5"/></g>` },
+    { id: "bottle", name: "Бутылка", x: 334, y: 364,
+      svg: `<g transform="rotate(-72)"><rect x="-7" y="-13" width="14" height="28" rx="5" fill="#3f8f4f"/><rect x="-3.5" y="-21" width="7" height="9" rx="2" fill="#3f8f4f"/><rect x="-4" y="-24" width="8" height="4" rx="1" fill="#e0a200"/><rect x="-4" y="-8" width="3" height="16" rx="1.5" fill="#fff" opacity="0.35"/></g>` },
+    { id: "banana", name: "Банановая кожура", x: 420, y: 368,
+      svg: `<path d="M-20 6q8 -20 18 -4q10 -18 20 2q-7 6 -13 -1q-5 9 -11 1q-7 7 -14 2z" fill="#ffc83d" stroke="#c9a13b" stroke-width="1.5" stroke-linejoin="round"/><path d="M-2 2l-1 -9" stroke="#6b4a2f" stroke-width="3" stroke-linecap="round"/>` },
+    { id: "core", name: "Огрызок", x: 506, y: 366,
+      svg: `<ellipse cy="-11" rx="8" ry="4" fill="#e5484d"/><ellipse cy="11" rx="8" ry="4" fill="#e5484d"/><path d="M-6 -10q-4 10 0 20h12q4 -10 0 -20z" fill="#f4ecd8"/><path d="M0 -14l1 -6" stroke="#6b4a2f" stroke-width="2.5" stroke-linecap="round"/><circle cx="-1" cy="0" r="1.5" fill="#3b2418"/>` },
+    { id: "pizza", name: "Коробка от пиццы", x: 206, y: 428,
+      svg: `<rect x="-30" y="-11" width="60" height="22" rx="2" fill="#d9b38c" stroke="#a8825c" stroke-width="2"/><path d="M-30 -4h60" stroke="#a8825c" stroke-width="1.5"/><text y="8" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="8" fill="#b5553f">ПИЦЦА</text>` },
+    { id: "paper", name: "Бумажки", x: 294, y: 430,
+      svg: `<path d="M-13 -4l6 -7 9 3 6 -2 3 9 -4 8 -9 3 -9 -4z" fill="#f4f1ea" stroke="#b9b09a" stroke-width="1.5" stroke-linejoin="round"/><path d="M-6 -3l6 5M3 -6l-2 9" stroke="#c9c1ad" stroke-width="1.5"/><path d="M10 6l5 -5 6 2 2 6 -4 5 -7 -1z" fill="#f4f1ea" stroke="#b9b09a" stroke-width="1.5" stroke-linejoin="round"/>` },
+    { id: "sock", name: "Старый носок", x: 464, y: 430,
+      svg: `<path d="M-14 -12H-3V-5H14Q20 -5 20 1Q20 7 14 7H-6Q-14 7 -14 -1z" fill="#9aa5b1" stroke="#6b7682" stroke-width="1.5" stroke-linejoin="round"/><path d="M-14 -8H-3" stroke="#e5484d" stroke-width="3"/><circle cx="9" cy="1" r="2.5" fill="#6b7682"/>` },
+    // Это не мусор: ключи и телефон выбрасывать нельзя
+    { id: "keys", name: "Ключи от квартиры", x: 380, y: 430, keep: "Это ключи от квартиры! Хватит с нас потерянных ключей.",
+      svg: `<circle cx="-10" cy="0" r="6.5" fill="none" stroke="#c3cbd3" stroke-width="3"/><path d="M-4 0H16M11 0v5M15 0v4" stroke="#e0a200" stroke-width="3.5" stroke-linecap="round"/><rect x="-22" y="4" width="10" height="8" rx="2" fill="#e5484d"/>` },
+    { id: "phone", name: "Телефон Тимура", x: 592, y: 366, keep: "Это телефон Тимура! Он его везде ищет.",
+      svg: `<g transform="rotate(-20)"><rect x="-9" y="-15" width="18" height="30" rx="4" fill="#23282e"/><rect x="-6.5" y="-11" width="13" height="20" rx="1.5" fill="#2fbf4a"/><circle cy="12" r="1.5" fill="#5f6973"/></g>` }
+  ];
+  const NEED16 = TRASH16.filter((it) => !it.keep).length;
+  const STAINS16 = [
+    { x: 142, y: 404, r: 30, c: "#5a4630" }, { x: 262, y: 398, r: 27, c: "#6b4a2f" }, { x: 380, y: 392, r: 30, c: "#a33c3c" },
+    { x: 470, y: 402, r: 27, c: "#5a4630" }, { x: 560, y: 404, r: 30, c: "#6f7a3a" }
+  ];
+  // Паутина: в двух углах под потолком, на потолке и в углу окна; a0–a1 — куда расходятся лучи
+  const WEBS16 = [
+    { x: 0, y: 0, r: 104, a0: 0, a1: 90, dx: -40 },
+    { x: 800, y: 0, r: 104, a0: 90, a1: 180, dx: 40 },
+    { x: 610, y: 0, r: 60, a0: 0, a1: 180, dx: 50 },
+    { x: 304, y: 68, r: 58, a0: 90, a1: 180, dx: -30 }
+  ];
+  // Стекло делится на клетки: окно чистое, когда губка прошла по 90% клеток
+  const GLASS16 = { x: 108, y: 68, w: 196, h: 176, cols: 14, rows: 12 }, BR16 = 24, GOAL16 = 0.9;
+  const PLAY16 = ["trash", "webs", "wipe", "mop"];
+  let Q16 = null, raf16 = 0, built16 = false;
+
+  // Человек в полный рост: ноги на y = 0, смотрит вправо (влево — отражаем снаружи). pose — чем он занят
+  const arm16 = (x1, y1, x2, y2, c) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${c}" stroke-width="8" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="4.5" fill="#f2c9a0"/>`;
+  function body16(p, pose) {
+    const c = p.c;
+    let back = "", arms = arm16(-8, -82, -11, -50, c) + arm16(8, -82, 11, -50, c), front = "";
+    if (pose === "box") {
+      back = arm16(-6, -82, 34, -66, c);
+      arms = "";
+      front = `<rect x="12" y="-86" width="32" height="28" rx="3" fill="#c9a26b" stroke="#9c7a48" stroke-width="2"/><path d="M12 -76h32" stroke="#e8d3a5" stroke-width="4"/>` + arm16(6, -82, 16, -62, c);
+    } else if (pose === "cheer") {
+      arms = arm16(-8, -84, -20, -122, c) + arm16(8, -84, 20, -122, c);
+    } else if (pose === "vac") {
+      back = `<path d="M-22 -20Q0 -34 18 -58" fill="none" stroke="#9aa5b1" stroke-width="4"/><rect x="-52" y="-28" width="32" height="26" rx="11" fill="#e5484d"/><rect x="-46" y="-24" width="14" height="6" rx="3" fill="#ff8a8e"/><circle cx="-46" cy="-2" r="4" fill="#23282e"/><circle cx="-26" cy="-2" r="4" fill="#23282e"/>`;
+      arms = arm16(-8, -82, -11, -50, c);
+      front = `<g transform="translate(18 -58)"><g class="wand16"><path d="M0 0L22 52" stroke="#5f6973" stroke-width="4" stroke-linecap="round"/><rect x="12" y="50" width="30" height="9" rx="3" fill="#3b424b"/></g></g>` + arm16(8, -82, 18, -58, c);
+    } else if (pose === "rag") {
+      arms = arm16(-8, -82, -11, -50, c);
+      front = `<g transform="translate(8 -82)"><g class="rag16">${arm16(0, 0, 28, 2, c)}<rect x="24" y="-3" width="16" height="11" rx="3" fill="#ffc83d"/></g></g>`;
+    } else if (pose === "guitar") {
+      arms = "";
+      front = `<path d="M10 -60L46 -84" stroke="#7a3f1f" stroke-width="5" stroke-linecap="round"/><rect x="42" y="-92" width="10" height="10" rx="2" fill="#3b2418"/><ellipse cx="-2" cy="-52" rx="15" ry="13" fill="#b5653a" stroke="#7a3f1f" stroke-width="2"/><ellipse cx="12" cy="-60" rx="9" ry="9" fill="#b5653a" stroke="#7a3f1f" stroke-width="2"/><circle cx="4" cy="-56" r="3.5" fill="#3b2418"/>` + arm16(-6, -82, 2, -56, c) + arm16(8, -82, 36, -76, c);
+    }
+    return `<g class="body16">
+      ${back}
+      ${p.long ? `<path d="M-9 -110q-8 16 -3 32" fill="none" stroke="${p.hair}" stroke-width="8" stroke-linecap="round"/>` : ""}
+      <path d="M-5 -44V-4M5 -44V-4" stroke="#2b3138" stroke-width="9" stroke-linecap="round"/>
+      <path d="M-5 -3h8M5 -3h8" stroke="#1d2227" stroke-width="6" stroke-linecap="round"/>
+      <rect x="-12" y="-96" width="24" height="56" rx="10" fill="${c}"/>
+      ${arms}
+      <circle cy="-108" r="12" fill="#f2c9a0"/>
+      <path d="M-12 -108a12 12 0 0 1 24 0q-5 -4 -12 -4t-12 4z" fill="${p.hair}"/>
+      <circle cx="5" cy="-107" r="1.7" fill="#23282e"/>
+      ${front}
+      ${p.extra || ""}
+    </g>`;
+  }
+  const place16 = (f) => f.el.setAttribute("transform", `translate(${f.x.toFixed(1)} ${f.y}) scale(${f.s})`);
+  function face16(f, k) {
+    f.k = k;
+    f.inner.setAttribute("transform", `scale(${k} 1)`);
+  }
+  function pose16(id, pose) {
+    const f = F16[id];
+    f.pose = pose;
+    f.inner.innerHTML = body16(f, pose);
+  }
+
+  // Окна рядами — для домов на улице и за окном квартиры
+  function windows16(blocks, w, h, sx, sy, fill) {
+    let s = "";
+    blocks.forEach(([bx, by, bw, bh]) => {
+      for (let y = by + 8; y + h < by + bh - 4; y += sy)
+        for (let x = bx + 5; x + w < bx + bw - 3; x += sx) s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>`;
+    });
+    return s;
+  }
+
+  // Улица днём: дом с подъездом, дерево, тротуар и дорога. Машина — та же, что в лесу
+  function street16() {
+    const far = [[0, 180, 96, 230], [86, 228, 80, 182], [170, 150, 84, 260], [744, 200, 60, 210]];
+    let wins = "";
+    for (let r = 0; r < 4; r++)
+      for (let c = 0; c < 6; c++) {
+        const x = 322 + c * 70, y = 60 + r * 64, ours = r === 2 && c === 1;
+        wins += `<rect x="${x}" y="${y}" width="44" height="44" rx="2" fill="#f4ecd8"/><rect x="${x + 4}" y="${y + 4}" width="36" height="36" fill="${ours ? "#8a7a5c" : (r + c) % 3 ? "#9fc3e6" : "#b9d6ef"}"/><path d="M${x + 22} ${y + 4}V${y + 40}" stroke="#f4ecd8" stroke-width="3"/>`;
+      }
+    [0, 1, 4, 5].forEach((c) => {
+      const x = 322 + c * 70;
+      wins += `<rect x="${x}" y="326" width="44" height="40" rx="2" fill="#f4ecd8"/><rect x="${x + 4}" y="330" width="36" height="32" fill="#9fc3e6"/>`;
+    });
+    return `
+      <rect width="800" height="450" fill="url(#sky16)"/>
+      <circle cx="110" cy="72" r="26" fill="#fff6c8"/>
+      <g fill="#b7c8d8">${far.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`).join("")}</g>
+      <g>${windows16(far, 6, 8, 14, 18, "#d6e2ec")}</g>
+      <rect x="292" y="30" width="456" height="14" fill="#8e6a4f"/>
+      <rect x="300" y="44" width="440" height="352" fill="#d49a6a"/>
+      <path d="M300 114H740M300 178H740M300 242H740M300 306H740" stroke="#c28858" stroke-width="3"/>
+      ${wins}
+      <rect x="490" y="312" width="80" height="10" rx="2" fill="#8e6a4f"/>
+      <rect x="508" y="322" width="44" height="74" fill="#5a3d26"/>
+      <rect x="514" y="330" width="32" height="20" rx="2" fill="#9fc3e6"/>
+      <circle cx="544" cy="364" r="2.5" fill="#c9a13b"/>
+      <rect x="456" y="330" width="30" height="20" rx="3" fill="#2356a8"/>
+      <text x="471" y="344" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="11" fill="#fff">16</text>
+      <rect x="244" y="320" width="12" height="76" fill="#6b4a2f"/>
+      <g fill="#3f8f4f"><circle cx="250" cy="306" r="34"/><circle cx="224" cy="324" r="22"/><circle cx="276" cy="326" r="22"/></g>
+      <rect y="394" width="800" height="18" fill="#b9c0c8"/>
+      <rect y="410" width="800" height="4" fill="#8f99a4"/>
+      <rect y="414" width="800" height="36" fill="#4b5560"/>
+      <path d="M0 434H800" stroke="#e9ecef" stroke-width="3" stroke-dasharray="26 22"/>
+      <g id="carSpot16"></g>`;
+  }
+
+  // Квартира: пыльные обои, грязное окно, комод, лампочка на проводе и открытая дверь
+  function room16() {
+    const city = [[112, 150, 34, 94], [150, 120, 28, 124], [182, 170, 40, 74], [226, 136, 30, 108], [260, 160, 44, 84]];
+    return `
+      <rect width="800" height="332" fill="url(#wall16)"/>
+      <g fill="#7d6a45" opacity="0.22"><ellipse cx="380" cy="40" rx="70" ry="26"/><ellipse cx="640" cy="250" rx="36" ry="54"/><ellipse cx="40" cy="290" rx="50" ry="34"/><ellipse cx="560" cy="120" rx="24" ry="16"/></g>
+      <path d="M592 150l40 8-6 42-28 8z" fill="#e8dfc8"/>
+      <path d="M592 150l8 10-4 44" fill="none" stroke="#b3a27f" stroke-width="2"/>
+      <rect y="322" width="800" height="10" fill="#8f7a58"/>
+      <rect y="332" width="800" height="118" fill="url(#plank16)"/>
+      <rect x="86" y="44" width="240" height="7" rx="3.5" fill="#6b4a2f"/>
+      <rect x="96" y="56" width="220" height="200" rx="4" fill="#e9e3d3"/>
+      <g clip-path="url(#glass16)">
+        <rect x="108" y="68" width="196" height="176" fill="url(#sky16)"/>
+        <circle cx="268" cy="98" r="15" fill="#fff6c8"/>
+        <path d="M164 120V96" stroke="#8fa6bd" stroke-width="3"/>
+        <g fill="#8fa6bd">${city.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`).join("")}</g>
+        <g>${windows16(city, 4, 6, 9, 12, "#d6e2ec")}</g>
+      </g>
+      <g id="dirt16" clip-path="url(#glass16)" mask="url(#mask16)">
+        <rect x="108" y="68" width="196" height="176" fill="#7d6e52" opacity="0.94"/>
+        <g fill="#5f5340" opacity="0.75"><ellipse cx="140" cy="100" rx="30" ry="18"/><ellipse cx="250" cy="206" rx="40" ry="22"/><ellipse cx="190" cy="150" rx="22" ry="30"/><ellipse cx="282" cy="112" rx="18" ry="14"/><ellipse cx="130" cy="214" rx="18" ry="24"/></g>
+        <path d="M120 180q30 -8 60 4M214 92q30 8 70 -2M134 232q40 -10 80 0" fill="none" stroke="#a09070" stroke-width="5" opacity="0.6"/>
+      </g>
+      <path d="M206 68V244M108 156H304" stroke="#e9e3d3" stroke-width="8"/>
+      <rect id="glassHi16" x="104" y="64" width="204" height="184" rx="4"/>
+      <rect x="84" y="252" width="244" height="12" rx="3" fill="#d8d0bd"/>
+      <rect x="652" y="102" width="126" height="230" fill="#e9e3d3"/>
+      <rect x="662" y="112" width="106" height="220" fill="#2f2820"/>
+      <rect x="662" y="300" width="106" height="32" fill="#3b3226"/>
+      <path d="M768 112L796 98V346L768 332z" fill="#8a5d3b"/>
+      <circle cx="775" cy="228" r="3.5" fill="#c9a13b"/>
+      <path d="M450 0V56" stroke="#3b424b" stroke-width="2"/>
+      <path d="M438 56h24l6 14h-36z" fill="#5f6973"/>
+      <circle cx="450" cy="78" r="8" fill="#f5f0c8"/>
+      <g id="pic16"><rect x="430" y="112" width="72" height="56" rx="2" fill="#6b4a2f"/><rect x="436" y="118" width="60" height="44" fill="#a8d5e2"/><path d="M436 162l18-20 12 12 10-8 20 16z" fill="#4e8f5a"/><circle cx="484" cy="128" r="5" fill="#ffc83d"/></g>
+      <rect x="380" y="240" width="150" height="84" rx="4" fill="#7a5134"/>
+      <rect x="390" y="250" width="130" height="30" rx="3" fill="#6b4a2f"/>
+      <rect x="390" y="286" width="130" height="30" rx="3" fill="#6b4a2f"/>
+      <circle cx="455" cy="265" r="3" fill="#c9a13b"/><circle cx="455" cy="301" r="3" fill="#c9a13b"/>
+      <rect x="386" y="324" width="10" height="8" fill="#5a3d26"/><rect x="514" y="324" width="10" height="8" fill="#5a3d26"/>
+      <rect id="dust16" x="378" y="232" width="154" height="10" rx="4" fill="#bdb193"/>
+      <g id="boxes16"></g>
+      <g id="stains16"></g>
+      <g id="gloss16" stroke="#fff" stroke-opacity="0.16" stroke-width="5" stroke-linecap="round"><path d="M150 438L172 410M166 440L180 422M330 426L352 398M346 428L360 410M520 440L542 412M536 442L550 424M690 420L708 396"/></g>
+      <polygon id="sun16" points="110,258 302,258 560,450 250,450" fill="url(#beam16)"/>
+      <rect id="zone16" x="-8" y="338" width="130" height="112" rx="18"/>
+      <g id="bag16" transform="translate(62 404)">
+        <g class="bagBody16"><path d="M-30 -30Q-38 6 -26 28H26Q38 6 30 -30z" fill="#2b3138"/><path d="M-16 -18q-4 18 0 38" fill="none" stroke="#4b5560" stroke-width="3" stroke-linecap="round"/></g>
+        <ellipse class="mouth16" cy="-30" rx="30" ry="7" fill="#14181c"/>
+        <g class="knot16"><path d="M-12 -30q12 -8 24 0l-5 -12q-7 5 -14 0z" fill="#2b3138"/></g>
+      </g>
+      <g id="items16"></g>
+      <rect id="dim16" width="800" height="450" fill="#231a0c"/>
+      <g id="webs16"></g>
+      <g id="notes16" font-family="Rubik, sans-serif" font-weight="800" font-size="22" fill="#ffc83d"><text class="note16" x="468" y="214">♪</text><text class="note16" x="486" y="200">♫</text><text class="note16" x="504" y="216">♪</text></g>
+      <g id="fx16"></g>
+      <g id="tool16">
+        <g class="broom16"><g transform="rotate(28)"><g class="sw16"><rect x="-3" y="-66" width="6" height="52" rx="3" fill="#b7793f"/><path d="M-6 -16h12l9 28h-30z" fill="#d9a441" stroke="#a8782a" stroke-width="1.5" stroke-linejoin="round"/><path d="M-3 -12l-5 22M0 -12v22M3 -12l5 22" stroke="#a8782a" stroke-width="1.2"/><rect x="-7" y="-20" width="14" height="6" rx="2" fill="#e5484d"/></g></g></g>
+        <g class="sponge16"><rect x="-19" y="-12" width="38" height="24" rx="6" fill="#ffc83d"/><rect x="-19" y="-12" width="38" height="8" rx="3" fill="#2fbf4a"/><circle cx="-8" cy="4" r="2" fill="#e0a200"/><circle cx="6" cy="6" r="1.6" fill="#e0a200"/><circle cx="12" cy="1" r="1.3" fill="#e0a200"/></g>
+        <g class="mop16"><path d="M6 -8L44 -100" stroke="#b7793f" stroke-width="5" stroke-linecap="round"/><rect x="-28" y="-10" width="56" height="10" rx="4" fill="#5f6973"/><path d="M-24 2v8M-16 2v9M-8 2v8M0 2v9M8 2v8M16 2v9M24 2v8" stroke="#9fc3e6" stroke-width="4" stroke-linecap="round"/></g>
+      </g>`;
+  }
+
+  // Паутина: лучи из угла и провисшие нити между ними
+  function webPath16(w) {
+    const n = w.a1 - w.a0 > 90 ? 7 : 5;
+    const ray = (f) => Array.from({ length: n }, (_, i) => {
+      const a = ((w.a0 + ((w.a1 - w.a0) * i) / (n - 1)) * Math.PI) / 180;
+      return [w.x + Math.cos(a) * w.r * f, w.y + Math.sin(a) * w.r * f];
+    });
+    let d = ray(1).map(([x, y]) => `M${w.x} ${w.y}L${x.toFixed(1)} ${y.toFixed(1)}`).join("");
+    [0.3, 0.55, 0.8, 1].forEach((f) => {
+      const p = ray(f);
+      d += `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+      for (let i = 1; i < n; i++) {
+        const mx = (p[i - 1][0] + p[i][0]) / 2, my = (p[i - 1][1] + p[i][1]) / 2;
+        d += `Q${(mx + (w.x - mx) * 0.12).toFixed(1)} ${(my + (w.y - my) * 0.12).toFixed(1)} ${p[i][0].toFixed(1)} ${p[i][1].toFixed(1)}`;
+      }
+    });
+    return d;
+  }
+  // Пятно на полу — неровная клякса, приплюснутая (пол виден сверху наискосок)
+  function blob16(s, seed) {
+    let d = "";
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2, rr = s.r * (0.78 + 0.22 * Math.sin(i * 2.3 + seed * 1.7));
+      d += (i ? "L" : "M") + (s.x + Math.cos(a) * rr).toFixed(1) + " " + (s.y + Math.sin(a) * rr * 0.55).toFixed(1);
+    }
+    return d + "z";
+  }
+  const SPIDER16 = `<path d="M-5 -2l-9 -6M-5 1h-11M-5 4l-9 7M5 -2l9 -6M5 1h11M5 4l9 7" stroke="#23282e" stroke-width="1.8" stroke-linecap="round"/><ellipse cy="2" rx="7" ry="6" fill="#23282e"/><circle cy="-6" r="4.5" fill="#23282e"/><circle cx="-1.8" cy="-7" r="1.1" fill="#e5484d"/><circle cx="1.8" cy="-7" r="1.1" fill="#e5484d"/>`;
+
+  function build16() {
+    if (built16) return;
+    built16 = true;
+    const svg = $("flat16");
+    $("street16").innerHTML = street16();
+    const car = document.querySelector("#forest7 .car7").cloneNode(true);
+    car.setAttribute("class", "car16");
+    car.querySelector(".beam7").remove();
+    $("carSpot16").replaceWith(car);
+    $("room16").innerHTML = room16();
+    const ppl = document.createElementNS(SVGNS, "g");
+    ppl.id = "people16";
+    ppl.innerHTML = FIGS16.map((p) => `<g class="fig16" data-id="${p.id}"><g class="flip16"></g></g>`).join("");
+    $("street16").appendChild(ppl);
+    FIGS16.forEach((p) => {
+      const el = ppl.querySelector(`[data-id="${p.id}"]`);
+      F16[p.id] = Object.assign({}, p, { el, inner: el.firstElementChild, x: 0, y: 0, s: 1, k: 1 });
+    });
+    $("items16").innerHTML = TRASH16.map((it) => `<g class="item16" data-id="${it.id}"><g class="shape16">${it.svg}</g>
+      <text class="name12" y="-24" text-anchor="middle">${it.name}</text><rect x="-33" y="-27" width="66" height="52" fill="transparent"/></g>`).join("");
+    TRASH16.forEach((it) => {
+      it.hx = it.x;
+      it.hy = it.y;
+      it.el = svg.querySelector(`.item16[data-id="${it.id}"]`);
+    });
+    $("stains16").innerHTML = STAINS16.map((s, i) => `<g class="stain16"><path d="${blob16(s, i)}" fill="${s.c}" stroke="${s.c}" stroke-width="8" stroke-linejoin="round" opacity="0.8"/>
+      <ellipse class="ring6" cx="${s.x}" cy="${s.y}" rx="${s.r + 6}" ry="${((s.r + 6) * 0.55).toFixed(1)}"/></g>`).join("");
+    STAINS16.forEach((s, i) => (s.el = $("stains16").children[i]));
+    $("webs16").innerHTML = WEBS16.map((w, i) => {
+      const am = (((w.a0 + w.a1) / 2) * Math.PI) / 180, a0 = (w.a0 * Math.PI) / 180, a1 = (w.a1 * Math.PI) / 180, R = w.r * 1.12;
+      w.sx = w.x + Math.cos(am) * w.r * 0.58;
+      w.sy = w.y + Math.sin(am) * w.r * 0.58;
+      const hit = `M${w.x} ${w.y}L${(w.x + Math.cos(a0) * R).toFixed(1)} ${(w.y + Math.sin(a0) * R).toFixed(1)}A${R} ${R} 0 0 1 ${(w.x + Math.cos(a1) * R).toFixed(1)} ${(w.y + Math.sin(a1) * R).toFixed(1)}z`;
+      return `<g class="web16" data-i="${i}" style="transform-origin: ${w.x}px ${w.y}px"><path d="${webPath16(w)}" fill="none" stroke="#f4f1ea" stroke-opacity="0.8" stroke-width="1.6"/>
+        <circle class="ring6" cx="${w.sx.toFixed(1)}" cy="${w.sy.toFixed(1)}" r="16"/><path d="${hit}" fill="transparent"/></g>
+        <g transform="translate(${w.sx.toFixed(1)} ${w.sy.toFixed(1)})"><g class="sp16" style="--dx: ${w.dx}px">${SPIDER16}</g></g>`;
+    }).join("");
+    WEBS16.forEach((w, i) => {
+      w.el = svg.querySelector(`.web16[data-i="${i}"]`);
+      w.sp = svg.querySelectorAll(".sp16")[i];
+    });
+  }
+
+  function say16(text, label) {
+    if (label) Q16.label = label;
+    $("hintText16").textContent = text;
+    $("stepLabel16").textContent = `Раунд 16 · ${Q16.label}`;
+  }
+  const label16 = (label) => { Q16.label = label; $("stepLabel16").textContent = `Раунд 16 · ${label}`; };
+  function nudge16() {
+    const h = $("hint16");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+  function banner16(text, color) {
+    const b = $("banner16");
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function fade16(on) {
+    $("fade16").classList.toggle("on", on);
+    return wait6(320);
+  }
+  // Облачко над головой того, кто говорит, и его голос
+  // Облачко с репликой: хвостик над головой в точке (ax, y), само облачко не вылезает за края сцены
+  function bubMarkup(ax, y, text) {
+    const w = text.length * 6.6 + 20;
+    const x = Math.max(8 + w / 2, Math.min(792 - w / 2, ax));
+    const tail = Math.max(x - w / 2 + 14, Math.min(x + w / 2 - 14, ax));
+    return `<rect x="${(x - w / 2).toFixed(1)}" y="${(y - 22).toFixed(1)}" width="${w.toFixed(1)}" height="22" rx="11" fill="#fff"/>
+      <path d="M${(tail - 4).toFixed(1)} ${(y - 1).toFixed(1)}l4 8 4 -8z" fill="#fff"/>
+      <text x="${x.toFixed(1)}" y="${(y - 7).toFixed(1)}" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="11" fill="#23282e">${text}</text>`;
+  }
+  function bubble16(id, text) {
+    const f = F16[id];
+    $("bubs16").innerHTML = bubMarkup(f.x, f.y - f.s * 126 - 12, text);
+  }
+  async function talk16(id, text) {
+    const f = F16[id];
+    bubble16(id, text);
+    say16(`${f.name}: «${text}»`);
+    try { await speak6(text, $("flat16"), 1.05, f.pitch); }
+    finally { $("bubs16").innerHTML = ""; }
+  }
+  // Идут все сразу; fadeOut — растворяются в конце пути (заходят в подъезд)
+  async function walk16(ids, xs, ms, fadeOut) {
+    const fs = ids.map((id) => F16[id]);
+    fs.forEach((f, i) => {
+      f.x0 = f.x;
+      if (xs[i] !== f.x) face16(f, xs[i] < f.x ? -1 : 1);
+      f.el.classList.add("walk");
+    });
+    try {
+      await tween9(REDUCE5 ? 0 : ms, (k) => {
+        const e = ease5.inOut(k);
+        fs.forEach((f, i) => {
+          f.x = f.x0 + (xs[i] - f.x0) * e;
+          place16(f);
+          if (fadeOut && k > 0.72) f.el.style.opacity = 0;
+        });
+      });
+    } finally { fs.forEach((f) => f.el.classList.remove("walk")); }
+  }
+  const trashLabel16 = () => `мусор ${Q16.out} из ${NEED16}`;
+  const webLabel16 = () => `паутина ${Q16.webs} из ${WEBS16.length}`;
+  const glassLabel16 = () => `окно ${Math.min(100, Math.round((Q16.glass / GOAL16) * 100))}%`;
+  const stainLabel16 = () => `пятна ${Q16.stains} из ${STAINS16.length}`;
+  function hud16() {
+    const floor = STAINS16.reduce((a, s) => a + (1 - s.hp), 0) / STAINS16.length;
+    const k = 0.3 * (Q16.out / NEED16) + 0.15 * (Q16.webs / WEBS16.length) + 0.25 * Math.min(1, Q16.glass / GOAL16) + 0.3 * floor;
+    $("clean16").textContent = Math.round(100 * k) + "%";
+  }
+  const placeIt16 = (it) => it.el.setAttribute("transform", `translate(${it.x.toFixed(1)} ${it.y.toFixed(1)})`);
+  // Мешок полнеет с каждой выброшенной вещью
+  function bagFill16() {
+    const s = 0.55 + 0.45 * (Q16.out / NEED16), b = $("bag16"), top = 28 - 58 * s;
+    b.querySelector(".bagBody16").setAttribute("transform", `translate(0 ${(28 * (1 - s)).toFixed(1)}) scale(1 ${s.toFixed(3)})`);
+    b.querySelector(".mouth16").setAttribute("cy", top.toFixed(1));
+    b.querySelector(".knot16").setAttribute("transform", `translate(0 ${(top + 30).toFixed(1)})`);
+  }
+  function sparkle16(x, y, n = 3) {
+    for (let i = 0; i < n; i++) {
+      const px = x + (Math.random() - 0.5) * 44, py = y + (Math.random() - 0.5) * 26, r = 7 + Math.random() * 5, q = r * 0.28;
+      const el = document.createElementNS(SVGNS, "path");
+      el.setAttribute("d", `M${px} ${py - r}L${px + q} ${py - q}L${px + r} ${py}L${px + q} ${py + q}L${px} ${py + r}L${px - q} ${py + q}L${px - r} ${py}L${px - q} ${py - q}z`);
+      el.setAttribute("fill", "#fff");
+      el.setAttribute("class", "spark16");
+      el.style.animationDelay = i * 90 + "ms";
+      $("fx16").appendChild(el);
+      setTimeout(() => el.remove(), 900 + i * 90);
+    }
+  }
+
+  // Люди — на тротуаре у машины (их пока не видно), с коробками в руках
+  function toStreet16() {
+    const car = $("flat16").querySelector(".car16");
+    car.parentNode.insertBefore($("people16"), car);
+    FIGS16.forEach(({ id }, i) => {
+      const f = F16[id];
+      Object.assign(f, { x: 296 + i * 30, y: STREET16, s: 0.62 });
+      f.el.style.opacity = 0;
+      f.el.classList.remove("walk");
+      face16(f, 1);
+      pose16(id, "box");
+      place16(f);
+    });
+  }
+  const toRoom16 = () => $("room16").insertBefore($("people16"), $("sun16"));
+
+  // Всё как было: мусор на полу, пятна, паутина, грязное окно, пыль на комоде
+  function setup16() {
+    const svg = $("flat16");
+    ["inside", "arrive", "moving", "work", "trash", "dragging", "webs", "wipe", "mop", "hover", "sunny", "shiny", "music", "tied", "home17", "furnished", "empty17"].forEach((c) => svg.classList.remove(c));
+    TRASH16.forEach((it) => {
+      it.x = it.hx;
+      it.y = it.hy;
+      it.out = it.flying = false;
+      it.el.classList.remove("out", "drag", "kept");
+      placeIt16(it);
+    });
+    STAINS16.forEach((s) => { s.hp = 1; s.el.style.opacity = ""; s.el.classList.remove("gone"); });
+    WEBS16.forEach((w) => { w.gone = false; w.el.classList.remove("gone"); w.sp.classList.remove("run"); });
+    ["wipes16", "boxes16", "fx16", "bubs16"].forEach((id) => ($(id).innerHTML = ""));
+    $("dirt16").classList.remove("clean");
+    $("dust16").style.opacity = 1;
+    Object.assign(Q16, {
+      out: 0, webs: 0, stains: 0, glass: 0, clean: 0, cells: new Uint8Array(GLASS16.cols * GLASS16.rows), wp: null,
+      drag: null, rub: null, last: null, sq: 0, boxes: 0, max: null, dust: 1, active: 0
+    });
+    bagFill16();
+    toStreet16();
+    $("hud16").hidden = true;
+    hud16();
+    $("fade16").classList.remove("on");
+    banner16(null);
+  }
+
+  function startRound16() {
+    stopRound6(); // новый токен I6 обрывает всё, что осталось от прошлой попытки
+    round = 16;
+    build16();
+    $("level16").hidden = false;
+    Q16 = { phase: "intro", label: "город", wrong: 0 };
+    setup16();
+    loop16();
+    run5(intro16);
+  }
+
+  async function intro16() {
+    const svg = $("flat16"), all = ["me", "max", "liza", "timur"];
+    say16("Вы оторвались от полиции и въехали в город…", "город");
+    await wait6(300);
+    svg.classList.add("arrive", "moving");
+    vroom6();
+    await wait6(2700);
+    svg.classList.remove("moving");
+    noise8(0.2, 0.3, 300);
+    all.forEach((id) => (F16[id].el.style.opacity = 1));
+    await wait6(600);
+    await talk16("max", "Приехали! Тут пустая квартира моего дяди.");
+    await talk16("max", "Здесь нас никто не найдёт!");
+    await talk16("liza", "Ура! У нас будет свой дом!");
+    await talk16("timur", "Берём коробки — и заходим!");
+    say16("Вы заносите вещи в подъезд…", "переезд");
+    await walk16(all, [530, 530, 530, 530], 2200, true);
+    await fade16(true);
+    toRoom16();
+    svg.classList.add("inside");
+    all.forEach((id) => {
+      const f = F16[id];
+      Object.assign(f, { x: DOOR16 - 26, y: FLOOR16, s: 1.1 });
+      pose16(id, "idle");
+      place16(f);
+      f.el.style.opacity = 1;
+    });
+    say16("Третий этаж, квартира 16. Вы открываете дверь…", "квартира");
+    await fade16(false);
+    await walk16(all, all.map((id) => SPOT16[id]), 2400);
+    face16(F16.me, 1);
+    await talk16("liza", "Фу! Тут сто лет никто не жил!");
+    noise8(0.35, 0.5, 1500);
+    await talk16("timur", "Апчхи! Сколько пыли!");
+    await talk16("max", "Ничего! Уберёмся вместе — и будет наш дом.");
+    startTrash16();
+  }
+
+  function loop16() {
+    cancelAnimationFrame(raf16);
+    let last = performance.now();
+    const step = (t) => {
+      if (!Q16 || Q16.phase === "off" || Q16.phase === "done") return;
+      const dt = Math.min(0.05, (t - last) / 1000);
+      last = t;
+      if (PLAY16.includes(Q16.phase)) Q16.active += dt;
+      if ($("flat16").classList.contains("work")) {
+        max16(dt);
+        Q16.dust = Math.max(0, Q16.dust - dt / 30);
+        $("dust16").style.opacity = Q16.dust.toFixed(3);
+      }
+      raf16 = requestAnimationFrame(step);
+    };
+    raf16 = requestAnimationFrame(step);
+  }
+  // Макс ходит к машине и обратно и ставит коробки у стены — три штуки
+  function max16(dt) {
+    const m = Q16.max, f = F16.max;
+    if (!m || m.state === "done") return;
+    m.t += dt;
+    if (m.state === "in") {
+      f.x = Math.max(SPOT16.max, f.x - 80 * dt);
+      if (f.x <= SPOT16.max) { m.state = "put"; m.t = 0; }
+    } else if (m.state === "put" && m.t > 0.35) {
+      addBox16();
+      pose16("max", "idle");
+      m.state = Q16.boxes < 3 ? "out" : "done";
+      face16(f, m.state === "out" ? 1 : -1);
+    } else if (m.state === "out") {
+      f.x = Math.min(DOOR16, f.x + 80 * dt);
+      if (f.x >= DOOR16) { m.state = "wait"; m.t = 0; f.el.style.opacity = 0; }
+    } else if (m.state === "wait" && m.t > 1.6) {
+      m.state = "in";
+      pose16("max", "box");
+      face16(f, -1);
+      f.el.style.opacity = 1;
+    }
+    f.el.classList.toggle("walk", m.state === "in" || m.state === "out");
+    place16(f);
+  }
+  const boxMarkup16 = (i) => `<g transform="translate(${[600, 604, 598][i]} ${FLOOR16 - 2 - 28 * i})"><g class="pop16">
+      <rect x="-24" y="-28" width="48" height="28" rx="2" fill="#c9a26b" stroke="#9c7a48" stroke-width="2"/><path d="M-24 -18h48" stroke="#e8d3a5" stroke-width="5"/>
+      <text y="-4" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="8" fill="#7a5134">ВЕЩИ</text></g></g>`;
+  function addBox16() {
+    $("boxes16").insertAdjacentHTML("beforeend", boxMarkup16(Q16.boxes++));
+    noise8(0.12, 0.25, 350);
+  }
+
+  // ---------- Мусор: перетаскиваем в мешок ----------
+  function startTrash16() {
+    const svg = $("flat16");
+    Q16.phase = "trash";
+    svg.classList.add("work", "trash");
+    pose16("timur", "vac");
+    pose16("liza", "rag");
+    Q16.max = { state: "out", t: 0 };
+    face16(F16.max, 1);
+    $("hud16").hidden = false;
+    hud16();
+    say16("Все взялись за дело! Твоё — мусор: перетаскивай его в мешок слева. Нужные вещи не выбрасывай!", trashLabel16());
+  }
+  const inBag16 = (it) => it.x < 124 && it.y > 336;
+  function home16(it) {
+    const x0 = it.x, y0 = it.y, t0 = performance.now(), D = REDUCE5 ? 1 : 260;
+    it.flying = true;
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / D), e = ease5.out(k);
+      it.x = x0 + (it.hx - x0) * e;
+      it.y = y0 + (it.hy - y0) * e;
+      placeIt16(it);
+      if (k < 1) requestAnimationFrame(step); else it.flying = false;
+    };
+    requestAnimationFrame(step);
+  }
+  // Вещь перелетает на новое место дугой
+  function fly16(it, x, y, ms = 650) {
+    const x0 = it.x, y0 = it.y;
+    return tween9(REDUCE5 ? 0 : ms, (k) => {
+      const e = ease5.inOut(k);
+      it.x = x0 + (x - x0) * e;
+      it.y = y0 + (y - y0) * e - Math.sin(k * Math.PI) * 50;
+      placeIt16(it);
+    });
+  }
+  function bin16(it) {
+    if (it.keep) {
+      Q16.wrong++;
+      beep(150, 0.18, "square", 0.06);
+      say16(it.keep);
+      nudge16();
+      home16(it);
+      return;
+    }
+    it.out = true;
+    it.el.classList.add("out");
+    Q16.out++;
+    noise8(0.15, 0.25, 400);
+    beep(600 + Q16.out * 50, 0.1);
+    bagFill16();
+    hud16();
+    say16(`${it.name} — в мешке!`, trashLabel16());
+    if (Q16.out === NEED16) trashDone16();
+  }
+  function trashDone16() {
+    const svg = $("flat16");
+    Q16.phase = "between";
+    svg.classList.remove("trash", "dragging");
+    svg.classList.add("tied");
+    noise8(0.2, 0.3, 700);
+    [523, 659].forEach((f, i) => setTimeout(() => beep(f, 0.12), i * 100));
+    say16("Весь мусор в мешке! Мешок завязан.", "мусор — всё");
+    run5(async () => {
+      await wait6(800);
+      const keys = TRASH16.find((i) => i.id === "keys"), phone = TRASH16.find((i) => i.id === "phone");
+      keys.el.classList.add("kept");
+      phone.el.classList.add("kept");
+      say16("Нужные вещи — на место: ключи на комод, а телефон — Тимуру.");
+      await Promise.all([fly16(keys, 470, 232), fly16(phone, F16.timur.x - 22, 262)]);
+      phone.el.classList.add("out");
+      await talk16("timur", "Мой телефон! Спасибо!");
+      startWebs16();
+    });
+  }
+
+  // ---------- Паутина: нажимаем веником ----------
+  function startWebs16() {
+    Q16.phase = "webs";
+    $("flat16").classList.add("webs");
+    say16("Теперь паутина. Смахни её веником — нажми на каждую: она в углах под потолком и на окне.", webLabel16());
+  }
+  function swish16() {
+    const g = $("flat16").querySelector(".sw16");
+    g.classList.remove("swish"); void g.getBoundingClientRect(); g.classList.add("swish");
+  }
+  function sweep16(w) {
+    w.gone = true;
+    w.el.classList.add("gone");
+    w.sp.classList.add("run");
+    noise8(0.18, 0.3, 2600);
+    Q16.webs++;
+    hud16();
+    const done = Q16.webs === WEBS16.length;
+    say16(done ? "Вся паутина сметена!" : "Паутина сметена, паук убежал! Ищи ещё.", webLabel16());
+    if (!done) return;
+    Q16.phase = "between";
+    $("flat16").classList.remove("webs", "hover");
+    run5(async () => {
+      await wait6(700);
+      await talk16("liza", "Бр-р, пауки! Хорошо, что они убежали.");
+      startWipe16();
+    });
+  }
+
+  // ---------- Окно: трём губкой (маска стирает грязь, клетки считают, сколько отмыто) ----------
+  function startWipe16() {
+    Q16.phase = "wipe";
+    Q16.last = null;
+    $("flat16").classList.add("wipe");
+    say16("Помой окно: води пальцем или мышкой по стеклу, пока оно не станет прозрачным.", glassLabel16());
+  }
+  function wipe16(p, last) {
+    const G = GLASS16, cw = G.w / G.cols, ch = G.h / G.rows;
+    if (!Q16.wp || Q16.wp.getAttribute("d").length > 6000) {
+      Q16.wp = document.createElementNS(SVGNS, "path");
+      Q16.wp.setAttribute("stroke-width", BR16 * 2);
+      Q16.wp.setAttribute("d", "");
+      $("wipes16").appendChild(Q16.wp);
+      last = null;
+    }
+    const xy = `${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+    Q16.wp.setAttribute("d", Q16.wp.getAttribute("d") + (last ? `L${xy}` : `M${xy}L${xy}`));
+    const from = last || p, n = Math.max(1, Math.ceil(Math.hypot(p.x - from.x, p.y - from.y) / 6));
+    for (let s = 0; s <= n; s++) {
+      const x = from.x + ((p.x - from.x) * s) / n, y = from.y + ((p.y - from.y) * s) / n;
+      const c0 = Math.max(0, Math.floor((x - BR16 - G.x) / cw)), c1 = Math.min(G.cols - 1, Math.floor((x + BR16 - G.x) / cw));
+      const r0 = Math.max(0, Math.floor((y - BR16 - G.y) / ch)), r1 = Math.min(G.rows - 1, Math.floor((y + BR16 - G.y) / ch));
+      for (let r = r0; r <= r1; r++)
+        for (let c = c0; c <= c1; c++) {
+          const i = r * G.cols + c;
+          if (Q16.cells[i] || Math.hypot(G.x + (c + 0.5) * cw - x, G.y + (r + 0.5) * ch - y) > BR16) continue;
+          Q16.cells[i] = 1;
+          Q16.clean++;
+        }
+    }
+    Q16.glass = Q16.clean / (G.cols * G.rows);
+    label16(glassLabel16());
+    hud16();
+    if (Q16.glass >= GOAL16) windowDone16();
+  }
+  function windowDone16() {
+    const svg = $("flat16");
+    Q16.phase = "between";
+    Q16.rub = null;
+    svg.classList.remove("wipe", "hover");
+    $("dirt16").classList.add("clean");
+    svg.classList.add("sunny");
+    sparkle16(160, 110, 3);
+    sparkle16(250, 200, 3);
+    [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.14), i * 110));
+    hud16();
+    say16("Окно чистое! В комнату заглянуло солнце.", glassLabel16());
+    run5(async () => {
+      await wait6(900);
+      await talk16("timur", "Сколько света! Отсюда видно весь город.");
+      startMop16();
+    });
+  }
+
+  // ---------- Пол: трём шваброй по пятнам ----------
+  function startMop16() {
+    Q16.phase = "mop";
+    Q16.last = null;
+    $("flat16").classList.add("mop");
+    say16("Последнее — пол. Води шваброй по пятнам, пока они не исчезнут.", stainLabel16());
+  }
+  function mop16(p, d) {
+    let hit = false;
+    STAINS16.forEach((s) => {
+      if (s.hp <= 0 || Math.hypot(p.x - s.x, (p.y - s.y) / 0.55) > s.r + 28) return;
+      hit = true;
+      s.hp = Math.max(0, s.hp - d / 220);
+      s.el.style.opacity = (0.2 + 0.8 * s.hp).toFixed(2);
+      if (s.hp <= 0) stainGone16(s);
+    });
+    if (hit) hud16();
+    return hit;
+  }
+  function stainGone16(s) {
+    s.el.classList.add("gone");
+    sparkle16(s.x, s.y);
+    Q16.stains++;
+    beep(760 + Q16.stains * 70, 0.1);
+    say16(Q16.stains < STAINS16.length ? "Пятно отмыто! Дальше." : "Пол блестит!", stainLabel16());
+    if (Q16.stains === STAINS16.length) floorDone16();
+  }
+  // Губка и швабра работают, пока палец на экране; мышкой — просто водим, как кисточкой в первом раунде
+  function rub16(p) {
+    const last = Q16.last, now = performance.now();
+    const d = last ? Math.min(40, Math.hypot(p.x - last.x, p.y - last.y)) : 0;
+    Q16.last = p;
+    if (Q16.phase === "wipe") {
+      wipe16(p, last);
+      if (d > 3 && now - Q16.sq > 90) { Q16.sq = now; beep(1700 + Math.random() * 700, 0.035, "sine", 0.025); }
+    } else if (Q16.phase === "mop" && d > 0 && mop16(p, d) && now - Q16.sq > 120) {
+      Q16.sq = now;
+      noise8(0.1, 0.07, 800);
+    }
+  }
+
+  // ---------- Новоселье ----------
+  function floorDone16() {
+    const svg = $("flat16");
+    Q16.phase = "end";
+    Q16.rub = null;
+    svg.classList.remove("mop", "hover");
+    svg.classList.add("shiny");
+    hud16();
+    [140, 300, 460, 620].forEach((x) => sparkle16(x, 400, 2));
+    run5(async () => {
+      banner16("ЧИСТО!", "#2fbf4a");
+      [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+      await wait6(1500);
+      banner16(null);
+      svg.classList.remove("work");
+      $("hud16").hidden = true;
+      if (Q16.max) Q16.max.state = "done";
+      const all = ["me", "timur", "liza", "max"];
+      all.forEach((id) => pose16(id, "idle"));
+      F16.max.el.style.opacity = 1;
+      say16("Все собираются посреди чистой комнаты…", "новоселье");
+      await walk16(all, [250, 330, 420, 505], 1600);
+      [["me", 1], ["timur", 1], ["liza", -1], ["max", -1]].forEach(([id, k]) => face16(F16[id], k));
+      await talk16("liza", "Как красиво! Теперь это наш дом.");
+      pose16("max", "guitar");
+      svg.classList.add("music");
+      melody16();
+      await talk16("max", "Новоселье! Сыграю вам на гитаре.");
+      ["me", "timur", "liza"].forEach((id) => pose16(id, "cheer"));
+      banner16("НОВОСЕЛЬЕ!", "#e0a200");
+      const end = "Поздравляю! Вы переехали в новую квартиру и навели в ней порядок.";
+      say16(end);
+      await speak6(end, svg);
+      await wait6(900);
+      finish16();
+    });
+  }
+  function melody16() {
+    const tok = I6.token;
+    [392, 523, 659, 523, 587, 698, 659, 784].forEach((f, i) => setTimeout(() => { if (I6.token === tok) beep(f, 0.22, "triangle", 0.07); }, i * 260));
+  }
+  function finish16() {
+    Q16.phase = "done";
+    const secs = Math.round(Q16.active);
+    const stars = Q16.wrong === 0 && secs <= 100 ? 3 : Q16.wrong <= 2 && secs <= 200 ? 2 : 1;
+    showResult({
+      title: "Новоселье!",
+      stars,
+      text: ["", "Квартира чистая, но уборка затянулась. Попробуй ещё раз!", "Чисто и уютно! Быстрее и без ошибок — и будет три звезды.", "Квартира сияет — теперь у вас есть свой дом!"][stars],
+      stats: `Чуть не выбросили нужное: ${Q16.wrong} · Время уборки: ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`,
+      next: 17
+    });
+  }
+
+  // ---------- Управление: перетаскивание, веник, губка и швабра ----------
+  const pt16 = (e) => {
+    const svg = $("flat16"), p = svg.createSVGPoint();
+    p.x = e.clientX;
+    p.y = e.clientY;
+    return p.matrixTransform(svg.getScreenCTM().inverse());
+  };
+  const tool16 = (p) => $("tool16").setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+  $("flat16").addEventListener("pointerdown", (e) => {
+    if (!Q16) return;
+    const svg = $("flat16"), p = pt16(e), ph = Q16.phase;
+    if (ph === "trash") {
+      const g = e.target.closest(".item16");
+      const it = g && TRASH16.find((i) => i.el === g);
+      if (!it || it.out || it.flying) return;
+      e.preventDefault();
+      svg.setPointerCapture(e.pointerId);
+      Q16.drag = { id: e.pointerId, it, dx: it.x - p.x, dy: it.y - p.y, moved: 0 };
+      g.classList.add("drag");
+      g.parentNode.appendChild(g); // поверх остальных вещей
+      svg.classList.add("dragging");
+      click();
+    } else if (ph === "webs") {
+      e.preventDefault();
+      svg.classList.add("hover");
+      tool16(p);
+      swish16();
+      const g = e.target.closest(".web16"), w = g && WEBS16.find((x) => x.el === g);
+      if (w && !w.gone) sweep16(w);
+      else { say16("Паутина — в углах под потолком и на окне. Нажимай прямо на неё."); nudge16(); }
+    } else if (ph === "wipe" || ph === "mop") {
+      e.preventDefault();
+      svg.setPointerCapture(e.pointerId);
+      Q16.rub = e.pointerId;
+      Q16.last = null;
+      svg.classList.add("hover");
+      tool16(p);
+      rub16(p);
+    }
+  });
+  $("flat16").addEventListener("pointermove", (e) => {
+    if (!Q16) return;
+    const p = pt16(e), d = Q16.drag;
+    if (d && e.pointerId === d.id) {
+      const it = d.it;
+      it.x = Math.max(10, Math.min(790, p.x + d.dx));
+      it.y = Math.max(20, Math.min(444, p.y + d.dy));
+      d.moved++;
+      placeIt16(it);
+      return;
+    }
+    if (!["webs", "wipe", "mop"].includes(Q16.phase)) return;
+    $("flat16").classList.add("hover");
+    tool16(p);
+    if (Q16.phase !== "webs" && (Q16.rub === e.pointerId || e.pointerType === "mouse")) rub16(p);
+  });
+  const up16 = (e) => {
+    if (!Q16) return;
+    const svg = $("flat16");
+    if (e.pointerType !== "mouse") {
+      if (Q16.rub === e.pointerId) Q16.last = null;
+      setTimeout(() => { if (Q16 && Q16.rub == null) svg.classList.remove("hover"); }, 300);
+    }
+    if (Q16.rub === e.pointerId) Q16.rub = null;
+    const d = Q16.drag;
+    if (!d || e.pointerId !== d.id) return;
+    Q16.drag = null;
+    const it = d.it;
+    it.el.classList.remove("drag");
+    svg.classList.remove("dragging");
+    if (d.moved >= 3 && inBag16(it)) bin16(it);
+    else {
+      if (d.moved < 3) { say16(`${it.name}: перетащи в мешок — он слева.`); nudge16(); }
+      home16(it);
+    }
+  };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((ev) => $("flat16").addEventListener(ev, up16));
+  $("flat16").addEventListener("pointerleave", (e) => {
+    if (!Q16 || e.pointerType !== "mouse") return;
+    $("flat16").classList.remove("hover");
+    Q16.last = null;
+  });
+
+  // =================== Раунд 17: мебель ===================
+  // Утро в новой квартире: чисто, но пусто — все спали на полу в спальниках. Едем в мебельный магазин.
+  // На 30 000 ₽ надо купить диван, стол, кровати и лампу. Каждый друг говорит, что ему нужно, а Лиза следит,
+  // чтобы денег хватило на всё. Вечером мебель привозят, и вся компания садится на новый диван.
+  // Квартира — та же сцена, что в шестнадцатом раунде. Голос и ожидания общие с раундами 6–16 (токен I6).
+  const MONEY17 = 30000, PODS17 = [180, 400, 620];
+  const SEAT17 = { me: 143, liza: 191, timur: 239, max: 287 };
+  const CATS17 = [
+    { id: "sofa", name: "Диван", acc: "диван", it: "него", sign: "ДИВАНЫ", who: "timur", short: "Нужен большой диван!", ask: "Хочу диван, чтобы мы сели все вчетвером!",
+      opts: [
+        { id: "chair", name: "Кресло «Уют»", price: 4000, n: 1, bad: "В кресло сядет только один! А нас четверо." },
+        { id: "family", name: "Диван «Семейный»", price: 9000, n: 4 },
+        { id: "royal", name: "Диван «Королевский»", price: 16000, n: 4 }
+      ] },
+    { id: "table", name: "Стол", acc: "стол", it: "него", sign: "СТОЛЫ", who: "liza", short: "Нужен обеденный стол!", ask: "Нужен стол, чтобы ужинать всем вместе!",
+      opts: [
+        { id: "coffee", name: "Журнальный столик", price: 3000, n: 0, bad: "Он низкий и маленький — за ним не поужинаешь." },
+        { id: "dining", name: "Стол и 4 стула", price: 5000, n: 4 },
+        { id: "glass", name: "Стеклянный стол на 8", price: 11000, n: 8 }
+      ] },
+    { id: "beds", name: "Кровати", acc: "кровати", it: "них", sign: "КРОВАТИ", who: "max", short: "Нужны кровати!", ask: "Хватит спать на полу! Нужны кровати для всех четверых.",
+      opts: [
+        { id: "heart", name: "Кровать-сердце", price: 7000, n: 2, bad: "На ней поместятся только двое!" },
+        { id: "bunk", name: "Две двухъярусные кровати", price: 8000, n: 4 },
+        { id: "cot", name: "Раскладушка", price: 1000, n: 1, bad: "Одна раскладушка на четверых? Не поместимся!" }
+      ] },
+    { id: "lamp", name: "Лампа", acc: "лампу", it: "неё", sign: "ЛАМПЫ", who: "me", short: "Нужен яркий свет!", ask: "А вечером нужен яркий свет!",
+      opts: [
+        { id: "floor", name: "Торшер", price: 1500, n: 3 },
+        { id: "crystal", name: "Хрустальная люстра", price: 6000, n: 3 },
+        { id: "flamingo", name: "Лампа-фламинго", price: 2000, n: 1, bad: "Фламинго светит тускло-розовым — при нём ничего не видно!" }
+      ] }
+  ];
+  const attr17 = (cat, o) => cat.id === "lamp" ? `свет: ${"☀".repeat(o.n)}` : cat.id === "beds" ? `спальных мест: ${o.n}` : o.n ? `мест: ${o.n}` : "без стульев";
+  const fmt17 = (n) => n.toLocaleString("ru-RU") + " ₽";
+  const list17 = (a) => (a.length > 1 ? a.slice(0, -1).join(", ") + " и " + a[a.length - 1] : a[0]);
+  const fig17 = (id) => FIGS16.find((p) => p.id === id);
+  let Q17 = null, built17 = false;
+
+  // Мебель стоит на полу: (0, 0) — середина низа, w × h — габариты, чтобы уместить на подиуме
+  const sofaSeats17 = (c) => [-72, -24, 24, 72].map((x) => `<rect x="${x - 22}" y="-48" width="44" height="14" rx="6" fill="${c}"/>`).join("");
+  const chairSide17 = (x, k, c) => `<rect x="${x - 14}" y="-40" width="28" height="6" rx="2" fill="${c}"/><rect x="${x - k * 14 - 3}" y="-86" width="6" height="52" rx="2" fill="${c}"/>
+    <rect x="${x - 12}" y="-34" width="4" height="34" fill="${c}"/><rect x="${x + 8}" y="-34" width="4" height="34" fill="${c}"/>`;
+  const bunk17 = (low, top) => `<rect x="-38" y="-170" width="7" height="170" rx="2" fill="#8a5d3b"/><rect x="31" y="-170" width="7" height="170" rx="2" fill="#8a5d3b"/>
+    <rect x="-31" y="-150" width="62" height="5" fill="#8a5d3b"/>
+    <rect x="-34" y="-126" width="68" height="14" rx="5" fill="${top}"/><ellipse cx="-20" cy="-128" rx="10" ry="5" fill="#f4f1ea"/>
+    <rect x="-38" y="-112" width="76" height="7" fill="#6b4a2f"/>
+    <rect x="-34" y="-46" width="68" height="14" rx="5" fill="${low}"/><ellipse cx="-20" cy="-48" rx="10" ry="5" fill="#f4f1ea"/>
+    <rect x="-38" y="-32" width="76" height="7" fill="#6b4a2f"/>
+    <path d="M18 -105V-32M30 -105V-32M18 -92H30M18 -76H30M18 -60H30M18 -44H30" stroke="#b07a4a" stroke-width="3"/>`;
+  // Люстра висит: (0, 0) — крюк на потолке
+  const crystal17 = `<circle cy="62" r="62" fill="#fff3b0" opacity="0.28"/>
+    <path d="M0 0V40" stroke="#c9a13b" stroke-width="3"/><circle cy="46" r="8" fill="#e0a200"/>
+    <path d="M-46 56Q0 86 46 56M-30 50Q0 70 30 50" fill="none" stroke="#e0a200" stroke-width="5" stroke-linecap="round"/>
+    ${[[-46, 50], [-23, 62], [0, 66], [23, 62], [46, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="#fff3b0"/>`).join("")}
+    ${[-40, -27, -14, 0, 14, 27, 40].map((x) => `<path d="M${x} 70l4 8 -4 8 -4 -8z" fill="#dff3ff" stroke="#9fc3e6"/>`).join("")}`;
+  const FURN17 = {
+    chair: { w: 104, h: 86, svg: `<rect x="-44" y="-86" width="88" height="54" rx="16" fill="#6b8fb3"/>
+      <rect x="-44" y="-44" width="88" height="34" rx="9" fill="#5a7ea2"/><rect x="-36" y="-48" width="72" height="14" rx="6" fill="#7fa3c7"/>
+      <rect x="-52" y="-62" width="18" height="54" rx="9" fill="#5a7ea2"/><rect x="34" y="-62" width="18" height="54" rx="9" fill="#5a7ea2"/>
+      <rect x="-40" y="-10" width="7" height="10" fill="#5a3d26"/><rect x="33" y="-10" width="7" height="10" fill="#5a3d26"/>` },
+    family: { w: 228, h: 86, svg: `<rect x="-104" y="-86" width="208" height="54" rx="16" fill="#3f6f9e"/>
+      <rect x="-104" y="-44" width="208" height="34" rx="9" fill="#35608a"/>${sofaSeats17("#5a88b6")}
+      <rect x="-114" y="-62" width="20" height="54" rx="10" fill="#35608a"/><rect x="94" y="-62" width="20" height="54" rx="10" fill="#35608a"/>
+      <rect x="-100" y="-10" width="7" height="10" fill="#5a3d26"/><rect x="93" y="-10" width="7" height="10" fill="#5a3d26"/>` },
+    royal: { w: 236, h: 120, svg: `<path d="M-104 -40V-82Q-104 -98 -86 -96Q-60 -114 -30 -100Q0 -120 30 -100Q60 -114 86 -96Q104 -98 104 -82V-40z" fill="#8e2c29" stroke="#e0a200" stroke-width="4"/>
+      <path d="M-14 -108l5 -12 9 7 9 -7 5 12z" fill="#ffc83d" stroke="#e0a200" stroke-width="2"/>
+      <g fill="#e0a200">${[-70, -35, 0, 35, 70].map((x) => `<circle cx="${x}" cy="-70" r="3"/>`).join("")}</g>
+      <rect x="-104" y="-44" width="208" height="34" rx="9" fill="#7a2424" stroke="#e0a200" stroke-width="3"/>${sofaSeats17("#a33c3c")}
+      <path d="M-118 -10V-58a15 15 0 0 1 30 0V-10z" fill="#7a2424" stroke="#e0a200" stroke-width="3"/><path d="M88 -10V-58a15 15 0 0 1 30 0V-10z" fill="#7a2424" stroke="#e0a200" stroke-width="3"/>
+      <path d="M-100 -10q-6 6 -2 10M100 -10q6 6 2 10" fill="none" stroke="#e0a200" stroke-width="5" stroke-linecap="round"/>` },
+    coffee: { w: 110, h: 50, svg: `<rect x="-55" y="-36" width="110" height="9" rx="3" fill="#8a5d3b"/>
+      <rect x="-48" y="-27" width="7" height="27" fill="#6b4a2f"/><rect x="41" y="-27" width="7" height="27" fill="#6b4a2f"/><rect x="-44" y="-15" width="88" height="5" fill="#6b4a2f"/>
+      <rect x="12" y="-47" width="12" height="11" rx="2" fill="#e5484d"/><path d="M24 -44h3v5h-3" fill="none" stroke="#e5484d" stroke-width="2"/>` },
+    dining: { w: 214, h: 96, svg: `<rect x="-48" y="-96" width="24" height="40" rx="4" fill="#c98f5a"/><rect x="24" y="-96" width="24" height="40" rx="4" fill="#c98f5a"/>
+      <rect x="-66" y="-66" width="132" height="9" rx="3" fill="#b07a4a"/>
+      <rect x="-58" y="-57" width="8" height="57" fill="#8a5d3b"/><rect x="50" y="-57" width="8" height="57" fill="#8a5d3b"/>
+      ${chairSide17(-90, 1, "#c98f5a")}${chairSide17(90, -1, "#c98f5a")}` },
+    glass: { w: 270, h: 96, svg: `${[-75, -25, 25, 75].map((x) => `<rect x="${x - 12}" y="-96" width="24" height="40" rx="8" fill="#e9ecef" stroke="#c3cbd3" stroke-width="2"/>`).join("")}
+      <rect x="-100" y="-66" width="200" height="8" rx="2" fill="#bfe3f2" fill-opacity="0.85" stroke="#8fb7cc" stroke-width="2"/>
+      <path d="M-86 -58V0M86 -58V0M-86 -30H86" stroke="#c3cbd3" stroke-width="5"/>
+      ${chairSide17(-118, 1, "#e9ecef")}${chairSide17(118, -1, "#e9ecef")}` },
+    heart: { w: 172, h: 98, svg: `<path d="M0 -56C-12 -90 -64 -98 -64 -70C-64 -50 -36 -38 0 -22C36 -38 64 -50 64 -70C64 -98 12 -90 0 -56z" fill="#e05a9a"/>
+      <rect x="-82" y="-40" width="164" height="28" rx="10" fill="#7fc3e6"/>
+      <path d="M-72 -28q10 -6 20 0t20 0t20 0t20 0t20 0t20 0t20 0" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="2"/>
+      <ellipse cx="-30" cy="-42" rx="16" ry="6" fill="#fff"/><ellipse cx="30" cy="-42" rx="16" ry="6" fill="#fff"/>
+      <rect x="-86" y="-14" width="172" height="10" rx="4" fill="#c9489a"/><rect x="-80" y="-6" width="8" height="6" fill="#8e2c29"/><rect x="72" y="-6" width="8" height="6" fill="#8e2c29"/>` },
+    bunk: { w: 172, h: 170, svg: `<g transform="translate(-44 0)">${bunk17("#3b8fe0", "#e05a9a")}</g><g transform="translate(44 0)">${bunk17("#2fbf4a", "#ffc83d")}</g>` },
+    cot: { w: 124, h: 44, svg: `<path d="M-48 -26L-28 0M-28 -26L-48 0M28 -26L48 0M48 -26L28 0" stroke="#9aa5b1" stroke-width="3" stroke-linecap="round"/>
+      <rect x="-60" y="-34" width="120" height="9" rx="3" fill="#6f8f5f"/><ellipse cx="-40" cy="-37" rx="14" ry="5" fill="#f4f1ea"/>` },
+    floor: { w: 104, h: 202, svg: `<circle cy="-150" r="52" fill="#fff3b0" opacity="0.35"/>
+      <path d="M-24 -132h48l-10 -38h-28z" fill="#f4d58d" stroke="#c9a13b" stroke-width="2"/>
+      <rect x="-2" y="-132" width="4" height="128" fill="#3b424b"/><ellipse cy="-3" rx="18" ry="4" fill="#3b424b"/>` },
+    crystal: { w: 130, h: 180, svg: `<path d="M-56 0V-176H0" fill="none" stroke="#9aa5b1" stroke-width="4"/><ellipse cx="-56" cy="-2" rx="14" ry="4" fill="#5f6973"/>
+      <g transform="translate(0 -176)">${crystal17}</g>` },
+    flamingo: { w: 80, h: 124, svg: `<circle cy="-78" r="36" fill="#ff9ac8" opacity="0.22"/>
+      <path d="M0 -4V-48M0 -48l9 -12" fill="none" stroke="#e05a9a" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="-4" cy="-62" rx="22" ry="14" fill="#ff8ac0"/>
+      <path d="M12 -68Q30 -92 18 -106Q10 -114 3 -106" fill="none" stroke="#ff8ac0" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="3" cy="-106" r="7" fill="#ff8ac0"/><path d="M-3 -107l-9 4 7 3z" fill="#23282e"/><circle cx="4" cy="-108" r="1.3" fill="#23282e"/>
+      <ellipse cy="-3" rx="16" ry="4" fill="#5f6973"/>` }
+  };
+  const scale17 = (F) => Math.min(1.1, 168 / F.w, 150 / F.h);
+
+  // Сидит на диване лицом к нам: ноги свешиваются с сиденья до пола
+  function sit17(x, p) {
+    return `<g transform="translate(${x} ${FLOOR16 - 44})">
+      ${p.long ? `<rect x="-15" y="-70" width="30" height="36" rx="13" fill="${p.hair}"/>` : ""}
+      <rect x="-11" y="-2" width="9" height="42" rx="4" fill="#2b3138"/><rect x="2" y="-2" width="9" height="42" rx="4" fill="#2b3138"/>
+      <rect x="-14" y="-46" width="28" height="48" rx="11" fill="${p.c}"/>
+      <path d="M-12 -38l-8 22M12 -38l8 22" stroke="${p.c}" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="-20" cy="-14" r="4.5" fill="#f2c9a0"/><circle cx="20" cy="-14" r="4.5" fill="#f2c9a0"/>
+      <circle cy="-58" r="13" fill="#f2c9a0"/>
+      <path d="M-13 -58a13 13 0 0 1 26 0q-6 -5 -13 -5t-13 5z" fill="${p.hair}"/>
+      <circle cx="-5" cy="-57" r="1.7" fill="#23282e"/><circle cx="5" cy="-57" r="1.7" fill="#23282e"/>
+      <path d="M-4 -51q4 3 8 0" fill="none" stroke="#b5653a" stroke-width="1.8" stroke-linecap="round"/>
+    </g>`;
+  }
+  // Купленная мебель в квартире; вся компания сидит на новом диване
+  function furnRoom17(ch) {
+    const at = (id, x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${FURN17[id].svg}</g>`;
+    return at(ch.sofa, 215, FLOOR16) +
+      `<g transform="translate(50 ${FLOOR16})">${bunk17("#3b8fe0", "#e05a9a")}</g><g transform="translate(596 ${FLOOR16})">${bunk17("#2fbf4a", "#ffc83d")}</g>` +
+      (ch.lamp === "crystal" ? `<g transform="translate(450 0)">${crystal17}</g>` : at("floor", 362, FLOOR16)) +
+      FIGS16.map((p) => sit17(SEAT17[p.id], p)).join("") +
+      at(ch.table, 470, 438, ch.table === "glass" ? 0.9 : 1);
+  }
+  const figAt17 = (p, x, y, s, k) => `<g transform="translate(${x} ${y}) scale(${s})"><g transform="scale(${k} 1)">${body16(p, "idle")}</g></g>`;
+
+  function build17() {
+    if (built17) return;
+    built17 = true;
+    build16();
+    // Спальники на полу пустой квартиры и место для мебели — в той же комнате, что в шестнадцатом раунде
+    const BAGS17 = [[150, 404, "#3b5b9e", "#2f4a82"], [292, 426, "#9a4f8f", "#7d3d74"], [440, 408, "#2f7a4a", "#245f3a"], [586, 428, "#a8423f", "#86332f"]];
+    $("gloss16").insertAdjacentHTML("afterend", `<g id="bags17">${BAGS17.map(([x, y, c, d]) => `<g transform="translate(${x} ${y})">
+      <rect x="-55" y="-13" width="110" height="26" rx="13" fill="${c}"/><rect x="-55" y="-13" width="34" height="26" rx="13" fill="${d}"/>
+      <path d="M0 -13v26M26 -13v26" stroke="${d}" stroke-width="2"/><ellipse cx="-46" cy="-6" rx="14" ry="8" fill="#f4f1ea"/></g>`).join("")}</g><g id="furn17"></g>`);
+    const beams = PODS17.map((cx) => `<rect x="${cx - 22}" y="12" width="44" height="9" rx="4" fill="#5f6973"/><polygon points="${cx - 16},20 ${cx + 16},20 ${cx + 92},322 ${cx - 92},322" fill="url(#spot17)"/>`).join("");
+    let tiles = "";
+    for (let x = -400; x <= 1200; x += 100) tiles += `M${400 + (x - 400) * 0.55} 300L${x} 450`;
+    $("shop17").innerHTML = `
+      <defs><linearGradient id="spot17" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c8" stop-opacity="0.6"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0.05"/></linearGradient></defs>
+      <rect width="800" height="302" fill="#f1ebe0"/>
+      <path d="M0 250H800" stroke="#e2d8c6" stroke-width="3"/>
+      <rect width="800" height="12" fill="#e5484d"/>
+      <rect x="250" y="28" width="300" height="50" rx="12" fill="#e5484d"/>
+      <text id="sign17" x="400" y="63" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="28" letter-spacing="3" fill="#fff">ДИВАНЫ</text>
+      <text x="400" y="98" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="600" font-size="13" fill="#9a8a6a">мебельный магазин «Уютный дом»</text>
+      <rect y="300" width="800" height="150" fill="#d8cfbf"/>
+      <path d="${tiles}M0 340H800M0 390H800" stroke="#c9bfad" stroke-width="2"/>
+      ${beams}
+      <g id="pods17">${PODS17.map((cx, k) => `<g class="pod17" data-k="${k}">
+        <ellipse cx="${cx}" cy="336" rx="86" ry="16" fill="#c3b8a2"/>
+        <rect x="${cx - 86}" y="322" width="172" height="14" fill="#e9e3d8"/>
+        <ellipse cx="${cx}" cy="322" rx="86" ry="16" fill="#fbf8f2" stroke="#e2d8c6" stroke-width="2"/>
+        <g transform="translate(${cx} 326)"><g class="item17"></g></g>
+        <rect x="${cx - 54}" y="352" width="108" height="30" rx="8" fill="#fff" stroke="#e2d8c6" stroke-width="2"/>
+        <text class="price17" x="${cx}" y="373" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="18" fill="#23282e"></text>
+        <rect x="${cx - 95}" y="140" width="190" height="250" fill="transparent"/></g>`).join("")}</g>
+      <g id="liza17"></g>
+      <g id="cart17" transform="translate(738 446)">
+        <path d="M-40 -84h8l6 12" fill="none" stroke="#5f6973" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M-30 -72h62l-9 46h-45z" fill="#fff" fill-opacity="0.35" stroke="#5f6973" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M-26 -58h54M-24 -44h50M-12 -72v46M4 -72v46M18 -72v46" stroke="#9aa5b1" stroke-width="1.5"/>
+        <path d="M-22 -26v10h48" fill="none" stroke="#5f6973" stroke-width="4"/>
+        <circle cx="-16" cy="-8" r="7" fill="#23282e"/><circle cx="20" cy="-8" r="7" fill="#23282e"/>
+      </g>
+      <g id="cartItems17"></g>
+      <g id="who17"></g>
+      <g id="fly17"></g>
+      <g id="bub17"></g>`;
+  }
+
+  function say17(text, label) {
+    if (label) Q17.label = label;
+    ["16", "17"].forEach((k) => {
+      $("hintText" + k).textContent = text;
+      $("stepLabel" + k).textContent = `Раунд 17 · ${Q17.label}`;
+    });
+  }
+  const catLabel17 = () => `${CATS17[Q17.cat].name.toLowerCase()} · куплено ${Q17.bought} из ${CATS17.length}`;
+  function banner17(text, color) {
+    const b = $("banner17");
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function fade17(on) {
+    $("fade17").classList.toggle("on", on);
+    return wait6(320);
+  }
+  // В магазине говорят двое: слева тот, кому нужна вещь, справа — Лиза с деньгами у тележки
+  const bub17 = (side, text) => ($("bub17").innerHTML = text ? bubMarkup(side === "R" ? 776 : 46, 446 - 0.95 * 126 - 12, text) : "");
+  async function talkShop17(id, short, full) {
+    const p = fig17(id);
+    bub17(id === "liza" ? "R" : "L", short);
+    say17(`${p.name}: «${full}»`);
+    try { await speak6(full.replace(/₽/g, "рублей"), $("shop17"), 1.05, p.pitch); }
+    finally { bub17(null, ""); }
+  }
+  async function talkRoom17(id, text) {
+    const f = F16[id];
+    bubble16(id, text);
+    say17(`${f.name}: «${text}»`);
+    try { await speak6(text, $("flat16"), 1.05, f.pitch); }
+    finally { $("bubs16").innerHTML = ""; }
+  }
+
+  // Квартира: пустая утром (спальники на полу, коробки у стены) или вечером — с мебелью
+  function home17(furnished) {
+    $("flat16").setAttribute("class", `inside shiny home17 ${furnished ? "furnished" : "sunny empty17"}`);
+    toRoom16();
+    ["bubs16", "fx16"].forEach((id) => ($(id).innerHTML = ""));
+    if (furnished) $("furn17").innerHTML = furnRoom17(Q17.chosen);
+    else $("boxes16").innerHTML = [0, 1, 2].map(boxMarkup16).join("");
+    const X = { me: 150, timur: 300, liza: 470, max: 610 }, K = { me: 1, timur: -1, liza: 1, max: -1 };
+    FIGS16.forEach(({ id }) => {
+      const f = F16[id];
+      f.el.classList.remove("walk");
+      if (furnished) {
+        // Сидят на диване (они нарисованы вместе с мебелью), а координаты нужны для облачков над головами
+        Object.assign(f, { x: SEAT17[id], y: 366, s: 1.1 });
+        f.el.style.opacity = 0;
+      } else {
+        Object.assign(f, { x: X[id], y: FLOOR16, s: 1.1 });
+        pose16(id, "idle");
+        face16(f, K[id]);
+        f.el.style.opacity = 1;
+      }
+      place16(f);
+    });
+  }
+
+  function startRound17() {
+    stopRound6(); // новый токен I6 обрывает всё, что осталось от прошлой попытки
+    round = 17;
+    build17();
+    Q17 = { phase: "intro", label: "утро", cat: 0, opts: [], money: MONEY17, wrong: 0, bought: 0, chosen: {} };
+    $("level16").hidden = false;
+    $("ctrl17").hidden = true;
+    ["fade16", "fade17"].forEach((id) => $(id).classList.remove("on"));
+    banner16(null);
+    banner17(null);
+    $("hud16").hidden = true;
+    $("cash17").textContent = fmt17(MONEY17);
+    ["cartItems17", "who17", "fly17", "bub17"].forEach((id) => ($(id).innerHTML = ""));
+    $("liza17").innerHTML = figAt17(fig17("liza"), 776, 446, 0.95, -1);
+    home17(false);
+    run5(intro17);
+  }
+
+  async function intro17() {
+    say17("Утро в новой квартире. Вы спали на полу, в спальниках…", "утро");
+    await wait6(900);
+    await talkRoom17("timur", "Ой, спина! Спать на полу — как в лесу.");
+    await talkRoom17("liza", "Квартира чистая, но пустая: ни дивана, ни стола.");
+    await talkRoom17("max", "Поехали в мебельный магазин!");
+    await fade16(true);
+    $("fade17").classList.add("on");
+    $("level16").hidden = true;
+    $("level17").hidden = false;
+    $("fade16").classList.remove("on");
+    say17("Мебельный магазин «Уютный дом».", "магазин");
+    await fade17(false);
+    await wait6(400);
+    await talkShop17("liza", "Тратим с умом!", "У нас 30 000 рублей. Надо купить диван, стол, кровати и лампу. Тратим с умом!");
+    await showCat17(0);
+  }
+
+  // Новый отдел: на подиумах три варианта, а тот, кому нужна вещь, говорит, какая
+  async function showCat17(i) {
+    const cat = CATS17[i], pods = $("pods17");
+    Q17.cat = i;
+    Q17.phase = "ask";
+    lock17(true);
+    pods.classList.add("swap");
+    await wait6(260);
+    Q17.opts = shuffle(cat.opts.slice());
+    $("sign17").textContent = cat.sign;
+    Q17.opts.forEach((o, k) => {
+      const pod = pods.children[k], F = FURN17[o.id];
+      pod.classList.remove("no", "sold");
+      pod.querySelector(".item17").innerHTML = `<g transform="scale(${scale17(F).toFixed(3)})">${F.svg}</g>`;
+      pod.querySelector(".price17").textContent = fmt17(o.price);
+    });
+    $("opts17").innerHTML = Q17.opts.map((o, k) =>
+      `<button class="opt17" type="button" data-k="${k}" disabled><b>${o.name}</b><span>${attr17(cat, o)}</span><em>${fmt17(o.price)}</em></button>`
+    ).join("");
+    $("ctrl17").hidden = false;
+    $("who17").innerHTML = cat.who === "liza" ? "" : figAt17(fig17(cat.who), 46, 446, 0.95, 1);
+    pods.classList.remove("swap");
+    Q17.label = catLabel17();
+    await talkShop17(cat.who, cat.short, cat.ask);
+    Q17.phase = "pick";
+    lock17(false);
+    say17(`${fig17(cat.who).name}: «${cat.ask}» Выбери ${cat.acc} — нажми на ${cat.it}.`, catLabel17());
+  }
+  function lock17(locked) {
+    document.querySelectorAll(".opt17").forEach((b) => (b.disabled = locked));
+    $("shop17").classList.toggle("pick", !locked);
+  }
+
+  // Подходит ли вещь и хватит ли потом денег на самое дешёвое из того, что ещё надо купить
+  function pick17(k) {
+    if (!Q17 || Q17.phase !== "pick") return;
+    const cat = CATS17[Q17.cat], o = Q17.opts[k], rest = CATS17.slice(Q17.cat + 1);
+    const need = rest.reduce((s, c) => s + Math.min(...c.opts.filter((x) => !x.bad).map((x) => x.price)), 0);
+    if (!o.bad && Q17.money - o.price >= need) { buy17(k, o); return; }
+    Q17.wrong++;
+    Q17.phase = "talk";
+    lock17(true);
+    [$("pods17").children[k], $("opts17").children[k]].forEach((el) => { el.classList.remove("no"); void el.getBoundingClientRect(); el.classList.add("no"); });
+    beep(150, 0.18, "square", 0.06);
+    const pricey = !o.bad;
+    const text = o.bad || (rest.length ? `Дорого! Если купим это, не хватит денег на ${list17(rest.map((c) => c.acc))}.` : "Дорого! На это у нас не хватит денег.");
+    run5(async () => {
+      await talkShop17(pricey ? "liza" : cat.who, pricey ? "Дорого!" : "Не подходит!", text);
+      Q17.phase = "pick";
+      lock17(false);
+      say17(`${text} ${pricey ? "Выбери что-нибудь подешевле." : "Выбери другой вариант."}`, catLabel17());
+    });
+  }
+
+  // Покупка: вещь летит в тележку, деньги в кошельке убывают
+  function buy17(k, o) {
+    const cat = CATS17[Q17.cat], F = FURN17[o.id], from = Q17.money, to = from - o.price, n = Q17.bought;
+    Q17.phase = "buy";
+    lock17(true);
+    Q17.money = to;
+    Q17.chosen[cat.id] = o.id;
+    Q17.bought++;
+    click();
+    [659, 880].forEach((f, i) => setTimeout(() => beep(f, 0.1), i * 90));
+    const pod = $("pods17").children[k], fly = document.createElementNS(SVGNS, "g");
+    fly.innerHTML = F.svg;
+    $("fly17").appendChild(fly);
+    pod.classList.add("sold");
+    const s0 = scale17(F), [tx, ty] = [[722, 378], [754, 378], [722, 350], [754, 350]][n], s1 = Math.min(30 / F.w, 26 / F.h), x0 = PODS17[k];
+    say17(`Покупаем: ${o.name} за ${fmt17(o.price)}.`, catLabel17());
+    run5(async () => {
+      try {
+        await tween9(REDUCE5 ? 0 : 750, (t) => {
+          const e = ease5.inOut(t);
+          fly.setAttribute("transform", `translate(${(x0 + (tx - x0) * e).toFixed(1)} ${(326 + (ty - 326) * e - Math.sin(Math.PI * t) * 90).toFixed(1)}) scale(${(s0 + (s1 - s0) * e).toFixed(3)})`);
+          $("cash17").textContent = fmt17(Math.round((from + (to - from) * e) / 100) * 100);
+        });
+      } finally { fly.remove(); }
+      $("cash17").textContent = fmt17(to);
+      $("cartItems17").insertAdjacentHTML("beforeend", `<g transform="translate(${tx} ${ty}) scale(${s1.toFixed(3)})">${F.svg}</g>`);
+      noise8(0.15, 0.25, 400);
+      say17(`${o.name} — в тележке! Осталось денег: ${fmt17(to)}.`, catLabel17());
+      await wait6(1000);
+      if (Q17.cat + 1 < CATS17.length) await showCat17(Q17.cat + 1);
+      else await checkout17();
+    });
+  }
+
+  // Касса, доставка — и вечер в квартире с новой мебелью
+  async function checkout17() {
+    Q17.phase = "pay";
+    $("ctrl17").hidden = true;
+    $("who17").innerHTML = "";
+    banner17("КУПЛЕНО!", "#2fbf4a");
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+    say17(`На кассе всё оплачено. Сдача — ${fmt17(Q17.money)}. Мебель привезут вечером.`, "касса");
+    await wait6(1500);
+    banner17(null);
+    await talkShop17("liza", "Уложились!", `Уложились! И ещё ${fmt17(Q17.money)} осталось.`);
+    await fade17(true);
+    $("fade16").classList.add("on");
+    $("level17").hidden = true;
+    $("level16").hidden = false;
+    $("fade17").classList.remove("on");
+    home17(true);
+    say17("Вечером мебель привезли и расставили…", "дома");
+    await fade16(false);
+    await wait6(700);
+    await talkRoom17("liza", "Как уютно!");
+    await talkRoom17("timur", "Наконец-то можно сесть на диван!");
+    await talkRoom17("max", "А вечером — ужин за новым столом!");
+    banner16("УЮТНО!", "#e0a200");
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.22), i * 120));
+    const end = "Вы купили мебель, и квартира стала настоящим домом.";
+    say17(end);
+    await speak6(end, $("flat16"));
+    await wait6(900);
+    finish17();
+  }
+
+  function finish17() {
+    Q17.phase = "done";
+    const stars = Q17.wrong === 0 ? 3 : Q17.wrong <= 2 ? 2 : 1;
+    showResult({
+      title: "Уютно!",
+      stars,
+      text: ["", "Мебель купили, но не с первого раза. Попробуй ещё раз!", "Хорошие покупки! Выбирай внимательнее — и будет три звезды.", "Всё купили с умом — и деньги остались!"][stars],
+      stats: `Неудачный выбор: ${Q17.wrong} · Сдача: ${fmt17(Q17.money)}`,
+      next: 18
+    });
+  }
+
+  $("shop17").addEventListener("click", (e) => {
+    const p = e.target.closest(".pod17");
+    if (p) pick17(Number(p.dataset.k));
+  });
+  $("opts17").addEventListener("click", (e) => {
+    const b = e.target.closest(".opt17");
+    if (b && !b.disabled) pick17(Number(b.dataset.k));
+  });
+
+  // =================== Раунд 18: грузчик ===================
+  // Автодиктор рассказывает: ты нашёл работу — теперь ты грузчик на складе. Бригадир Семёныч объясняет правила:
+  // цвет наклейки — это стеллаж, тяжёлые коробки ставят вниз, лёгкие — наверх. Все девять коробок из грузовика
+  // надо разложить по полкам за полторы минуты, пока грузовик не уехал. В конце — первая зарплата.
+  // Голос и ожидания общие с раундами 6–17 (токен I6).
+  const LINES18 = [
+    "Ты нашёл <em>работу</em>!",
+    "Теперь ты работаешь <em>грузчиком</em> на складе.",
+    "Разгрузи грузовик — разложи <em>коробки</em> по полкам."
+  ];
+  const COLS18 = [
+    { c: "#e5484d", tint: "#f2c4c6", sticker: "красная", rack: "красный", gen: "красного" },
+    { c: "#3b8fe0", tint: "#c4d9f2", sticker: "синяя", rack: "синий", gen: "синего" },
+    { c: "#2fbf4a", tint: "#c4ebcf", sticker: "зелёная", rack: "зелёный", gen: "зелёного" }
+  ];
+  // Полки сверху вниз: лёгкие коробки — маленькие, тяжёлые — большие; y — где стоит низ коробки
+  const ROWS18 = [
+    { kg: "3 кг", w: 56, h: 36, y: 130, shelf: "Верхняя" },
+    { kg: "12 кг", w: 76, h: 48, y: 230, shelf: "Средняя" },
+    { kg: "30 кг", w: 96, h: 60, y: 330, shelf: "Нижняя" }
+  ];
+  const X18 = [403, 549, 695], TIME18 = 90, STACK18 = [112, 312], MEX18 = 70, BOSSX18 = 262, FEET18 = 446;
+  const BOSS18 = { id: "boss", name: "Семёныч", c: "#3b5b9e", hair: "#9aa5b1", pitch: 0.6,
+    extra: `<path d="M-13 -110a13 13 0 0 1 26 0z" fill="#e5484d"/><rect x="0" y="-112" width="20" height="4" rx="2" fill="#b93a3f"/>
+      <path d="M3 -99q5 3 9 -1" fill="none" stroke="#6b7682" stroke-width="3" stroke-linecap="round"/>
+      <rect x="6" y="-76" width="18" height="24" rx="2" fill="#8a5d3b"/><rect x="8" y="-72" width="14" height="17" fill="#fff"/>
+      <path d="M10 -68h10M10 -64h10M10 -60h7" stroke="#8f99a4" stroke-width="1.2"/>` };
+  const ME18 = { id: "me", name: "Ты", c: "#f08a24", hair: "#3b2f2a", pitch: 1,
+    extra: `<path d="M-12 -74H12M-12 -64H12" stroke="#e9ecef" stroke-width="3"/>
+      <path d="M-14 -110a14 14 0 0 1 28 0z" fill="#ffc83d"/><rect x="-15" y="-112" width="34" height="5" rx="2.5" fill="#e0a200"/>` };
+  const sym18 = (col, s = 1) => col === 0 ? `<circle r="${6 * s}" fill="${COLS18[0].c}"/>`
+    : col === 1 ? `<rect x="${-5.5 * s}" y="${-5.5 * s}" width="${11 * s}" height="${11 * s}" fill="${COLS18[1].c}"/>`
+    : `<path d="M0 ${-7 * s}L${7 * s} ${5 * s}H${-7 * s}z" fill="${COLS18[2].c}"/>`;
+  let Q18 = null, raf18 = 0, built18 = false;
+
+  // Коробка стоит на полу: (0, 0) — середина низа. Наклейка — цвет стеллажа, размер — вес
+  function box18(col, row) {
+    const R = ROWS18[row], w = R.w, h = R.h, sh = row ? 20 : 16;
+    return `<rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" rx="3" fill="#c9a26b" stroke="#9c7a48" stroke-width="2"/>
+      <rect x="${-w / 2 + 1}" y="${(-h * 0.62).toFixed(1)}" width="${w - 2}" height="${Math.round(h * 0.12)}" fill="#e8d3a5"/>
+      ${row === 2 ? `<path d="M${-w / 2 + 12} ${-h}V0M${w / 2 - 12} ${-h}V0" stroke="#5f6973" stroke-width="4"/>` : ""}
+      <rect x="-13" y="${-h + 4}" width="26" height="${sh}" rx="4" fill="#fff" stroke="${COLS18[col].c}" stroke-width="2"/>
+      <g transform="translate(0 ${-h + 4 + sh / 2})">${sym18(col, row ? 1 : 0.85)}</g>
+      <text y="-4" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="${row === 2 ? 11 : 9}" fill="#5a3d26">${R.kg}</text>
+      <rect class="hi18" x="${-w / 2 - 4}" y="${-h - 4}" width="${w + 8}" height="${h + 8}" rx="6"/>`;
+  }
+
+  function build18() {
+    if (built18) return;
+    built18 = true;
+    let ribs = "";
+    for (let x = 12; x < 800; x += 24) ribs += `M${x} 0V330`;
+    const slots = ROWS18.flatMap((R, r) => X18.map((cx, c) =>
+      `<rect class="slot18" data-i="${r * 3 + c}" x="${cx - R.w / 2}" y="${R.y - R.h}" width="${R.w}" height="${R.h}" rx="3"/>`));
+    $("ware18").innerHTML = `
+      <rect width="800" height="332" fill="#aeb8c4"/>
+      <path d="${ribs}" stroke="#9ea9b6" stroke-width="3"/>
+      <rect x="236" y="8" width="556" height="20" rx="3" fill="#dbe7f2"/>
+      <path d="M328 8V28M420 8V28M512 8V28M604 8V28M696 8V28" stroke="#9ea9b6" stroke-width="3"/>
+      <rect y="330" width="800" height="120" fill="#8f99a4"/>
+      <path d="M0 346H800" stroke="#ffc83d" stroke-width="4" stroke-dasharray="26 16"/>
+      <path d="M0 396H800M0 434H800" stroke="#838d98" stroke-width="2"/>
+      <rect x="0" y="80" width="230" height="252" fill="#1d2227"/>
+      <g id="truck18">
+        <rect x="6" y="94" width="214" height="232" rx="6" fill="#d7dce1"/>
+        <rect x="18" y="106" width="190" height="206" fill="#2b3138"/>
+        <path d="M18 150H208M18 210H208M18 270H208" stroke="#343b43" stroke-width="2"/>
+        <rect x="6" y="312" width="214" height="16" fill="#5f6973"/>
+        <rect x="10" y="300" width="10" height="8" rx="2" fill="#e5484d"/><rect x="206" y="300" width="10" height="8" rx="2" fill="#e5484d"/>
+        <circle cx="46" cy="338" r="15" fill="#1d2227"/><circle cx="180" cy="338" r="15" fill="#1d2227"/>
+        <text x="113" y="124" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="12" fill="#8f99a4">ГРУЗ</text>
+      </g>
+      ${X18.map((cx, c) => `<rect x="${cx - 67}" y="62" width="134" height="268" fill="${COLS18[c].tint}"/>`).join("")}
+      <g fill="#3b5b9e">${[330, 476, 622, 768].map((x) => `<rect x="${x - 3}" y="34" width="6" height="296"/>`).join("")}</g>
+      <g fill="#f08a24">${[62, 130, 230].map((y) => `<rect x="327" y="${y}" width="447" height="8"/>`).join("")}</g>
+      ${X18.map((cx, c) => `<rect x="${cx - 24}" y="34" width="48" height="26" rx="6" fill="#fff" stroke="${COLS18[c].c}" stroke-width="3"/><g transform="translate(${cx} 47)">${sym18(c, 1.3)}</g>`).join("")}
+      ${slots.join("")}
+      <!-- Табличка слева: наверху лёгкие (пёрышко), в середине средние, внизу тяжёлые (гиря) -->
+      <g>
+        <rect x="290" y="64" width="34" height="266" rx="8" fill="#3b424b"/>
+        <path d="M309 82C320 88 318 106 307 114C302 104 302 92 309 82z" fill="#e9ecef"/><path d="M307 114L304 121" stroke="#e9ecef" stroke-width="2"/>
+        <rect x="297" y="182" width="20" height="16" rx="2" fill="#c9a26b"/><path d="M297 188h20" stroke="#e8d3a5" stroke-width="3"/>
+        <path d="M300 286a7 7 0 0 1 14 0" fill="none" stroke="#e9ecef" stroke-width="3"/><circle cx="307" cy="296" r="10" fill="#e9ecef"/>
+        <text x="307" y="300" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="8" fill="#3b424b">30</text>
+      </g>
+      <g id="crew18"></g>
+      <g id="boxes18"></g>
+      <g id="cash18"></g>
+      <g id="bub18"></g>`;
+    $("voice18").hidden = !TTS;
+  }
+
+  function say18(text, label) {
+    if (label) Q18.label = label;
+    $("hintText18").textContent = text;
+    $("stepLabel18").textContent = `Раунд 18 · ${Q18.label}` + (Q18.tries > 1 ? ` · попытка ${Q18.tries}` : "");
+  }
+  const label18 = () => `на полках ${Q18.done} из 9`;
+  function nudge18() {
+    const h = $("hint18");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+  function banner18(text, color) {
+    const b = $("banner18");
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function fade18(on) {
+    $("fade18").classList.toggle("on", on);
+    return wait6(320);
+  }
+  function hud18() {
+    const s = Math.max(0, Math.ceil(Q18.left));
+    $("time18").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    $("hud18").classList.toggle("low", Q18.left < 20);
+  }
+  // Ты — у грузовика, в каске и жилете; бригадир — между грузовиком и стеллажами, с планшетом
+  function crew18(pose = "idle") {
+    const at = (p, x, k, ps) => `<g transform="translate(${x} ${FEET18})"><g transform="scale(${k} 1)">${body16(p, ps)}</g></g>`;
+    $("crew18").innerHTML = at(ME18, MEX18, 1, pose) + at(BOSS18, BOSSX18, -1, "idle");
+  }
+  const bub18 = (who, text) => ($("bub18").innerHTML = text ? bubMarkup(who === "boss" ? BOSSX18 : MEX18, FEET18 - 126 - 12, text) : "");
+  async function talk18(who, short, full) {
+    const p = who === "boss" ? BOSS18 : ME18;
+    clearTimeout(quip18.t);
+    bub18(who, short);
+    say18(`${p.name}: «${full}»`);
+    try { await speak6(full, $("ware18"), who === "boss" ? 1 : 1.05, p.pitch); }
+    finally { bub18(who, ""); }
+  }
+  // Короткая реплика бригадира во время работы — без голоса, чтобы не мешать
+  function quip18(text) {
+    clearTimeout(quip18.t);
+    bub18("boss", text);
+    quip18.t = setTimeout(() => bub18("boss", ""), 1200);
+  }
+
+  const pb18 = (b) => b.el.setAttribute("transform", `translate(${b.x.toFixed(1)} ${b.y.toFixed(1)})`);
+  // В кузове видно три верхние коробки; брать можно только самую верхнюю
+  function stack18() {
+    const q = Q18.boxes.filter((b) => !b.placed);
+    Q18.boxes.forEach((b) => b.el.classList.remove("top"));
+    q.forEach((b, k) => b.el.classList.toggle("hidden18", k > 2));
+    let y = STACK18[1];
+    for (let k = Math.min(2, q.length - 1); k >= 0; k--) {
+      const b = q[k];
+      b.x = b.hx = STACK18[0];
+      b.y = b.hy = y;
+      y -= ROWS18[b.row].h;
+      pb18(b);
+    }
+    if (q[0]) q[0].el.classList.add("top");
+  }
+
+  // Новая смена: девять коробок — по одной на каждое место — в случайном порядке
+  function setup18() {
+    const svg = $("ware18");
+    svg.setAttribute("class", "");
+    const combos = shuffle(Array.from({ length: 9 }, (_, i) => ({ col: i % 3, row: Math.floor(i / 3) })));
+    $("boxes18").innerHTML = combos.map((b, i) => {
+      const R = ROWS18[b.row];
+      return `<g class="box18" data-i="${i}"><g class="shape18">${box18(b.col, b.row)}</g><rect x="${-R.w / 2 - 14}" y="${-R.h - 14}" width="${R.w + 28}" height="${R.h + 28}" fill="transparent"/></g>`;
+    }).join("");
+    Q18.boxes = combos.map((b, i) => ({ ...b, i, placed: false, flying: false, el: $("boxes18").children[i] }));
+    Object.assign(Q18, { done: 0, filled: Array(9).fill(false), left: TIME18, drag: null, time: 0 });
+    svg.querySelectorAll(".slot18").forEach((r) => r.classList.remove("full", "bad"));
+    stack18();
+    crew18("idle");
+    ["bub18", "cash18"].forEach((id) => ($(id).innerHTML = ""));
+    $("cash18").removeAttribute("transform");
+    $("hud18").hidden = true;
+    hud18();
+    banner18(null);
+    $("fade18").classList.remove("on");
+  }
+
+  function startRound18() {
+    stopRound6(); // новый токен I6 обрывает всё, что осталось от прошлой попытки
+    round = 18;
+    build18();
+    $("level18").hidden = false;
+    Q18 = { phase: "intro", label: "работа", tries: 1, wrong: 0 };
+    setup18();
+    loop18();
+    say18("Ты нашёл работу…", "работа");
+    const box = $("intro18"), lines = $("lines18");
+    lines.innerHTML = LINES18.map((l) => `<p>${l}</p>`).join("");
+    $("art18").classList.remove("on");
+    box.hidden = false;
+    box.animate(
+      [{ clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(100% at 50% 50%)" }],
+      { duration: 850, easing: "cubic-bezier(.2,.7,.2,1)" }
+    );
+    run5(async () => {
+      await wait6(900);
+      const ps = [...lines.children];
+      for (let i = 0; i < ps.length; i++) {
+        if (i) ps[i - 1].classList.add("said");
+        ps[i].classList.add("on");
+        if (i === 0) $("art18").classList.add("on");
+        await speak6(ps[i].textContent, box);
+      }
+      ps.forEach((p) => p.classList.remove("said"));
+      await wait6(1100);
+      endIntro18();
+    });
+  }
+  // Надпись гаснет — под ней склад, где ждёт бригадир
+  function endIntro18() {
+    const box = $("intro18");
+    if (!Q18 || Q18.phase !== "intro") return;
+    Q18.phase = "boss";
+    I6.token++;
+    if (TTS) TTS.cancel();
+    const tok = I6.token;
+    box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: REDUCE5 ? 0 : 500, easing: "ease-in" })
+      .onfinish = () => { if (I6.token === tok) box.hidden = true; };
+    run5(boss18);
+  }
+  $("skip18").addEventListener("click", endIntro18);
+
+  async function boss18() {
+    say18("Склад. Грузовик привёз коробки.", "склад");
+    await wait6(600);
+    await talk18("boss", "Привет, новенький!", "Привет, новенький! Я бригадир Семёныч.");
+    await talk18("boss", "Цвет — это стеллаж!", "Цвет наклейки — это стеллаж. Тяжёлые коробки — вниз, лёгкие — наверх.");
+    await talk18("boss", "За работу!", "Грузовик уедет через полторы минуты. За работу!");
+    startShift18();
+  }
+  function startShift18() {
+    Q18.phase = "play";
+    $("ware18").classList.add("shift18");
+    $("hud18").hidden = false;
+    hud18();
+    say18("Перетаскивай коробки из грузовика на стеллажи: цвет наклейки — это стеллаж. Большие тяжёлые — вниз, маленькие лёгкие — наверх.", label18());
+  }
+
+  function loop18() {
+    cancelAnimationFrame(raf18);
+    let last = performance.now();
+    const step = (t) => {
+      if (!Q18 || Q18.phase === "off" || Q18.phase === "done") return;
+      const dt = Math.min(0.05, (t - last) / 1000);
+      last = t;
+      if (Q18.phase === "play") {
+        const was = Math.ceil(Q18.left);
+        Q18.left = Math.max(0, Q18.left - dt);
+        hud18();
+        const now = Math.ceil(Q18.left);
+        if (now !== was && now <= 10 && now > 0) beep(now <= 5 ? 1200 : 900, 0.06, "square", 0.05);
+        if (Q18.left <= 0) fail18();
+      }
+      raf18 = requestAnimationFrame(step);
+    };
+    raf18 = requestAnimationFrame(step);
+  }
+
+  // Коробка плавно возвращается в кузов
+  function home18(b) {
+    const x0 = b.x, y0 = b.y, t0 = performance.now(), D = REDUCE5 ? 1 : 260;
+    b.flying = true;
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / D), e = ease5.out(k);
+      b.x = x0 + (b.hx - x0) * e;
+      b.y = y0 + (b.hy - y0) * e;
+      pb18(b);
+      if (k < 1) requestAnimationFrame(step); else b.flying = false;
+    };
+    requestAnimationFrame(step);
+  }
+  function flashSlot18(slot) {
+    slot.classList.add("bad");
+    setTimeout(() => slot.classList.remove("bad"), 600);
+  }
+
+  function drop18(b, moved) {
+    if (moved < 3) { say18("Перетащи коробку на полку: зажми её и веди."); nudge18(); home18(b); return; }
+    const R = ROWS18[b.row], cy = b.y - R.h / 2;
+    const c = X18.findIndex((cx) => Math.abs(b.x - cx) < 73), r = cy < 134 ? 0 : cy < 234 ? 1 : 2;
+    if (c < 0 || cy < 40 || cy > 350) { home18(b); return; }
+    const i = r * 3 + c, slot = $("ware18").querySelector(`.slot18[data-i="${i}"]`);
+    if (Q18.filled[i]) { say18("Тут уже стоит коробка. Ищи свободное место."); nudge18(); home18(b); return; }
+    if (c === b.col && r === b.row) { place18(b, c, r, slot); return; }
+    Q18.wrong++;
+    beep(150, 0.18, "square", 0.06);
+    flashSlot18(slot);
+    quip18("Не туда!");
+    const C = COLS18[b.col];
+    say18(c !== b.col ? `У этой коробки ${C.sticker} наклейка — ей на ${C.rack} стеллаж.`
+      : b.row === 2 ? "Тяжёлую коробку ставим только вниз — а то полка не выдержит!"
+      : b.row === 0 ? "Лёгкие коробки — наверх. Внизу место для тяжёлых."
+      : "Средней коробке — место на средней полке.");
+    nudge18();
+    home18(b);
+  }
+
+  function place18(b, c, r, slot) {
+    b.placed = true;
+    b.el.classList.remove("top");
+    b.el.classList.add("placed");
+    slot.classList.add("full");
+    Q18.filled[r * 3 + c] = true;
+    Q18.done++;
+    const x0 = b.x, y0 = b.y, tx = X18[c], ty = ROWS18[r].y, t0 = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / 160);
+      b.x = x0 + (tx - x0) * k;
+      b.y = y0 + (ty - y0) * k;
+      pb18(b);
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    noise8(0.15, 0.3, 300);
+    beep(520 + Q18.done * 45, 0.08);
+    say18(`Есть! ${ROWS18[r].shelf} полка ${COLS18[c].gen} стеллажа.`, label18());
+    if (Q18.done === 3) quip18("Хорошо!");
+    else if (Q18.done === 6) quip18("Молодец!");
+    if (Q18.done === 9) done18();
+    else stack18();
+  }
+
+  // Не успел — грузовику пора ехать, смена начинается заново
+  function fail18() {
+    Q18.phase = "fail";
+    const d = Q18.drag;
+    if (d) { Q18.drag = null; d.b.el.classList.remove("drag"); home18(d.b); }
+    $("ware18").classList.remove("shift18", "dragging");
+    banner18("ВРЕМЯ ВЫШЛО!", "#e5484d");
+    beep(140, 0.35, "sawtooth", 0.08);
+    run5(async () => {
+      await talk18("boss", "Не успели!", "Не успели — грузовику пора ехать! Давай ещё раз, только быстрее.");
+      banner18(null);
+      Q18.tries++;
+      await fade18(true);
+      setup18();
+      await fade18(false);
+      startShift18();
+    });
+  }
+
+  // Все коробки на полках: грузовик уезжает, бригадир выдаёт первую зарплату
+  function done18() {
+    const svg = $("ware18");
+    Q18.phase = "end";
+    Q18.time = Math.round(Q18.left);
+    svg.classList.remove("shift18", "dragging");
+    $("hud18").hidden = true;
+    banner18("ВСЁ НА ПОЛКАХ!", "#2fbf4a");
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+    run5(async () => {
+      await wait6(1300);
+      banner18(null);
+      svg.classList.add("gone");
+      vroom6();
+      await talk18("boss", "Отлично!", "Отлично! Все коробки на своих местах.");
+      await talk18("boss", "Держи зарплату!", "Держи свою первую зарплату — пять тысяч рублей!");
+      await pay18();
+      crew18("cheer");
+      $("cash18").setAttribute("transform", "translate(0 -62)");
+      banner18("ЗАРПЛАТА!", "#e0a200");
+      await talk18("me", "Ура!", "Ура! Моя первая зарплата!");
+      const end = "Ты отработал первую смену грузчиком и получил зарплату.";
+      say18(end, "зарплата");
+      await speak6(end, svg);
+      await wait6(900);
+      finish18();
+    });
+  }
+  // Купюры по одной перелетают из рук бригадира тебе в руку
+  async function pay18() {
+    const bill = `<rect x="-15" y="-9" width="30" height="18" rx="2" fill="#3cb96b" stroke="#1f7a44" stroke-width="1.5"/><circle r="4.5" fill="none" stroke="#e8f7ee" stroke-width="1.5"/>`;
+    const x0 = BOSSX18 - 20, y0 = FEET18 - 64, x1 = MEX18 + 22, y1 = FEET18 - 58;
+    for (let i = 0; i < 5; i++) {
+      const el = document.createElementNS(SVGNS, "g");
+      el.innerHTML = bill;
+      el.setAttribute("transform", `translate(${x0} ${y0})`);
+      $("cash18").appendChild(el);
+      beep(1200 + i * 120, 0.06);
+      tween9(REDUCE5 ? 0 : 600, (t) => {
+        const e = ease5.inOut(t);
+        el.setAttribute("transform", `translate(${(x0 + (x1 - x0) * e).toFixed(1)} ${(y0 + (y1 - y0) * e - Math.sin(Math.PI * t) * 70 - i * 3).toFixed(1)}) rotate(${(t * 360 * (i % 2 ? 1 : -1)).toFixed(0)})`);
+      }).catch(noop);
+      await wait6(160);
+    }
+    await wait6(700);
+  }
+
+  function finish18() {
+    Q18.phase = "done";
+    const stars = Q18.tries === 1 && Q18.wrong === 0 && Q18.time >= 20 ? 3 : Q18.tries <= 2 && Q18.wrong <= 3 ? 2 : 1;
+    showResult({
+      title: "Первая зарплата!",
+      stars,
+      text: ["", "Смена отработана, но с ошибками. Попробуй ещё раз!", "Хорошая смена! Быстрее и без ошибок — и будет три звезды.", "Лучший грузчик на складе!"][stars],
+      stats: `Ошибки: ${Q18.wrong} · Запас времени: ${Q18.time} с` + (Q18.tries > 1 ? ` · Попытка ${Q18.tries}` : ""),
+      next: 19
+    });
+  }
+
+  const pt18 = (e) => {
+    const svg = $("ware18"), p = svg.createSVGPoint();
+    p.x = e.clientX;
+    p.y = e.clientY;
+    return p.matrixTransform(svg.getScreenCTM().inverse());
+  };
+  $("ware18").addEventListener("pointerdown", (e) => {
+    if (!Q18 || Q18.phase !== "play") return;
+    const g = e.target.closest(".box18.top");
+    if (!g) return;
+    const b = Q18.boxes[Number(g.dataset.i)], p = pt18(e);
+    if (b.flying || b.placed) return;
+    e.preventDefault();
+    $("ware18").setPointerCapture(e.pointerId);
+    Q18.drag = { id: e.pointerId, b, dx: b.x - p.x, dy: b.y - p.y, moved: 0 };
+    g.classList.add("drag");
+    g.parentNode.appendChild(g); // поверх остальных коробок
+    $("ware18").classList.add("dragging");
+    click();
+  });
+  $("ware18").addEventListener("pointermove", (e) => {
+    const d = Q18 && Q18.drag;
+    if (!d || e.pointerId !== d.id) return;
+    const p = pt18(e), b = d.b;
+    b.x = Math.max(20, Math.min(780, p.x + d.dx));
+    b.y = Math.max(40, Math.min(446, p.y + d.dy));
+    d.moved++;
+    pb18(b);
+  });
+  const up18 = (e) => {
+    const d = Q18 && Q18.drag;
+    if (!d || e.pointerId !== d.id) return;
+    Q18.drag = null;
+    d.b.el.classList.remove("drag");
+    $("ware18").classList.remove("dragging");
+    if (Q18.phase === "play") drop18(d.b, d.moved);
+    else home18(d.b);
+  };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((ev) => $("ware18").addEventListener(ev, up18));
+
+  // =================== Раунд 19: продукты ===================
+  // С первой зарплаты ты идёшь в продуктовый магазин. Лиза написала список: хлеб, два пакета молока, яйца, сыр,
+  // три яблока и макароны. Продукты берёшь с полок — нажимаешь, и они летят в корзину; лишнего не бери
+  // (кефир — не молоко, конфеты — не по списку). На кассе кассир пробивает покупки, а ты расплачиваешься сам:
+  // выбираешь купюры и монеты из кошелька. Голос и ожидания общие с раундами 6–18 (токен I6).
+  // Продукты стоят на полке: (0, 0) — середина низа
+  const wrap19 = (x, c) => `<g transform="translate(${x} -14)"><ellipse rx="7" ry="5" fill="${c}"/><path d="M-7 0l-6 -5v10zM7 0l6 -5v10z" fill="${c}"/></g>`;
+  const PROD19 = {
+    bread: { name: "Хлеб", price: 50, svg: `<path d="M-28 0V-16Q-28 -34 0 -34Q28 -34 28 -16V0z" fill="#c98f4e"/><path d="M-16 -24l6 7M-3 -27l6 7M10 -24l6 7" stroke="#a8702f" stroke-width="3" stroke-linecap="round"/>` },
+    bun: { name: "Булочка", price: 40, no: "Это булочка, а в списке — хлеб.",
+      svg: `<ellipse cy="-14" rx="21" ry="14" fill="#d9a35f"/><g fill="#3b2f2a"><circle cx="-8" cy="-20" r="1.4"/><circle cx="0" cy="-23" r="1.4"/><circle cx="8" cy="-19" r="1.4"/><circle cx="-3" cy="-15" r="1.4"/><circle cx="5" cy="-13" r="1.4"/></g>` },
+    pasta: { name: "Макароны", price: 90, svg: `<rect x="-17" y="-52" width="34" height="52" rx="3" fill="#3b8fe0"/><rect x="-17" y="-52" width="34" height="9" fill="#1d5fa8"/>
+      <rect x="-11" y="-38" width="22" height="18" rx="4" fill="#fff"/><path d="M-7 -34l3 10M-1 -35l3 10M5 -34l3 10" stroke="#e0a200" stroke-width="3" stroke-linecap="round"/>` },
+    rice: { name: "Рис", price: 100, no: "Рис не нужен — в списке макароны.",
+      svg: `<rect x="-17" y="-48" width="34" height="48" rx="3" fill="#f4f1ea" stroke="#c3cbd3" stroke-width="2"/><rect x="-17" y="-48" width="34" height="10" fill="#e5484d"/>
+      <text y="-16" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="11" fill="#e5484d">РИС</text>` },
+    cookies: { name: "Печенье", price: 120, no: "Печенье не в списке! Не отвлекайся на сладкое.",
+      svg: `<rect x="-24" y="-30" width="48" height="30" rx="3" fill="#f08a24"/><circle cx="-10" cy="-15" r="8" fill="#d9a35f" stroke="#a8702f" stroke-width="1.5"/><circle cx="10" cy="-15" r="8" fill="#d9a35f" stroke="#a8702f" stroke-width="1.5"/>` },
+    candy: { name: "Конфеты", price: 150, no: "Конфеты? Их нет в списке, хоть и очень хочется!",
+      svg: `<rect x="-24" y="-28" width="48" height="28" rx="4" fill="#e05a9a"/>${wrap19(-11, "#ffc83d")}${wrap19(11, "#5cf08a")}` },
+    milk: { name: "Молоко", price: 80, svg: `<path d="M-15 0V-42L-9 -52H9L15 -42V0z" fill="#f4f6f8" stroke="#c3cbd3" stroke-width="2"/><path d="M-9 -52L0 -46L9 -52" fill="none" stroke="#c3cbd3" stroke-width="2"/><rect x="-15" y="-32" width="30" height="14" fill="#3b8fe0"/>` },
+    kefir: { name: "Кефир", price: 85, no: "Это кефир, а в списке — молоко!",
+      svg: `<path d="M-15 0V-42L-9 -52H9L15 -42V0z" fill="#f4f6f8" stroke="#c3cbd3" stroke-width="2"/><path d="M-9 -52L0 -46L9 -52" fill="none" stroke="#c3cbd3" stroke-width="2"/><rect x="-15" y="-32" width="30" height="14" fill="#2fbf4a"/>` },
+    yogurt: { name: "Йогурт", price: 60, no: "Йогурта нет в списке.",
+      svg: `<path d="M-13 -30h26l-4 30h-18z" fill="#ff8ac0"/><rect x="-15" y="-34" width="30" height="5" rx="2" fill="#c3cbd3"/>` },
+    cheese: { name: "Сыр", price: 200, svg: `<path d="M-26 0H26V-32z" fill="#ffc83d"/><g fill="#e0a200"><circle cx="10" cy="-8" r="4"/><circle cx="18" cy="-20" r="3"/><circle cx="-6" cy="-4" r="2.5"/></g>` },
+    eggs: { name: "Яйца", price: 110, svg: `${[-18, -6, 6, 18].map((x) => `<ellipse cx="${x}" cy="-15" rx="6" ry="7.5" fill="#fbf3e4" stroke="#e2d8c6"/>`).join("")}<path d="M-28 0V-12H28V0z" fill="#b9ab8c"/><path d="M-28 -12H28" stroke="#9c8f73" stroke-width="2"/>` },
+    cake: { name: "Торт", price: 400, no: "Торт? Его нет в списке — и он дорогой!",
+      svg: `<rect x="-26" y="-28" width="52" height="28" rx="4" fill="#f4d58d"/><rect x="-26" y="-14" width="52" height="4" fill="#e05a9a"/><rect x="-26" y="-31" width="52" height="8" rx="4" fill="#fff"/>
+      <circle cy="-36" r="5" fill="#e5484d"/><path d="M0 -41q3 -6 7 -6" stroke="#3f8f4f" stroke-width="2" fill="none"/>` },
+    banana: { name: "Бананы", price: 30, no: "Бананов нет в списке — нужны яблоки.",
+      svg: `<path d="M-24 -26Q0 -2 24 -26Q20 -12 0 -12Q-20 -12 -24 -26z" fill="#ffd84d" stroke="#c9a13b" stroke-width="1.5"/><path d="M-26 -18Q0 6 26 -18Q22 -4 0 -4Q-22 -4 -26 -18z" fill="#ffc83d" stroke="#c9a13b" stroke-width="1.5"/><path d="M-26 -20l-4 -9" stroke="#6b4a2f" stroke-width="3" stroke-linecap="round"/>` },
+    lemon: { name: "Лимон", price: 25, no: "Лимон не нужен — его нет в списке.",
+      svg: `<ellipse cy="-13" rx="16" ry="12" fill="#ffe34d"/><path d="M16 -13l5 -1M-16 -13l-5 1" stroke="#e0c030" stroke-width="3" stroke-linecap="round"/>` },
+    apple: { name: "Яблоко", price: 20, svg: `<circle cy="-16" r="16" fill="#e5484d"/><path d="M0 -30V-37" stroke="#6b4a2f" stroke-width="3" stroke-linecap="round"/><ellipse cx="6" cy="-36" rx="6" ry="3" fill="#3f8f4f"/><ellipse cx="-6" cy="-21" rx="4" ry="6" fill="#fff" opacity="0.35"/>` },
+    orange: { name: "Апельсин", price: 25, no: "Это апельсин, а нужны яблоки!",
+      svg: `<circle cy="-15" r="15" fill="#f08a24"/><circle cx="3" cy="-28" r="2.5" fill="#3f8f4f"/><circle cx="-5" cy="-19" r="3" fill="#fff" opacity="0.3"/>` },
+    melon: { name: "Арбуз", price: 300, no: "Арбуз? Его нет в списке — и он тяжёлый!",
+      svg: `<ellipse cy="-20" rx="30" ry="20" fill="#3f8f4f"/><path d="M-24 -30q24 -10 48 0M-28 -20h56M-24 -10q24 10 48 0" fill="none" stroke="#2c6b3c" stroke-width="4"/>` },
+    carrot: { name: "Морковь", price: 15, no: "Моркови нет в списке.",
+      svg: `<g transform="rotate(-70)"><path d="M-6 -30L6 -30L0 4z" fill="#f08a24"/><path d="M-4 -30l-6 -10M0 -30v-12M4 -30l6 -10" stroke="#3f8f4f" stroke-width="3" stroke-linecap="round"/></g>
+      <g transform="translate(10 -2) rotate(-110)"><path d="M-6 -30L6 -30L0 4z" fill="#f59a3a"/><path d="M-4 -30l-6 -10M0 -30v-12M4 -30l6 -10" stroke="#3f8f4f" stroke-width="3" stroke-linecap="round"/></g>` }
+  };
+  const LIST19 = [
+    { id: "bread", name: "Хлеб", n: 1 }, { id: "milk", name: "Молоко", n: 2 }, { id: "eggs", name: "Яйца", n: 1 },
+    { id: "cheese", name: "Сыр", n: 1 }, { id: "apple", name: "Яблоки", n: 3 }, { id: "pasta", name: "Макароны", n: 1 }
+  ];
+  const NEED19 = Object.fromEntries(LIST19.map((r) => [r.id, r]));
+  const TOTAL19 = LIST19.reduce((s, r) => s + r.n, 0);
+  // Где что стоит: [продукт, x, полка сверху вниз]. Слева хлеб и крупы, в середине холодильник, справа фрукты
+  const SHELF19 = [
+    ["bread", 240, 0], ["bun", 340, 0], ["pasta", 240, 1], ["rice", 340, 1], ["cookies", 240, 2], ["candy", 340, 2],
+    ["milk", 440, 0], ["kefir", 540, 0], ["yogurt", 440, 1], ["cheese", 540, 1], ["eggs", 440, 2], ["cake", 540, 2],
+    ["banana", 640, 0], ["lemon", 740, 0], ["apple", 640, 1], ["orange", 740, 1], ["melon", 640, 2], ["carrot", 740, 2]
+  ];
+  const ROWY19 = [168, 268, 368], WALLET19 = [1000, 500, 100, 100, 50, 10, 10, 10, 10];
+  const BILLC19 = { 1000: "#2f9e5a", 500: "#8e5bd6", 100: "#b5653a", 50: "#3b8fe0", 10: "#e0a200" };
+  const CASH19 = { id: "cash", name: "Кассир", c: "#e5484d", hair: "#8a5d3b", long: true, pitch: 1.25, extra: `<rect x="-2" y="-84" width="11" height="7" rx="1.5" fill="#fff"/>` };
+  let Q19 = null, built19 = false;
+
+  function build19() {
+    if (built19) return;
+    built19 = true;
+    const SECT = [["ХЛЕБ И КРУПЫ", 290, "#c98f4e"], ["МОЛОЧНОЕ", 490, "#3b8fe0"], ["ФРУКТЫ", 690, "#2fbf4a"]];
+    const shelves = SHELF19.map(([id, x, r]) => {
+      const y = ROWY19[r], fruit = x > 590;
+      return `${fruit ? `<rect x="${x - 36}" y="${y - 16}" width="72" height="16" rx="2" fill="#b07a4a"/><path d="M${x - 36} ${y - 8}H${x + 36}" stroke="#8a5d3b" stroke-width="2"/>` : ""}
+        <g class="prod19" data-id="${id}"><g transform="translate(${x} ${y - (fruit ? 10 : 0)})"><g class="item19">${PROD19[id].svg}</g></g>
+        <rect x="${x - 46}" y="${y - 88}" width="92" height="88" fill="transparent"/></g>
+        <rect x="${x - 20}" y="${y + 1}" width="40" height="12" rx="2" fill="#fff"/>
+        <text x="${x}" y="${y + 11}" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="10" fill="#23282e">${PROD19[id].price} ₽</text>`;
+    }).join("");
+    $("shop19").innerHTML = `
+      <rect width="800" height="402" fill="#f4f1e8"/>
+      <rect width="800" height="12" fill="#2f9e5a"/>
+      <rect y="400" width="800" height="50" fill="#e0d8c8"/>
+      <path d="M0 400H800M0 424H800M100 400L80 450M300 400L290 450M500 400L510 450M700 400L720 450" stroke="#cfc6b4" stroke-width="2"/>
+      <g id="aisle19">
+        <rect x="300" y="18" width="200" height="40" rx="10" fill="#2f9e5a"/>
+        <text x="400" y="46" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">ПРОДУКТЫ</text>
+        ${SECT.map(([t, x, c]) => `<rect x="${x - 80}" y="64" width="160" height="20" rx="6" fill="${c}"/><text x="${x}" y="78.5" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="11" fill="#fff">${t}</text>`).join("")}
+        <rect x="190" y="88" width="600" height="292" fill="#e6e0d2"/>
+        <rect x="390" y="88" width="200" height="292" fill="#dff0fa"/>
+        <path d="M404 100L436 360M480 100L500 250" stroke="#fff" stroke-opacity="0.7" stroke-width="6" stroke-linecap="round"/>
+        <g fill="#8f99a4">${[190, 390, 590, 790].map((x) => `<rect x="${x - 4}" y="88" width="8" height="292"/>`).join("")}</g>
+        <g fill="#aeb6bf">${ROWY19.map((y) => `<rect x="190" y="${y}" width="600" height="8"/>`).join("")}</g>
+        <rect x="186" y="376" width="608" height="24" fill="#8f99a4"/>
+        ${shelves}
+      </g>
+      <g id="till19">
+        <rect x="560" y="18" width="200" height="40" rx="10" fill="#e5484d"/>
+        <text x="660" y="46" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">КАССА</text>
+        <rect x="200" y="96" width="330" height="8" fill="#aeb6bf"/><rect x="200" y="186" width="330" height="8" fill="#aeb6bf"/>
+        ${["cookies", "candy", "yogurt", "orange", "bun", "lemon"].map((id, i) => `<g transform="translate(${228 + i * 56} 96) scale(0.8)">${PROD19[id].svg}</g>`).join("")}
+        ${["pasta", "rice", "milk", "kefir", "apple", "banana"].map((id, i) => `<g transform="translate(${228 + i * 56} 186) scale(0.8)">${PROD19[id].svg}</g>`).join("")}
+        <g transform="translate(560 90)"><rect width="112" height="88" rx="8" fill="#ffc83d"/><text x="56" y="38" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="26" fill="#e5484d">−20%</text>
+          <text x="56" y="62" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="700" font-size="12" fill="#5a3d26">на все фрукты</text></g>
+        <g transform="translate(690 384)"><g transform="scale(-1 1)">${body16(CASH19, "idle")}</g></g>
+        <rect x="190" y="328" width="610" height="12" fill="#aeb6bf"/>
+        <rect x="190" y="340" width="610" height="80" fill="#5f6973"/>
+        <path d="M190 362H800" stroke="#4b5560" stroke-width="3"/>
+        <rect x="200" y="318" width="300" height="12" rx="4" fill="#2b3138"/>
+        <path class="belt19" d="M204 324H496" stroke="#5f6973" stroke-width="4"/>
+        <rect x="506" y="300" width="28" height="30" rx="4" fill="#23282e"/><rect x="510" y="306" width="20" height="4" fill="#e5484d"/>
+        <g transform="translate(590 328)">
+          <rect x="-40" y="-64" width="80" height="64" rx="6" fill="#3b424b"/>
+          <rect x="-32" y="-56" width="64" height="24" rx="3" fill="#0e1712"/>
+          <text id="reg19" y="-38" text-anchor="middle" font-family="Share Tech Mono, monospace" font-size="16" fill="#5cf08a">0 ₽</text>
+          <g fill="#8f99a4">${[0, 1, 2, 3, 4, 5].map((i) => `<rect x="${-28 + (i % 3) * 20}" y="${-26 + Math.floor(i / 3) * 12}" width="16" height="8" rx="2"/>`).join("")}</g>
+        </g>
+        <g transform="translate(770 328)"><path d="M-20 0V-40H20V0z" fill="#d9b38c" stroke="#a8825c" stroke-width="2"/><path d="M-20 -40l5 -6h30l5 6" fill="#c9a26b"/></g>
+        <g id="belt19items"></g>
+        <g id="tray19"></g>
+      </g>
+      <g id="hero19" transform="translate(90 440)"></g>
+      <g id="basket19" transform="translate(101 390)">
+        <path d="M-18 8Q0 -12 18 8" fill="none" stroke="#b93a3f" stroke-width="3"/>
+        <g id="bmini19"></g>
+        <path d="M-25 8h50l-6 30h-38z" fill="#e5484d"/><path d="M-21 18h42M-18 28h36M-8 8v30M8 8v30" stroke="#b93a3f" stroke-width="2"/>
+      </g>
+      <g id="fly19"></g>
+      <g id="bub19"></g>`;
+  }
+
+  function say19(text, label) {
+    if (label) Q19.label = label;
+    $("hintText19").textContent = text;
+    $("stepLabel19").textContent = `Раунд 19 · ${Q19.label}`;
+  }
+  const label19 = () => `в корзине ${Q19.basket.length} из ${TOTAL19}`;
+  function nudge19() {
+    const h = $("hint19");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+  function banner19(text, color) {
+    const b = $("banner19");
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function fade19(on) {
+    $("fade19").classList.toggle("on", on);
+    return wait6(320);
+  }
+  const hero19 = (pose) => ($("hero19").innerHTML = body16(fig17("me"), pose));
+  const bub19 = (who, text) => ($("bub19").innerHTML = text ? bubMarkup(who === "cash" ? 690 : 90, (who === "cash" ? 384 : 440) - 138, text) : "");
+  async function talk19(who, short, full) {
+    const p = who === "cash" ? CASH19 : fig17("me");
+    clearTimeout(quip19.t);
+    bub19(who, short);
+    say19(`${p.name}: «${full}»`);
+    try { await speak6(full, $("shop19"), 1.05, p.pitch); }
+    finally { bub19(who, ""); }
+  }
+  // Короткая реплика у полок — без голоса, чтобы не тормозить покупки
+  function quip19(text) {
+    clearTimeout(quip19.t);
+    bub19("me", text);
+    quip19.t = setTimeout(() => bub19("me", ""), 1200);
+  }
+  // Список от Лизы: картинка, что купить и сколько уже в корзине
+  function list19(hit) {
+    $("list19").innerHTML = `<li class="head19">Список от Лизы</li>` + LIST19.map((r) => {
+      const n = Q19.got[r.id] || 0;
+      return `<li class="row19${n >= r.n ? " done" : ""}${r.id === hit ? " hit" : ""}" data-id="${r.id}"><svg viewBox="-32 -58 64 60" aria-hidden="true">${PROD19[r.id].svg}</svg><span>${r.name}</span><b>${n} из ${r.n}</b></li>`;
+    }).join("");
+  }
+
+  function startRound19() {
+    stopRound6(); // новый токен I6 обрывает всё, что осталось от прошлой попытки
+    round = 19;
+    build19();
+    $("level19").hidden = false;
+    Q19 = { phase: "intro", label: "магазин", wrong: 0, got: {}, basket: [], total: 0, paid: 0, change: 0 };
+    $("shop19").setAttribute("class", "");
+    ["bmini19", "fly19", "bub19", "belt19items", "tray19"].forEach((id) => ($(id).innerHTML = ""));
+    hero19("idle");
+    $("reg19").textContent = "0 ₽";
+    $("paid19").hidden = true;
+    $("fade19").classList.remove("on");
+    banner19(null);
+    list19();
+    $("list19").hidden = true;
+    $("wallet19").hidden = true;
+    $("ctrl19").hidden = true;
+    run5(intro19);
+  }
+
+  async function intro19() {
+    const svg = $("shop19"), read = "Хлеб, два пакета молока, яйца, сыр, три яблока и макароны.";
+    say19("С первой зарплаты ты пошёл в магазин за продуктами.", "магазин");
+    await speak6("С первой зарплаты ты пошёл в магазин за продуктами.", svg);
+    await talk19("me", "Где мой список?", "Так, где мой список от Лизы… Вот он!");
+    $("ctrl19").hidden = false;
+    const list = $("list19");
+    list.hidden = false;
+    list.classList.remove("pop"); void list.offsetWidth; list.classList.add("pop");
+    beep(660, 0.08);
+    say19(`В списке: ${read.toLowerCase()}`, "список");
+    await speak6(`В списке: ${read}`, svg);
+    Q19.phase = "shop";
+    svg.classList.add("shop");
+    say19("Найди на полках всё, что есть в списке, и нажимай на продукты — они полетят в корзину. Лишнего не бери!", label19());
+  }
+
+  // Нажали на продукт: если он из списка и его ещё не хватает — летит в корзину
+  function pick19(g) {
+    if (!Q19 || Q19.phase !== "shop") return;
+    const id = g.dataset.id, P = PROD19[id], row = NEED19[id], have = Q19.got[id] || 0;
+    if (!row || have >= row.n) {
+      Q19.wrong++;
+      g.classList.remove("no"); void g.getBoundingClientRect(); g.classList.add("no");
+      beep(150, 0.18, "square", 0.06);
+      quip19(row ? "Хватит!" : "Не то!");
+      say19(row ? `${row.name}: в списке только ${row.n} — больше не надо!` : P.no);
+      nudge19();
+      return;
+    }
+    Q19.got[id] = have + 1;
+    const k = Q19.basket.length;
+    Q19.basket.push(id);
+    click();
+    fly19(id, k);
+    list19(id);
+    const done = Q19.got[id] >= row.n;
+    if (done) setTimeout(() => beep(880, 0.1), 120);
+    say19(done ? `${row.name} — есть! Вычёркиваем из списка.` : `${P.name} — в корзине.`, label19());
+    if (Q19.basket.length === TOTAL19) toTill19();
+  }
+  $("shop19").addEventListener("click", (e) => {
+    const g = e.target.closest(".prod19");
+    if (g) pick19(g);
+  });
+
+  // Продукт летит с полки в корзину; в корзине он ложится на своё место (k)
+  function fly19(id, k) {
+    const [, x, r] = SHELF19.find((s) => s[0] === id), x0 = x, y0 = ROWY19[r] - (x > 590 ? 10 : 0);
+    const mx = -14 + (k % 3) * 14, my = 12 - Math.floor(k / 3) * 7, x1 = 101 + mx, y1 = 390 + my;
+    const el = document.createElementNS(SVGNS, "g");
+    el.innerHTML = PROD19[id].svg;
+    el.setAttribute("transform", `translate(${x0} ${y0})`);
+    $("fly19").appendChild(el);
+    tween9(REDUCE5 ? 0 : 600, (t) => {
+      const e = ease5.inOut(t);
+      el.setAttribute("transform", `translate(${(x0 + (x1 - x0) * e).toFixed(1)} ${(y0 + (y1 - y0) * e - Math.sin(Math.PI * t) * 60).toFixed(1)}) scale(${(1 - 0.66 * e).toFixed(3)})`);
+    }).then(() => {
+      el.remove();
+      $("bmini19").insertAdjacentHTML("beforeend", `<g transform="translate(${mx} ${my}) scale(0.34)">${PROD19[id].svg}</g>`);
+      noise8(0.08, 0.15, 500);
+    }, () => el.remove());
+  }
+
+  // Всё по списку: на кассе продукты едут по ленте, кассир пробивает каждый
+  function toTill19() {
+    const svg = $("shop19");
+    Q19.phase = "till";
+    run5(async () => {
+      await wait6(800);
+      banner19("ВСЁ ПО СПИСКУ!", "#2fbf4a");
+      [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.16), i * 110));
+      await talk19("me", "Всё есть!", "Всё по списку! Иду на кассу.");
+      banner19(null);
+      await fade19(true);
+      $("ctrl19").hidden = true;
+      svg.classList.remove("shop");
+      svg.classList.add("till");
+      $("bmini19").innerHTML = "";
+      $("belt19items").innerHTML = Q19.basket.map((id, i) => `<g transform="translate(${226 + i * 30} 318) scale(0.55)">${PROD19[id].svg}</g>`).join("");
+      say19("Касса. Ты выложил продукты на ленту.", "касса");
+      await fade19(false);
+      await talk19("cash", "Здравствуйте!", "Здравствуйте! Сейчас всё пробью.");
+      svg.classList.add("scan");
+      let sum = 0;
+      const items = [...$("belt19items").children];
+      for (let i = 0; i < items.length; i++) {
+        const el = items[i], x0 = 226 + i * 30;
+        await tween9(REDUCE5 ? 0 : 260, (t) => el.setAttribute("transform", `translate(${(x0 + (520 - x0) * t).toFixed(1)} 318) scale(0.55)`));
+        beep(1560, 0.07, "square", 0.05);
+        sum += PROD19[Q19.basket[i]].price;
+        $("reg19").textContent = `${sum} ₽`;
+        say19(`Пик! ${PROD19[Q19.basket[i]].name} — ${PROD19[Q19.basket[i]].price} ₽. Всего: ${sum} ₽.`);
+        await tween9(REDUCE5 ? 0 : 220, (t) => el.setAttribute("transform", `translate(${(520 + 250 * t).toFixed(1)} ${(318 - Math.sin(Math.PI * t) * 40).toFixed(1)}) scale(${(0.55 - 0.3 * t).toFixed(3)})`));
+        el.remove();
+      }
+      svg.classList.remove("scan");
+      Q19.total = sum;
+      $("total19").textContent = `${sum} ₽`;
+      await talk19("cash", `С вас ${sum} ₽`, `С вас ${sum} рублей.`);
+      startPay19();
+    });
+  }
+
+  // Оплата: нажимаешь купюры и монеты, пока денег не хватит; сдачу даёт кассир
+  function startPay19() {
+    Q19.phase = "pay";
+    Q19.paid = 0;
+    $("paidv19").textContent = "0 ₽";
+    $("paid19").hidden = false;
+    $("list19").hidden = true;
+    const w = $("wallet19");
+    w.innerHTML = WALLET19.map((v, k) => `<button class="bill19${v < 50 ? " coin" : ""}" type="button" data-k="${k}" style="background:${BILLC19[v]}">${v} ₽</button>`).join("");
+    w.hidden = false;
+    $("ctrl19").hidden = false;
+    say19(`Заплати ${Q19.total} ₽: нажимай на купюры и монеты в кошельке, пока денег не хватит. Попробуй без сдачи!`, "оплата");
+  }
+  $("wallet19").addEventListener("click", (e) => {
+    const b = e.target.closest(".bill19");
+    if (!b || !Q19 || Q19.phase !== "pay" || b.classList.contains("used")) return;
+    const v = WALLET19[Number(b.dataset.k)], n = $("tray19").children.length;
+    b.classList.add("used");
+    Q19.paid += v;
+    click();
+    const x = 646 + (n % 3) * 7, y = 324 - n * 2;
+    $("tray19").insertAdjacentHTML("beforeend", v < 50
+      ? `<circle cx="${x}" cy="${y - 5}" r="6" fill="${BILLC19[v]}" stroke="#a8782a"/>`
+      : `<rect x="${x - 14}" y="${y - 8}" width="28" height="12" rx="2" fill="${BILLC19[v]}" stroke="#fff" stroke-opacity="0.5"/>`);
+    $("paidv19").textContent = `${Q19.paid} ₽`;
+    if (Q19.paid >= Q19.total) paid19();
+    else say19(`Дал ${Q19.paid} ₽ — не хватает ещё ${Q19.total - Q19.paid} ₽.`);
+  });
+
+  function paid19() {
+    const svg = $("shop19");
+    Q19.phase = "end";
+    Q19.change = Q19.paid - Q19.total;
+    $("ctrl19").hidden = true;
+    beep(1320, 0.1);
+    run5(async () => {
+      await wait6(400);
+      if (Q19.change) await talk19("cash", `Сдача ${Q19.change} ₽`, `Ваша сдача — ${Q19.change} рублей. Спасибо за покупку!`);
+      else await talk19("cash", "Без сдачи!", "Без сдачи — спасибо! Приходите ещё!");
+      $("paid19").hidden = true;
+      svg.classList.add("cheer");
+      hero19("cheer");
+      banner19("ВСЁ КУПЛЕНО!", "#2fbf4a");
+      [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+      await talk19("me", "Ура!", "Ура! Несу продукты домой!");
+      const end = "Ты купил всё по списку и сам расплатился на кассе.";
+      say19(end, "покупки");
+      await speak6(end, svg);
+      await wait6(900);
+      finish19();
+    });
+  }
+
+  function finish19() {
+    Q19.phase = "done";
+    const stars = Q19.wrong === 0 ? 3 : Q19.wrong <= 2 ? 2 : 1;
+    showResult({
+      title: "Всё по списку!",
+      stars,
+      text: ["", "Продукты куплены, но в корзину просилось лишнее. Попробуй ещё раз!", "Хорошие покупки! Внимательнее со списком — и будет три звезды.", "Ни одной лишней покупки!"][stars],
+      stats: `Лишнее у полок: ${Q19.wrong} · Покупки: ${Q19.total} ₽ · ` + (Q19.change ? `Сдача: ${Q19.change} ₽` : "Заплатил без сдачи"),
+      next: 20
+    });
+  }
+
+  // =================== Раунд 20: тир ===================
+  // Ты решил заняться спортивной стрельбой. В спортивном магазине покупаешь пневматический пистолет, защитные очки
+  // и наушники (денег — остаток первой зарплаты). В школе стрельбы тренер Ольга объясняет правила тира, а потом —
+  // 3D-тир от первого лица: три серии (неподвижные, движущиеся и выскакивающие мишени), очки — по кольцам мишени.
+  // Целишься мышкой или пальцем, стреляешь нажатием. Голос и ожидания общие с раундами 6–19 (токен I6).
+  const MONEY20 = 4330;
+  // Пистолеты и защита лежат на прилавке: (0, 0) — середина низа, ствол смотрит влево
+  const GUNS20 = [
+    { id: "water", name: "Водяной пистолет", price: 300, attr: "игрушка", bad: "Это же водяной! В школе стрельбы нужен спортивный пистолет.",
+      svg: `<rect x="-50" y="-44" width="70" height="14" rx="6" fill="#3b8fe0"/><rect x="-58" y="-40" width="10" height="6" rx="2" fill="#ffc83d"/>
+        <circle cx="-8" cy="-54" r="12" fill="#ffc83d" stroke="#e0a200" stroke-width="2"/><path d="M4 -30h22l4 30h-20z" fill="#e05a9a"/>
+        <path d="M-4 -30q0 12 12 12" fill="none" stroke="#3b8fe0" stroke-width="3"/>` },
+    { id: "sport", name: "Спортивный пневматический", price: 3500, attr: "для тира",
+      svg: `<rect x="-52" y="-48" width="80" height="12" rx="3" fill="#3b424b"/><rect x="-58" y="-45" width="8" height="6" fill="#23282e"/>
+        <rect x="-50" y="-54" width="4" height="6" fill="#ff8a2a"/><rect x="18" y="-54" width="8" height="6" fill="#23282e"/>
+        <path d="M6 -36h26l6 34q-12 6 -26 2z" fill="#b5653a"/><path d="M-2 -36q0 14 12 14" fill="none" stroke="#3b424b" stroke-width="3"/>
+        <path d="M4 -34l-3 8" stroke="#23282e" stroke-width="3"/>` },
+    { id: "gold", name: "Золотой пистолет", price: 15000, attr: "для коллекции",
+      svg: `<rect x="-52" y="-48" width="80" height="14" rx="3" fill="#e0a200" stroke="#b8860b" stroke-width="2"/>
+        <path d="M6 -34h26l6 32q-12 6 -26 2z" fill="#ffc83d" stroke="#b8860b" stroke-width="2"/>
+        <circle cx="-20" cy="-41" r="3" fill="#e5484d"/><circle cx="-6" cy="-41" r="3" fill="#3b8fe0"/><circle cx="8" cy="-41" r="3" fill="#2fbf4a"/>
+        <path d="M-40 -58l3 -6 3 6 -3 6z" fill="#fff"/>` }
+  ];
+  const GEAR20 = [
+    { id: "glasses", name: "Защитные очки", price: 300, attr: "берегут глаза",
+      svg: `<path d="M-40 -30h80v16q0 10 -12 10h-18l-10 -8l-10 8h-18q-12 0 -12 -10z" fill="#fff3b0" fill-opacity="0.75" stroke="#e0a200" stroke-width="3"/>
+        <path d="M-40 -26l-10 4M40 -26l10 4" stroke="#e0a200" stroke-width="3"/>` },
+    { id: "muffs", name: "Наушники", price: 400, attr: "берегут уши",
+      svg: `<path d="M-26 -14V-30a26 26 0 0 1 52 0V-14" fill="none" stroke="#23282e" stroke-width="6"/>
+        <rect x="-36" y="-26" width="18" height="26" rx="7" fill="#e5484d"/><rect x="18" y="-26" width="18" height="26" rx="7" fill="#e5484d"/>` },
+    { id: "hat", name: "Ковбойская шляпа", price: 500, attr: "для красоты", bad: "Шляпа не защитит — нужны очки и наушники.",
+      svg: `<ellipse cy="-8" rx="46" ry="8" fill="#8a5d3b"/><path d="M-24 -8q-2 -30 24 -30q26 0 24 30z" fill="#a0673a"/><rect x="-24" y="-16" width="48" height="6" fill="#5a3d26"/>` },
+    { id: "sun", name: "Солнечные очки", price: 200, attr: "от солнца", bad: "Солнечные очки не защитят глаза в тире — нужны защитные.",
+      svg: `<path d="M-36 -26h72" stroke="#23282e" stroke-width="3"/><ellipse cx="-17" cy="-18" rx="16" ry="11" fill="#23282e"/><ellipse cx="17" cy="-18" rx="16" ry="11" fill="#23282e"/>
+        <path d="M-24 -24l-6 6M10 -24l-6 6" stroke="#fff" stroke-opacity="0.4" stroke-width="3"/>` }
+  ];
+  const SER20 = [
+    { name: "Неподвижные мишени", shots: 5, max: 50, say: "Серия первая: неподвижные мишени. Пять выстрелов. Целься в центр — там десятка. Огонь!" },
+    { name: "Движущиеся мишени", shots: 5, max: 50, say: "Серия вторая: мишени двигаются. Пять выстрелов. Огонь!" },
+    { name: "Выскакивающие мишени", shots: 8, max: 60, say: "Серия третья: мишени выскакивают на секунду. Стреляй быстро! Огонь!" }
+  ];
+  const POP20 = [[-3, -9], [-1.5, -7.5], [0, -10], [1.5, -7.5], [3, -9]];
+  const SELL20 = { id: "sell", name: "Продавец", c: "#2356a8", hair: "#6b4a2f", pitch: 0.85, extra: `<rect x="-2" y="-84" width="11" height="7" rx="1.5" fill="#ffc83d"/>` };
+  const COACH20 = { id: "coach", name: "Тренер Ольга", c: "#e5484d", hair: "#1d2227", long: true, pitch: 1.2,
+    extra: `<path d="M-6 -95Q2 -80 8 -95" fill="none" stroke="#e9ecef" stroke-width="1.5"/><rect x="3" y="-86" width="8" height="5" rx="2" fill="#c3cbd3"/><path d="M-12 -80v30M12 -80v30" stroke="#fff" stroke-width="2"/>` };
+  // Ты в очках и наушниках — после магазина
+  const GEAR_ME20 = `<path d="M-12 -112a12 12 0 0 1 24 0" fill="none" stroke="#23282e" stroke-width="3"/><rect x="-7" y="-114" width="9" height="14" rx="4" fill="#e5484d"/>
+    <rect x="1" y="-111" width="11" height="7" rx="2" fill="#fff3b0" fill-opacity="0.85" stroke="#e0a200" stroke-width="1.5"/>`;
+  let Q20 = null, W20 = null, raf20 = 0, built20 = false;
+  const rank20 = (s) => (s >= 130 ? "Снайпер" : s >= 100 ? "Меткий стрелок" : s >= 70 ? "Хороший стрелок" : "Новичок");
+  const pts20 = (n) => { const a = n % 10, b = n % 100; return `${n} ${a === 1 && b !== 11 ? "очко" : a >= 2 && a <= 4 && (b < 12 || b > 14) ? "очка" : "очков"}`; };
+
+  function build20() {
+    if (built20) return;
+    built20 = true;
+    const balls = [["#f08a24", 180], ["#fff", 230], ["#3b8fe0", 280], ["#e5484d", 330]].map(([c, x]) => `<circle cx="${x}" cy="166" r="18" fill="${c}" stroke="#23282e" stroke-width="2"/>`).join("");
+    $("shop20").innerHTML = `
+      <rect width="800" height="450" fill="#eef1f5"/>
+      <rect y="400" width="800" height="50" fill="#d7dce1"/>
+      <g id="store20">
+        <rect width="800" height="12" fill="#2356a8"/>
+        <rect x="300" y="20" width="200" height="42" rx="10" fill="#2356a8"/>
+        <text x="400" y="49" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">СПОРТ</text>
+        <rect x="140" y="184" width="520" height="8" fill="#aeb6bf"/><rect x="140" y="112" width="520" height="8" fill="#aeb6bf"/>
+        ${balls}
+        <g fill="#5f6973"><rect x="400" y="160" width="10" height="24"/><rect x="440" y="160" width="10" height="24"/><rect x="410" y="168" width="30" height="8"/></g>
+        <path d="M520 184l30 -70M560 184l30 -70" stroke="#e5484d" stroke-width="6" stroke-linecap="round"/>
+        <g transform="translate(700 330)"><g transform="scale(-1 1)">${body16(SELL20, "idle")}</g></g>
+        <rect x="110" y="286" width="660" height="10" fill="#aeb6bf"/>
+        <rect x="110" y="296" width="660" height="104" fill="#cfe8f5" fill-opacity="0.7" stroke="#aeb6bf" stroke-width="3"/>
+        <path d="M150 300l40 96M330 300l30 96" stroke="#fff" stroke-opacity="0.6" stroke-width="6"/>
+        <g id="wares20"></g>
+      </g>
+      <g id="school20">
+        <rect width="800" height="400" fill="#dfe6ee"/>
+        <rect width="800" height="12" fill="#e5484d"/>
+        <rect x="250" y="20" width="300" height="42" rx="10" fill="#e5484d"/>
+        <text x="400" y="49" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">ШКОЛА СТРЕЛЬБЫ</text>
+        <g transform="translate(100 88)">
+          <rect width="300" height="196" rx="10" fill="#fff" stroke="#e5484d" stroke-width="4"/>
+          <text x="150" y="34" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="20" fill="#e5484d">ПРАВИЛА ТИРА</text>
+          ${["Ствол — только к мишеням", "Очки и наушники — всегда", "Стреляем по команде"].map((t, i) =>
+            `<circle cx="28" cy="${76 + i * 44}" r="13" fill="#2356a8"/><text x="28" y="${81 + i * 44}" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="14" fill="#fff">${i + 1}</text>
+            <text x="52" y="${81 + i * 44}" font-family="Rubik, sans-serif" font-weight="600" font-size="15" fill="#23282e">${t}</text>`).join("")}
+        </g>
+        <rect x="600" y="150" width="140" height="250" fill="#3b424b"/><rect x="612" y="162" width="116" height="238" fill="#23282e"/>
+        <g transform="translate(670 118)"><circle r="26" fill="#f4f1ea" stroke="#1d2227" stroke-width="2"/><circle r="16" fill="#1d2227"/><circle r="6" fill="#e5484d"/></g>
+        <text x="670" y="290" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="22" fill="#ffc83d">ТИР</text>
+        <g transform="translate(490 440)"><g transform="scale(-1 1)">${body16(COACH20, "idle")}</g></g>
+      </g>
+      <g id="hero20" transform="translate(60 440)"></g>
+      <g id="bub20"></g>`;
+  }
+
+  function say20(text, label) {
+    if (label) Q20.label = label;
+    $("hintText20").textContent = text;
+    $("stepLabel20").textContent = `Раунд 20 · ${Q20.label}`;
+  }
+  function nudge20() {
+    const h = $("hint20");
+    h.classList.remove("flash"); void h.offsetWidth; h.classList.add("flash");
+  }
+  function banner20(text, color, id = "banner20") {
+    const b = $(id);
+    b.classList.toggle("on", !!text);
+    if (text) { b.textContent = text; b.style.background = color; }
+  }
+  function fade20(on) {
+    $("fade20").classList.toggle("on", on);
+    return wait6(320);
+  }
+  const hero20 = (gear) => ($("hero20").innerHTML = body16(Object.assign({}, fig17("me"), { extra: gear ? GEAR_ME20 : "" }), "idle"));
+  const SPEAK20 = { me: [60, 440], sell: [700, 330], coach: [490, 440] };
+  const bub20 = (who, text) => ($("bub20").innerHTML = text ? bubMarkup(SPEAK20[who][0], SPEAK20[who][1] - 138, text) : "");
+  async function talk20(who, short, full) {
+    const p = who === "sell" ? SELL20 : who === "coach" ? COACH20 : fig17("me"), box = $("level20").classList.contains("gun") ? $("scene20") : $("shop20");
+    if (!$("flat20").hidden) bub20(who, short);
+    say20(`${p.name}: «${full}»`);
+    try { await speak6(full.replace(/₽/g, "рублей"), box, 1.05, p.pitch); }
+    finally { bub20(who, ""); }
+  }
+
+  function startRound20() {
+    stopRound6(); // новый токен I6 обрывает всё, что осталось от прошлой попытки
+    round = 20;
+    build20();
+    const lv = $("level20");
+    lv.hidden = false;
+    lv.classList.remove("gun");
+    Q20 = { phase: "intro", label: "магазин", step: 0, money: MONEY20, wrong: 0, got: [], opts: [], score: 0, series: 0, left: 0, sscore: 0, tens: 0, aim: [0, 0], pops: [], pop: null, popT: 0 };
+    $("flat20").hidden = false;
+    $("scene20").hidden = true;
+    $("ctrl20").hidden = true;
+    $("money20").hidden = true;
+    $("cross20").hidden = true;
+    $("shop20").setAttribute("class", "");
+    ["wares20", "bub20", "pops20"].forEach((id) => ($(id).innerHTML = ""));
+    hero20(false);
+    $("cash20").textContent = fmt17(MONEY20);
+    ["fade20", "fadeg20"].forEach((id) => $(id).classList.remove("on"));
+    banner20(null);
+    banner20(null, "", "bannerg20");
+    run5(intro20);
+  }
+
+  async function intro20() {
+    say20("Ты решил заняться спортивной стрельбой. Сначала — в спортивный магазин.", "магазин");
+    await speak6("Ты решил заняться спортивной стрельбой. Сначала надо купить пистолет.", $("shop20"));
+    $("money20").hidden = false;
+    await talk20("sell", "Здравствуйте!", "Здравствуйте! Вам для тира? Выбирайте пистолет.");
+    showStep20(0);
+  }
+
+  // На прилавке — три пистолета, потом четыре вещи для защиты; внизу — те же вещи кнопками с ценой
+  function showStep20(step) {
+    const list = step ? GEAR20 : GUNS20, n = list.length;
+    Q20.step = step;
+    Q20.got = [];
+    Q20.opts = shuffle(list.slice());
+    $("wares20").innerHTML = Q20.opts.map((o, k) => {
+      const x = 150 + ((k + 0.5) * 520) / n;
+      return `<g class="ware20" data-k="${k}"><g transform="translate(${x.toFixed(0)} 286)"><g class="item20">${o.svg}</g></g>
+        <rect x="${(x - 40).toFixed(0)}" y="304" width="80" height="24" rx="6" fill="#fff" stroke="#aeb6bf" stroke-width="2"/>
+        <text x="${x.toFixed(0)}" y="321" text-anchor="middle" font-family="Rubik, sans-serif" font-weight="800" font-size="14" fill="#23282e">${fmt17(o.price)}</text>
+        <rect x="${(x - 62).toFixed(0)}" y="210" width="124" height="120" fill="transparent"/></g>`;
+    }).join("");
+    $("opts20").className = "opts17" + (n === 4 ? " four" : "");
+    $("opts20").innerHTML = Q20.opts.map((o, k) =>
+      `<button class="opt17" type="button" data-k="${k}"><b>${o.name}</b><span>${o.attr}</span><em>${fmt17(o.price)}</em></button>`).join("");
+    $("ctrl20").hidden = false;
+    Q20.phase = "pick";
+    $("shop20").classList.add("pick");
+    say20(step ? "Без защиты в тир не пустят. Выбери две вещи, которые берегут глаза и уши." : "Выбери пистолет для школы стрельбы — нажми на него.", label20());
+  }
+  const label20 = () => (Q20.step ? `защита ${Q20.got.length} из 2` : "пистолет");
+  function lock20(on) {
+    $("shop20").classList.toggle("pick", !on);
+    document.querySelectorAll("#opts20 .opt17").forEach((b) => (b.disabled = on || b.classList.contains("bought")));
+  }
+
+  function pick20(k) {
+    if (!Q20 || Q20.phase !== "pick") return;
+    const o = Q20.opts[k];
+    if (!o || Q20.got.includes(o.id)) return;
+    const ware = $("wares20").children[k], btn = $("opts20").children[k];
+    if (o.bad || o.price > Q20.money) {
+      Q20.wrong++;
+      [ware, btn].forEach((el) => { el.classList.remove("no"); void el.getBoundingClientRect(); el.classList.add("no"); });
+      beep(150, 0.18, "square", 0.06);
+      const text = o.bad || `Не хватает денег! У меня только ${fmt17(Q20.money)}.`;
+      Q20.phase = "talk";
+      lock20(true);
+      run5(async () => {
+        await talk20(o.bad ? "sell" : "me", o.bad ? "Не то!" : "Дорого!", text);
+        Q20.phase = "pick";
+        lock20(false);
+        say20(`${text} Выбери другое.`, label20());
+      });
+      return;
+    }
+    Q20.money -= o.price;
+    Q20.got.push(o.id);
+    $("cash20").textContent = fmt17(Q20.money);
+    ware.classList.add("sold");
+    btn.classList.add("bought");
+    btn.disabled = true;
+    click();
+    beep(880, 0.1);
+    if (!Q20.step) {
+      Q20.phase = "talk";
+      lock20(true);
+      run5(async () => {
+        await talk20("sell", "Отличный выбор!", "Спортивный пневматический — отличный выбор! Но без защиты в тир не пустят.");
+        showStep20(1);
+      });
+    } else if (Q20.got.length === 2) {
+      Q20.phase = "school";
+      lock20(true);
+      run5(toSchool20);
+    } else say20(`${o.name} — куплено! Нужна ещё одна вещь.`, label20());
+  }
+  $("shop20").addEventListener("click", (e) => {
+    const w = e.target.closest(".ware20");
+    if (w) pick20(Number(w.dataset.k));
+  });
+  $("opts20").addEventListener("click", (e) => {
+    const b = e.target.closest(".opt17");
+    if (b && !b.disabled) pick20(Number(b.dataset.k));
+  });
+
+  // Школа стрельбы: тренер объясняет правила, потом — на огневой рубеж
+  async function toSchool20() {
+    $("ctrl20").hidden = true;
+    banner20("КУПЛЕНО!", "#2fbf4a");
+    [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 0.16), i * 110));
+    say20(`Всё куплено! Осталось денег: ${fmt17(Q20.money)}.`, "магазин");
+    await wait6(1300);
+    banner20(null);
+    await fade20(true);
+    $("money20").hidden = true;
+    $("shop20").classList.remove("pick");
+    $("shop20").classList.add("school");
+    hero20(true);
+    say20("Школа стрельбы.", "школа");
+    await fade20(false);
+    await talk20("coach", "Привет!", "Привет! Я тренер Ольга. Добро пожаловать в школу стрельбы!");
+    await talk20("coach", "Правила тира!", "Правила тира: пистолет смотрит только на мишени. Очки и наушники — всегда. Стреляем только по команде.");
+    await talk20("coach", "На рубеж!", "Очки и наушники надел — молодец. Пошли на огневой рубеж!");
+    await fade20(true);
+    startRange20();
+  }
+
+  // ---------- 3D-тир (строится один раз) ----------
+  function init20() {
+    if (W20 !== null) return;
+    W20 = false;
+    if (!window.THREE) return;
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: $("c20"), antialias: true }); }
+    catch (e) { return; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const scene = new THREE.Scene(), dark = new THREE.Color("#1d2227");
+    scene.background = dark;
+    scene.fog = new THREE.Fog(dark, 16, 30);
+    const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.03, 60);
+    camera.position.set(0, 1.6, 0.3);
+    camera.lookAt(0, 1.45, -8);
+    scene.add(camera);
+    const W = { renderer, scene, camera, rigs: [], kick: 0, flashT: 0 };
+    const lam = (c) => new THREE.MeshLambertMaterial({ color: c });
+    const basic = (c) => new THREE.MeshBasicMaterial({ color: c });
+    const box = (w, h, d, m, x, y, z, p = scene) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), typeof m === "string" ? lam(m) : m);
+      mesh.position.set(x, y, z);
+      p.add(mesh);
+      return mesh;
+    };
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x3b424b, 0.75));
+    const top = new THREE.DirectionalLight(0xffffff, 0.5);
+    top.position.set(0, 6, 2);
+    scene.add(top);
+    // Зал: пол с разметкой, стены, потолок с лампами, песчаный вал за мишенями
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 26), lam("#7d8791"));
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0, 0, -11);
+    scene.add(floor);
+    [-3.4, -1.2, 1.2, 3.4].forEach((x) => box(0.05, 0.01, 24, basic("#ffc83d"), x, 0.005, -11));
+    [-5, 5].forEach((x) => box(0.2, 3.6, 26, "#4b5560", x, 1.8, -11));
+    box(10, 0.1, 26, "#2b3138", 0, 3.5, -11);
+    [-2.2, 2.2].forEach((x) => box(0.25, 0.04, 22, basic("#fff6d0"), x, 3.43, -11));
+    [-3.5, -6.5].forEach((z) => box(10, 0.6, 0.12, "#3b424b", 0, 3.15, z));
+    box(10, 3.6, 0.4, "#8a6d4a", 0, 1.8, -14);
+    box(10, 0.8, 1.2, "#b08a5a", 0, 0.4, -13.4);
+    // Огневой рубеж: стойка перед тобой и перегородки по бокам
+    box(3.6, 0.08, 0.5, "#8a5d3b", 0, 1.05, -0.45);
+    box(3.6, 1.0, 0.05, "#6b4a2f", 0, 0.55, -0.7);
+    [-1.8, 1.8].forEach((x) => box(0.05, 2.2, 1.3, "#5f6973", x, 1.1, -0.25));
+    // Мишень: 10 колец, в центре — десятка
+    const ring = canvasTex(256, 256, (g, w) => {
+      const c = w / 2, R = c - 2;
+      g.fillStyle = "#f4f1ea";
+      g.fillRect(0, 0, w, w);
+      for (let k = 10; k >= 1; k--) {
+        g.beginPath();
+        g.arc(c, c, (k / 10) * R, 0, 7);
+        g.fillStyle = k <= 4 ? "#1d2227" : "#f4f1ea";
+        g.fill();
+        g.lineWidth = 2;
+        g.strokeStyle = k <= 4 ? "#f4f1ea" : "#1d2227";
+        g.stroke();
+      }
+      g.fillStyle = "#e5484d";
+      g.beginPath();
+      g.arc(c, c, R * 0.04, 0, 7);
+      g.fill();
+      g.font = "700 11px Rubik, sans-serif";
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      for (let k = 2; k <= 9; k++) {
+        g.fillStyle = k <= 4 ? "#f4f1ea" : "#1d2227";
+        g.fillText(String(11 - k), c, c - ((k - 0.5) / 10) * R);
+      }
+    });
+    const faceM = new THREE.MeshBasicMaterial({ map: ring }), boardM = lam("#c9a26b"), legM = lam("#5f6973");
+    const faceGeo = new THREE.CircleGeometry(0.6, 48), boardGeo = new THREE.PlaneGeometry(1.4, 1.4);
+    W.holeGeo = new THREE.CircleGeometry(0.022, 12);
+    W.holeM = basic("#111418");
+    W.rimGeo = new THREE.RingGeometry(0.022, 0.036, 16);
+    W.rimM = basic("#ffe38a");
+    // Стойка с мишенью; мишень на шарнире снизу — так она выскакивает и падает
+    for (let i = 0; i < 5; i++) {
+      const g = new THREE.Group(), hinge = new THREE.Group();
+      hinge.position.y = 0.8;
+      g.add(hinge);
+      const board = new THREE.Mesh(boardGeo, boardM);
+      board.position.y = 0.7;
+      hinge.add(board);
+      const face = new THREE.Mesh(faceGeo, faceM);
+      face.position.set(0, 0.7, 0.01);
+      hinge.add(face);
+      [-0.6, 0.6].forEach((x) => box(0.06, 0.8, 0.06, legM, x, 0.4, 0, g));
+      box(1.5, 0.06, 0.3, legM, 0, 0.03, 0, g);
+      const rig = { g, hinge, face, board, holes: [], active: false, up: true };
+      face.userData.rig = board.userData.rig = rig;
+      g.visible = false;
+      scene.add(g);
+      W.rigs.push(rig);
+    }
+    W.rails = new THREE.Group();
+    [-7, -9, -11].forEach((z) => box(7.2, 0.05, 0.12, "#3b424b", 0, 0.03, z, W.rails));
+    scene.add(W.rails);
+    // Пистолет в руке — внизу справа; ствол повторяет, куда ты целишься
+    const gun = new THREE.Group();
+    box(0.03, 0.036, 0.24, "#2b3138", 0, 0.02, -0.1, gun);
+    box(0.016, 0.016, 0.06, "#23282e", 0, 0.02, -0.25, gun);
+    box(0.008, 0.014, 0.01, basic("#ff8a2a"), 0, 0.044, -0.21, gun);
+    box(0.02, 0.012, 0.012, "#1d2227", 0, 0.044, 0.01, gun);
+    box(0.032, 0.1, 0.05, "#b5653a", 0, -0.04, 0, gun).rotation.x = 0.3;
+    box(0.055, 0.06, 0.07, "#f2c9a0", 0.004, -0.035, 0.01, gun);
+    box(0.07, 0.07, 0.25, "#f08a24", 0.02, -0.06, 0.15, gun);
+    W.flash = new THREE.PointLight(0xffd36b, 0, 3);
+    W.flash.position.set(0, 0.02, -0.3);
+    gun.add(W.flash);
+    W.flashMesh = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 6), basic("#fff3b0"));
+    W.flashMesh.position.set(0, 0.02, -0.29);
+    W.flashMesh.visible = false;
+    gun.add(W.flashMesh);
+    gun.scale.setScalar(0.6);
+    gun.position.set(0.11, -0.1, -0.42);
+    camera.add(gun);
+    W.gun = gun;
+    W.ray = new THREE.Raycaster();
+    const wrap = $("scene20");
+    // На узком экране угол обзора шире — чтобы все мишени помещались
+    W.fit = () => {
+      const r = wrap.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      renderer.setSize(r.width, r.height, false);
+      camera.aspect = r.width / r.height;
+      camera.fov = Math.max(38, (2 * Math.atan(3.7 / 8.3 / camera.aspect) * 180) / Math.PI);
+      camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(W.fit).observe(wrap);
+    W20 = W;
+  }
+
+  function startRange20() {
+    const lv = $("level20");
+    lv.classList.add("gun");
+    $("flat20").hidden = true;
+    $("scene20").hidden = false;
+    $("scene20").classList.remove("playing", "touch");
+    $("fade20").classList.remove("on");
+    $("fadeg20").classList.add("on");
+    init20();
+    $("nogl20").hidden = !!W20;
+    if (!W20) { $("fadeg20").classList.remove("on"); say20("Не получилось включить 3D — этот раунд можно пропустить.", "тир"); return; }
+    W20.fit();
+    cancelAnimationFrame(raf20);
+    let last = performance.now();
+    const step = (t) => {
+      if (!Q20 || Q20.phase === "off") return;
+      const dt = Math.min(0.05, (t - last) / 1000);
+      last = t;
+      tick20(dt, t / 1000);
+      raf20 = requestAnimationFrame(step);
+    };
+    raf20 = requestAnimationFrame(step);
+    run5(() => series20(0));
+  }
+
+  // Мишени для серии: 0 — неподвижные, 1 — едут по рельсам, 2 — лежат и выскакивают по одной
+  function targets20(i) {
+    const W = W20;
+    W.rigs.forEach((r) => {
+      r.holes.forEach((h) => h.parent.remove(h));
+      Object.assign(r, { holes: [], active: false, up: true, hit: false, move: null, anim: null });
+      r.hinge.rotation.x = 0;
+      r.g.visible = false;
+    });
+    W.rails.visible = i === 1;
+    const on = (k, x, z) => {
+      const r = W.rigs[k];
+      Object.assign(r, { active: true, base: x });
+      r.g.position.set(x, 0, z);
+      r.g.visible = true;
+      return r;
+    };
+    if (i === 0) [-2.4, 0, 2.4].forEach((x, k) => on(k, x, -8));
+    else if (i === 1) [[-7, 0.9, 0], [-9, 1.25, 2], [-11, 1.6, 4]].forEach(([z, sp, ph], k) => (on(k, 0, z).move = { sp, ph }));
+    else {
+      POP20.forEach(([x, z], k) => { const r = on(k, x, z); r.hinge.rotation.x = -Math.PI / 2; r.up = false; });
+      const seq = [];
+      while (seq.length < 6) { const k = Math.floor(Math.random() * POP20.length); if (k !== seq[seq.length - 1]) seq.push(k); }
+      Object.assign(Q20, { pops: seq, pop: null, popT: 0.8 });
+    }
+  }
+  const raise20 = (r) => { r.up = true; r.hit = false; r.anim = { t: 0, from: r.hinge.rotation.x, to: 0 }; };
+  const lower20 = (r) => { r.up = false; r.anim = { t: 0, from: r.hinge.rotation.x, to: -Math.PI / 2 }; };
+
+  function hud20() {
+    const S = SER20[Q20.series];
+    $("ser20").textContent = `${Q20.series + 1} из 3`;
+    $("ammo20").textContent = "●".repeat(Q20.left) + "○".repeat(S.shots - Q20.left) + " · ";
+    $("pts20").textContent = pts20(Q20.score);
+  }
+
+  async function series20(i) {
+    const S = SER20[i], sc = $("scene20");
+    Object.assign(Q20, { series: i, phase: "brief", left: S.shots, sscore: 0 });
+    targets20(i);
+    hud20();
+    sc.classList.remove("playing");
+    $("cross20").hidden = true;
+    say20(`Серия ${i + 1} из 3: ${S.name.toLowerCase()}. Выстрелов: ${S.shots}.`, `серия ${i + 1} из 3`);
+    banner20(`СЕРИЯ ${i + 1}`, "#2356a8", "bannerg20");
+    if (i === 0) { $("fadeg20").classList.remove("on"); await wait6(320); }
+    await wait6(1200);
+    banner20(null, "", "bannerg20");
+    say20(`Тренер Ольга: «${S.say}»`);
+    await speak6(S.say, sc, 1.05, COACH20.pitch);
+    Q20.phase = "aim";
+    sc.classList.add("playing");
+    say20(TOUCH10 ? "Нажимай на мишень — туда и полетит пулька. В центре — десятка!" : "Наведи прицел мышкой и нажми, чтобы выстрелить. В центре — десятка!", `серия ${i + 1} из 3`);
+  }
+
+  // Каждый кадр: мишени едут или выскакивают, пистолет поворачивается за прицелом и откатывается после выстрела
+  function tick20(dt, t) {
+    const W = W20, Q = Q20;
+    W.rigs.forEach((r) => {
+      if (r.active && r.move) r.g.position.x = Math.sin(t * r.move.sp + r.move.ph) * 2.8;
+      if (r.anim) {
+        r.anim.t += dt;
+        const k = Math.min(1, r.anim.t / 0.18);
+        r.hinge.rotation.x = r.anim.from + (r.anim.to - r.anim.from) * k;
+        if (k >= 1) r.anim = null;
+      }
+    });
+    if (Q.series === 2 && Q.phase === "aim") pops20(dt);
+    const g = W.gun, k = Math.min(1, dt * 12);
+    g.rotation.y += (-Q.aim[0] * 0.35 - g.rotation.y) * k;
+    g.rotation.x += (Q.aim[1] * 0.25 + W.kick - g.rotation.x) * k;
+    W.kick = Math.max(0, W.kick - dt * 2.5);
+    g.position.z = -0.42 + W.kick * 0.12;
+    if (W.flashT > 0 && (W.flashT -= dt) <= 0) { W.flash.intensity = 0; W.flashMesh.visible = false; }
+    W.renderer.render(W.scene, W.camera);
+  }
+  // Третья серия: мишени выскакивают по одной на полторы секунды
+  function pops20(dt) {
+    const Q = Q20;
+    if (Q.pop) {
+      Q.pop.t -= dt;
+      if (Q.pop.t <= 0 || Q.pop.rig.hit) { lower20(Q.pop.rig); Q.pop = null; Q.popT = 0.5 + Math.random() * 0.5; }
+      return;
+    }
+    if (!Q.pops.length) { endSeries20(); return; }
+    if ((Q.popT -= dt) > 0) return;
+    const r = W20.rigs[Q.pops.shift()];
+    raise20(r);
+    Q.pop = { rig: r, t: 1.5 };
+    beep(620, 0.05, "square", 0.04);
+  }
+
+  // Выстрел: луч из камеры туда, где прицел; очки — по кольцу, в которое попал
+  function shoot20(x, y) {
+    const Q = Q20, W = W20;
+    if (Q.left <= 0) return;
+    Q.left--;
+    noise8(0.1, 0.5, 1400);
+    beep(90, 0.08, "square", 0.08);
+    W.kick = 0.35;
+    W.flash.intensity = 2.5;
+    W.flashMesh.visible = true;
+    W.flashT = 0.06;
+    W.ray.setFromCamera(new THREE.Vector2(Q.aim[0], Q.aim[1]), W.camera);
+    const objs = [];
+    W.rigs.forEach((r) => { if (r.active) objs.push(r.face, r.board); });
+    const hit = W.ray.intersectObjects(objs, false)[0];
+    let pts = 0;
+    if (hit) {
+      const r = hit.object.userData.rig, l = hit.object.worldToLocal(hit.point.clone());
+      const live = Q.series !== 2 || (r.up && !r.hit);
+      if (hit.object === r.face && live) {
+        const d = Math.hypot(l.x, l.y) / 0.6;
+        pts = d >= 1 ? 0 : Math.max(1, 10 - Math.floor(d * 10));
+      }
+      const hole = new THREE.Mesh(W.holeGeo, W.holeM);
+      hole.add(new THREE.Mesh(W.rimGeo, W.rimM));
+      hole.position.set(l.x, l.y, 0.004);
+      hit.object.add(hole);
+      r.holes.push(hole);
+      if (Q.series === 2 && pts) r.hit = true;
+    }
+    Q.score += pts;
+    Q.sscore += pts;
+    if (pts === 10) Q.tens++;
+    const pop = document.createElement("div");
+    pop.className = "pop20" + (pts ? "" : " miss");
+    pop.textContent = pts === 10 ? "10!" : pts ? `+${pts}` : "Мимо!";
+    pop.style.left = x + "px";
+    pop.style.top = y + "px";
+    $("pops20").appendChild(pop);
+    setTimeout(() => pop.remove(), 1500);
+    if (pts) setTimeout(() => beep(pts === 10 ? 1320 : 560 + pts * 40, 0.1), 90);
+    hud20();
+    if (!Q.left) endSeries20();
+  }
+
+  function endSeries20() {
+    if (Q20.phase !== "aim") return;
+    const Q = Q20, S = SER20[Q.series], sc = $("scene20");
+    Q.phase = "result";
+    if (Q.pop) { lower20(Q.pop.rig); Q.pop = null; }
+    sc.classList.remove("playing");
+    $("cross20").hidden = true;
+    run5(async () => {
+      await wait6(800);
+      const k = Q.sscore / S.max, rem = k >= 0.8 ? "Отлично!" : k >= 0.5 ? "Неплохо!" : "Ничего, дальше получится лучше.";
+      const text = `Серия ${Q.series + 1}: ${pts20(Q.sscore)} из ${S.max}. ${rem}`;
+      say20(`Тренер Ольга: «${text}»`);
+      await speak6(text, sc, 1.05, COACH20.pitch);
+      await wait6(400);
+      if (Q.series < 2) await series20(Q.series + 1);
+      else await final20();
+    });
+  }
+
+  async function final20() {
+    const Q = Q20, sc = $("scene20");
+    Q.phase = "end";
+    banner20(pts20(Q.score).toUpperCase() + "!", "#2fbf4a", "bannerg20");
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.2), i * 110));
+    const text = `Молодец! Всего ${pts20(Q.score)} из 160. Твой разряд — «${rank20(Q.score)}».`;
+    say20(`Тренер Ольга: «${text}»`, "итог");
+    await speak6(text, sc, 1.05, COACH20.pitch);
+    await wait6(900);
+    finish20();
+  }
+
+  function finish20() {
+    Q20.phase = "done";
+    const stars = Q20.score >= 110 ? 3 : Q20.score >= 70 ? 2 : 1;
+    showResult({
+      title: "Меткий выстрел!",
+      stars,
+      text: ["", "Попадать надо чаще — потренируйся ещё!", "Хорошая стрельба! Ещё точнее — и будет три звезды.", "Ты прошёл все раунды! Настоящий снайпер тира."][stars],
+      stats: `Очки: ${Q20.score} из 160 · Разряд: ${rank20(Q20.score)} · Десяток: ${Q20.tens}` + (Q20.wrong ? ` · Ошибки в магазине: ${Q20.wrong}` : ""),
+      next: false
+    });
+  }
+
+  // ---------- Прицел и выстрел ----------
+  function aim20(e) {
+    const r = $("scene20").getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    Q20.aim = [(x / r.width) * 2 - 1, -(y / r.height) * 2 + 1];
+    const c = $("cross20");
+    c.style.left = x + "px";
+    c.style.top = y + "px";
+    return [x, y];
+  }
+  $("scene20").addEventListener("pointermove", (e) => {
+    if (!Q20 || !W20 || Q20.phase !== "aim") return;
+    aim20(e);
+    if (e.pointerType === "mouse") $("cross20").hidden = false;
+  });
+  $("scene20").addEventListener("pointerdown", (e) => {
+    if (!Q20 || !W20 || Q20.phase !== "aim" || e.target.closest("button")) return;
+    e.preventDefault();
+    const [x, y] = aim20(e);
+    $("cross20").hidden = false;
+    shoot20(x, y);
+  });
+  $("scene20").addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") $("cross20").hidden = true; });
+  $("skip20").addEventListener("click", () => {
+    if (!Q20 || W20) return;
+    Q20.phase = "done";
     showResult({ title: "Раунд пропущен", stars: 1, text: "В этом браузере не работает 3D, поэтому раунд засчитан без игры.", stats: "", next: false });
   });
 
@@ -9296,7 +12341,12 @@
   $("nextBtn").addEventListener("click", () => showRound(Number($("nextBtn").dataset.round)));
   $("againBtn").addEventListener("click", () => {
     $("win").hidden = true;
-    if (round === 15) startRound15();
+    if (round === 20) startRound20();
+    else if (round === 19) startRound19();
+    else if (round === 18) startRound18();
+    else if (round === 17) startRound17();
+    else if (round === 16) startRound16();
+    else if (round === 15) startRound15();
     else if (round === 14) startRound14();
     else if (round === 13) startRound9(13);
     else if (round === 12) startRound12();
